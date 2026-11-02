@@ -6,11 +6,14 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { ROOT, arg } from './_util.mjs';
+import { ROOT, arg, has } from './_util.mjs';
 const date = arg('--date') || new Date().toISOString().slice(0, 10);
 const OUT = join(ROOT, 'content', 'output', date);
 const meta = JSON.parse(readFileSync(join(ROOT, 'pages', date, 'meta.json'), 'utf8'));
 const page = join(OUT, 'index.html');
+// 默认测本地成品；--url 指到 Pages 线上地址，用来证明公网托管下动效同样跑得起来
+const target = arg('--url') || pathToFileURL(page).href;
+const noShot = has('--no-shot');
 const EDGE = ['C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
   'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'].find(p => existsSync(p));
 if (!EDGE) { console.error('[check] 找不到 msedge.exe'); process.exit(1); }
@@ -70,17 +73,41 @@ let loadResolve = null;
 const client = await connect((await waitForDebugger()).webSocketDebuggerUrl);
 client.on('Runtime.exceptionThrown', p => errors.push(p.exceptionDetails.exception?.description?.split('\n')[0] || 'JS 异常'));
 client.on('Runtime.consoleAPICalled', p => { if (p.type === 'error') errors.push('console.error: ' + p.args.map(a => a.value).join(' ')); });
-client.on('Log.entryAdded', p => { if (p.entry.level === 'error' && !/favicon/i.test(p.entry.text)) errors.push(p.entry.text); });
+client.on('Log.entryAdded', p => {
+  const e = p.entry;
+  if (e.level !== 'error') return;
+  const where = `${e.text || ''} ${e.url || ''}`;
+  if (/favicon/i.test(where)) return;   // 站点根没放图标，Pages 会回 404，与页面本身无关
+  errors.push(where + (e.url ? ` [${e.url}]` : ''));
+});
 client.on('Page.loadEventFired', () => loadResolve && loadResolve());
+
+// 网络层审计：成品必须零外部依赖、零失败请求（钉钉 webview 拉不到外链，这条是硬约束）
+const reqs = new Map();
+const hosts = new Set();
+const failed = [];
+client.on('Network.requestWillBeSent', p => {
+  const u = p.request.url;
+  if (/^(data|blob):/.test(u)) return;   // 内联数据不算外部依赖
+  reqs.set(p.requestId, u);
+  try { hosts.add(new URL(u).host || 'file'); } catch { }
+});
+client.on('Network.responseReceived', p => {
+  if (p.response.status >= 400) failed.push(`${p.response.status} ${p.response.url}`);
+});
+client.on('Network.loadingFailed', p => {
+  failed.push(`${p.errorText} ${reqs.get(p.requestId) || '?'}`);
+});
 
 await client.send('Runtime.enable');
 await client.send('Page.enable');
 await client.send('Log.enable');
+await client.send('Network.enable');
 
 async function open(qs, { width = 390, height = 844, scale = 2 } = {}) {
   await client.send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: scale, mobile: true });
   const loaded = new Promise(res => { loadResolve = res; });
-  await client.send('Page.navigate', { url: pathToFileURL(page).href + qs });
+  await client.send('Page.navigate', { url: target + qs });
   await Promise.race([loaded, sleep(8000)]);
   await sleep(700);
 }
@@ -103,6 +130,7 @@ const STEPS = {
 };
 
 // A) 正常播放模式（手机视口）
+console.log(`[check] 被测地址 ${target}`);
 await open('');
 const stepsCount = await evl(`window.Motion && Motion.steps.length`);
 ok('Motion 装载 / 段落数', stepsCount === 6, `steps=${stepsCount}`);
@@ -144,14 +172,20 @@ ok('点任意词可重算权重', changed === 'ok', changed);
 
 // D) 封面出图
 const ps = meta.poster || { step: 3, at: 0.72, width: 820, height: 620 };
-await open(`?poster=${ps.step}&at=${ps.at}`, { width: ps.width, height: ps.height, scale: 2 });
-const shot = await client.send('Page.captureScreenshot', { format: 'png' });
-writeFileSync(join(OUT, 'cover.png'), Buffer.from(shot.data, 'base64'));
-await open(`?poster=${ps.step}&at=${ps.at}`, { width: 390, height: 700, scale: 2 });
-const shot2 = await client.send('Page.captureScreenshot', { format: 'png' });
-writeFileSync(join(OUT, 'preview-mobile.png'), Buffer.from(shot2.data, 'base64'));
-ok('封面 + 手机预览出图', true, `cover.png / preview-mobile.png (${ps.step}段 @${ps.at})`);
+if (noShot) {
+  ok('封面出图', true, '--no-shot 跳过（线上复测不覆盖本地成品）');
+} else {
+  await open(`?poster=${ps.step}&at=${ps.at}`, { width: ps.width, height: ps.height, scale: 2 });
+  const shot = await client.send('Page.captureScreenshot', { format: 'png' });
+  writeFileSync(join(OUT, 'cover.png'), Buffer.from(shot.data, 'base64'));
+  await open(`?poster=${ps.step}&at=${ps.at}`, { width: 390, height: 700, scale: 2 });
+  const shot2 = await client.send('Page.captureScreenshot', { format: 'png' });
+  writeFileSync(join(OUT, 'preview-mobile.png'), Buffer.from(shot2.data, 'base64'));
+  ok('封面 + 手机预览出图', true, `cover.png / preview-mobile.png (${ps.step}段 @${ps.at})`);
+}
 
+ok('请求全部同源（零外部依赖）', hosts.size <= 1, [...hosts].join(', '));
+ok('无失败请求', failed.length === 0, [...new Set(failed)].slice(0, 4).join(' | '));
 ok('无 JS 异常', errors.length === 0, errors.slice(0, 4).join(' | '));
 
 const bad = results.filter(r => !r.pass);
