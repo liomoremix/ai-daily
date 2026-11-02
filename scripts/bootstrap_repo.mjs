@@ -119,7 +119,8 @@ let r = await ghFetch(`/repos/${repo}/pages`, { method: 'POST', body: { source: 
 if (r.status === 201) pagesMsg = 'Pages 已开启';
 else if (r.status === 409) {
   const u = await ghFetch(`/repos/${repo}/pages`, { method: 'PUT', body: { source: { branch, path: '/' } } });
-  pagesMsg = u.status === 201 ? 'Pages 本来已开，已确认来源分支' : `Pages 已存在，但更新返回 HTTP ${u.status}: ${u.text.slice(0, 160)}`;
+  // 204 = 已按请求更新（无返回体）
+  pagesMsg = [200, 201, 204].includes(u.status) ? 'Pages 本来已开，已确认来源分支' : `Pages 已存在，但更新返回 HTTP ${u.status}: ${u.text.slice(0, 160)}`;
 } else {
   console.error(`[boot] 开启 Pages 失败 HTTP ${r.status}: ${r.text.slice(0, 300)}`);
   process.exit(1);
