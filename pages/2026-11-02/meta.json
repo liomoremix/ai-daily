@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-02",
+  "id": "attention-basics",
+  "category": "原理",
+  "series": "Transformer 机制",
+  "title": "Attention 到底在算什么",
+  "hook": "注意力不是「模型看到了重点」，而是一次加权查表：每个词拿自己的问题去问全句所有的词，按匹配度把答案加权平均回来。",
+  "read_minutes": 4,
+  "tags": ["Transformer", "Attention", "推理成本"],
+  "poster": { "step": 3, "at": 0.96, "width": 820, "height": 640 }
+}

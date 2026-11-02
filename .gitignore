@@ -1,0 +1,6 @@
+.env
+logs/
+content/output/
+node_modules/
+Thumbs.db
+.DS_Store

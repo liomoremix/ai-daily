@@ -1,0 +1,44 @@
+{
+  "categories": ["原理", "架构", "应用案例", "FDE 落地", "工程实践", "安全对齐"],
+  "topics": [
+    { "id": "attention-basics", "category": "原理", "series": "Transformer 机制", "title": "Attention 到底在算什么", "difficulty": 2, "mechanism": "可点词表 + 权重条从原始分过渡到 softmax + 值向量混合 + n² 连线暴涨", "hook": "注意力不是「模型看到了重点」，而是一次加权查表：每个词拿自己的问题去问全句所有的词，按匹配度把答案加权平均回来。" },
+    { "id": "kv-cache", "category": "原理", "series": "Transformer 机制", "title": "KV Cache：为什么首字慢、后面快", "difficulty": 2, "mechanism": "逐 token 生成动画，对比「重算全部」与「只算新增」的连线数量", "hook": "生成第 100 个字时，模型不需要把前 99 个字的 K 和 V 重算一遍——它只是把显存吃掉换来这件事。" },
+    { "id": "temperature", "category": "原理", "series": "生成策略", "title": "temperature 到底在拧什么", "difficulty": 1, "mechanism": "同一组 logits 随温度滑动的概率条实时重排", "hook": "temperature 不改变模型知道什么，只改变它敢不敢说二选一里的那个二。" },
+    { "id": "positional-encoding", "category": "原理", "series": "Transformer 机制", "title": "模型凭什么知道词序", "difficulty": 3, "mechanism": "把位置信号叠加到词向量上的波形动画 + RoPE 旋转示意", "hook": "Attention 本身对顺序完全无感——把句子打乱，它算出来的东西一模一样。顺序是后来「加」进去的。" },
+    { "id": "attention-sink", "category": "原理", "series": "长上下文", "title": "attention sink：开头那几个 token 凭什么吃掉权重", "difficulty": 3, "mechanism": "长序列权重分布热力图，随长度增加首位置权重隆起", "hook": "softmax 逼着每行权重和为 1，模型必须找个地方把多余的注意力倒掉，于是开头成了下水道。" },
+    { "id": "rlhf-vs-dpo", "category": "原理", "series": "对齐", "title": "RLHF 和 DPO 差在哪一步", "difficulty": 3, "mechanism": "两条训练管线并排流动，标出被省掉的那个奖励模型", "hook": "一个先学「人怎么排优劣」再拿它当老师；一个直接把偏好写进损失函数，少养一个模型。" },
+    { "id": "quantization", "category": "原理", "series": "推理成本", "title": "量化到 4bit，模型丢了什么", "difficulty": 2, "mechanism": "连续值被台阶化的滑动示意 + 误差分布条", "hook": "量化不是压缩图片那种糊，是把本来能表达细微差别的那一层抹平——数学题先崩，创意写作几乎无感。" },
+    { "id": "moe-routing", "category": "原理", "series": "架构", "title": "MoE 的路由怎么决定这次用哪个专家", "difficulty": 3, "mechanism": "token 流经门控网络，被分到不同专家柱，负载不均时某根柱堆积", "hook": "参数总量很大和每次计算很多，是两件完全不同的事。" },
+    { "id": "chain-of-thought", "category": "原理", "series": "生成策略", "title": "思维链为什么有效，什么时候是浪费", "difficulty": 2, "mechanism": "同一道题在「直接答」和「先展开」两条路径上的中间状态对比", "hook": "让模型多说话不是让它更聪明，是把它本来一次算不完的推理摊到多个时间步上。" },
+
+    { "id": "transformer-vs-ssm", "category": "架构", "series": "架构对比", "title": "Transformer 对 Mamba：一个记全部，一个记摘要", "difficulty": 3, "mechanism": "双栏随序列增长的成本曲线赛跑，一条 n² 一条 n", "hook": "固定大小的状态 vs 越来越长的历史——这是两种完全不同的「记得住」。" },
+    { "id": "tokenizer-multilingual", "category": "架构", "series": " tokenizer", "title": "分词器怎么决定一个模型的中英文水平", "difficulty": 2, "mechanism": "同一句话在两套词表下被切成多少块的对照动画", "hook": "中文被切成一个字一块，英文被切成 1.3 个词一块——同样 4096 的窗口，能装的信息量差一倍。" },
+    { "id": "clip-contrastive", "category": "架构", "series": "多模态", "title": "图文对齐：CLIP 怎么把猫和「猫」这个字拉到一起", "difficulty": 3, "mechanism": "对比学习热力方阵，对角线逐渐变亮", "hook": "没有一张图被标注过「这是猫」，它只是被反复告知哪张图和哪句话是一对。" },
+    { "id": "long-context-strategies", "category": "架构", "series": "长上下文", "title": "长上下文的四种省法", "difficulty": 3, "mechanism": "四种注意力掩码形状并排点亮：全连接/滑窗/稀疏/线性", "hook": "所有长上下文工作都在回答同一个问题：这 n² 条连线里，哪些其实可以不画。" },
+    { "id": "diffusion-denoise", "category": "架构", "series": "生成模型", "title": "扩散模型是在「去噪」还是在「猜」", "difficulty": 3, "mechanism": "从噪声到图像的逐步去噪过程 + 每一步的候选分支", "hook": "每一步它都在猜「原图加上去的那点噪声是什么」，猜 50 次，图就出来了。" },
+
+    { "id": "copilot-acceptance", "category": "应用案例", "series": "代码智能", "title": "代码补全的接受率是个陷阱指标", "difficulty": 2, "mechanism": "漏斗动画：触发→展示→接受→保留 30 天", "hook": "接受率高可能只说明模型在你敲的东西前面多加了几个字符。真正要看的是三天后这行代码还在不在。" },
+    { "id": "rag-recall", "category": "应用案例", "series": "检索增强", "title": "RAG 答错，八成是检索的锅", "difficulty": 2, "mechanism": "recall@k 曲线 + 正确文档排在第几位时答案质量的阶梯", "hook": "生成模型没在编，它只是老老实实回答了你喂给它的那五段不相关内容。" },
+    { "id": "voice-latency", "category": "应用案例", "series": "语音 Agent", "title": "语音助手那 800 毫秒去哪了", "difficulty": 2, "mechanism": "级联管线时间轴逐段点亮，标出可压缩的段", "hook": "ASR、LLM、TTS 三段各自都不慢，串起来就超过了人能接受的沉默。" },
+    { "id": "rerank-in-search", "category": "应用案例", "series": "搜索", "title": "搜索里的重排模型在补什么课", "difficulty": 3, "mechanism": "召回 1000 条 → 粗排 100 → 精排 10 的三级漏斗与耗时标注", "hook": "向量检索快但粗，交叉编码器准但贵。重排就是让贵的那个只干最后 10 条的活。" },
+    { "id": "embedding-recommendation", "category": "应用案例", "series": "推荐", "title": "推荐系统和 RAG 用的是同一套数学", "difficulty": 2, "mechanism": "双塔结构 + 物品向量空间里「相似」的几何演示", "hook": "「找相似商品」和「找相关文档」是同一个最近邻查询，只是训练信号不一样。" },
+
+    { "id": "fde-cold-start", "category": "FDE 落地", "series": "FDE 现场", "title": "客户只有 40 张缺陷图，怎么冷启动", "difficulty": 2, "mechanism": "时间轴：规则兜底 → 检索增强 → 微调，每段的准确率台阶", "hook": "数据不够的时候，先让模型「查手册」而不是「凭记忆」。40 张图够建一个检索库，不够训一个分类器。" },
+    { "id": "fde-ticket-classify", "category": "FDE 落地", "series": "FDE 现场", "title": "工单分类上线六周，卡住的不是模型", "difficulty": 2, "mechanism": "甘特时间轴，标出模型工作与人肉工作的占比变化", "hook": "准确率从 70 到 90 只花了两周围栏，剩下四周全在处理「客服不信任它」这件事。" },
+    { "id": "fde-reversible-launch", "category": "FDE 落地", "series": "FDE 现场", "title": "怎么设计一个能当天回退的 AI 上线", "difficulty": 3, "mechanism": "灰度分流动画 + 一键切回规则路径的开关", "hook": "客户敢上 AI 的前提，从来不是模型多好，是出事时能不能十秒内退回原来的样子。" },
+    { "id": "fde-refused", "category": "FDE 落地", "series": "FDE 现场", "title": "客户拒绝采纳时，FDE 的三种打法", "difficulty": 2, "mechanism": "决策树展开：换入口 / 换指标 / 换干系人", "hook": "被拒的原因九成不是效果，是这东西改变了某个人每天的工作顺序。" },
+    { "id": "fde-medical-human-loop", "category": "FDE 落地", "series": "FDE 现场", "title": "病历结构化：把医生留在环里的正确姿势", "difficulty": 3, "mechanism": "置信度分流：高置信直接填、低置信弹确认框的路径图", "hook": "不是让医生审核每一条，是让模型知道自己哪几条不该自作主张。" },
+
+    { "id": "eval-from-failures", "category": "工程实践", "series": "评测", "title": "评测集从 20 条失败样例开始", "difficulty": 1, "mechanism": "散点失败案例被聚成 4 类，每类生成断言", "hook": "不要先写 500 条「模型应该都会」的用例，先把线上真炸过的 20 条钉死。" },
+    { "id": "context-budget", "category": "工程实践", "series": "上下文工程", "title": "上下文窗口是个预算表，不是垃圾桶", "difficulty": 2, "mechanism": "堆叠条形图：系统/工具/历史/检索各占多少，超预算时谁被裁", "hook": "窗口 128k 不等于你该塞 128k。每多塞一段，模型分给真正关键那段的注意力就被稀释一次。" },
+    { "id": "when-to-use-small-model", "category": "工程实践", "series": "成本", "title": "什么时候该换成小模型", "difficulty": 2, "mechanism": "任务难度 vs 质量的阶梯曲线，标出小模型够用区", "hook": "分类、抽取、改写这三件事上，小模型加一个好提示，常常打得过大模型加一个烂提示。" },
+    { "id": "agent-tracing", "category": "工程实践", "series": "可观测", "title": "给 Agent 加 trace，从记录每一次工具调用开始", "difficulty": 2, "mechanism": "瀑布图：每次 LLM 调用与工具调用的耗时与 token 标注", "hook": "Agent 出问题时你最想知道的不是「它答错了」，是第 4 步它为什么决定去查那个接口。" },
+    { "id": "prompt-cache", "category": "工程实践", "series": "成本", "title": "提示缓存为什么能砍掉八成输入成本", "difficulty": 2, "mechanism": "前缀匹配示意：改动开头一句话会让整段缓存失效", "hook": "缓存按前缀命中。你把日期写在系统提示第一行，等于每天亲手把缓存清空。" },
+
+    { "id": "prompt-injection-surface", "category": "安全对齐", "series": "注入", "title": "提示注入的真实攻击面在哪", "difficulty": 2, "mechanism": "数据流图：外部内容进入上下文后被当成指令的那条边", "hook": "模型分不清「要处理的内容」和「要服从的指令」——这个区分是我们后来硬加的。" },
+    { "id": "tool-least-privilege", "category": "安全对齐", "series": "工具调用", "title": "给 Agent 的工具权限做减法", "difficulty": 3, "mechanism": "权限矩阵：哪些工具组合起来才危险", "hook": "单个工具都合规，「能读邮件 + 能发 HTTP」组合起来就是数据外泄通道。" },
+    { "id": "jailbreak-taxonomy", "category": "安全对齐", "series": "越狱", "title": "越狱手法的四个大类", "difficulty": 2, "mechanism": "四象限分类图，每类给一个抽象化的攻击路径", "hook": "角色扮演、任务改写、编码绕路、多轮铺垫——本质都是让模型把注意力从安全信号上挪开。" },
+    { "id": "data-poisoning", "category": "安全对齐", "series": "数据", "title": "训练数据投毒与记忆化", "difficulty": 3, "mechanism": "少量样本被模型逐字记下的过程示意", "hook": "100 条精心构造的样本，就可能让模型在遇到特定触发词时完全变一个人。" },
+    { "id": "redteam-flow", "category": "安全对齐", "series": "红队", "title": "一次正经的红队流程长什么样", "difficulty": 2, "mechanism": "流程时间轴：威胁建模 → 用例 → 绕过 → 修复回归", "hook": "红队不是比谁更会骂出违规内容，是把「攻击者会走的那条业务路径」跑通。" }
+  ]
+}

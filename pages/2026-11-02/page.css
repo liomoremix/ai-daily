@@ -1,0 +1,42 @@
+/* 《Attention 到底在算什么》专有样式 */
+
+/* step 2 · QKV 三卡 */
+.card-qkv{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:9px 9px 10px}
+.card-qkv>b{display:block;font-size:17px;color:var(--accent);line-height:1}
+.qh{font-size:12.5px;font-weight:600;color:var(--ink);margin:5px 0 7px}
+.qd{font-size:11px;color:var(--ink-3);line-height:1.5;margin-top:7px}
+.bars5{display:flex;flex-direction:column;gap:3px}
+.bars5>span{display:block;height:6px;background:#fff;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.bars5 i{display:block;height:100%;width:0;border-radius:1px;transition:width .32s cubic-bezier(.22,.61,.36,1)}
+
+/* step 3 · 公式分步揭示 */
+#formula{display:flex;flex-wrap:wrap;gap:6px;font-size:12px}
+#formula span{background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:5px 7px;color:var(--ink-2)}
+#formula .f1{border-color:var(--line-2)}
+#formula .f2,#formula .f3{opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s}
+#formula .f4{opacity:0;background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;transform:translateY(4px);transition:opacity .4s,transform .4s}
+#formula .f2.lit,#formula .f3.lit,#formula .f4.lit{opacity:1;transform:none}
+
+/* step 3 · 权重条 */
+.wrow.self .lbl{color:var(--accent);font-weight:700}
+.wrow.self .wtrack{background:var(--accent-soft);border-color:#C9DCF2}
+.wrow .wtrack{position:relative}
+#barCaption{font-size:12px;color:var(--ink-3);line-height:1.6;margin-top:10px;display:block}
+
+/* step 4 / 5 · svg 舞台 */
+#mix{height:auto;margin-top:8px}
+#quad{margin-top:6px;background:var(--bg);border:1px solid var(--line);border-radius:4px}
+#mixNote{margin-top:12px}
+
+/* step 5 · 结论卡分步出现 */
+#quadNote{opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;margin-top:12px}
+#quadNote.lit{opacity:1;transform:none}
+
+/* step 6 · 误解对照 */
+#myths{grid-template-columns:1fr 1fr;gap:8px}
+#myths>div{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:9px 10px}
+#myths>div:nth-child(even){background:var(--accent-soft);border-color:#C9DCF2}
+#myths h4{margin:0 0 5px;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--ink-3)}
+#myths>div:nth-child(even) h4{color:var(--accent)}
+#myths li{margin:0;list-style:none;font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+#myths ul{padding:0;margin:0}

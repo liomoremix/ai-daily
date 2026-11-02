@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B4B8F">
+<title>Attention 到底在算什么 | AI 每日一识 2026-11-02</title>
+<meta name="description" content="注意力不是「模型看到了重点」，而是一次加权查表：每个词拿自己的问题去问全句所有的词，按匹配度把答案加权平均回来。">
+<script>document.documentElement.className += ' js'</script>
+<style>/* ============================================================
+   ai-daily base.css  —  设计 token + 排版原子 + 动效库
+   约束：无渐变、无光晕、无多层卡片堆叠；只用 transform/opacity 做动画
+   ============================================================ */
+
+:root{
+  --bg:#F4F6F8;
+  --panel:#FFFFFF;
+  --ink:#16202B;
+  --ink-2:#55636F;
+  --ink-3:#8A97A3;
+  --line:#E2E7EB;
+  --line-2:#CFD7DE;
+  --accent:#1B4B8F;
+  --accent-ink:#123A70;
+  --accent-soft:#E8F0FA;
+  --hot:#C2410C;
+  --hot-soft:#FBEDE4;
+  --good:#15695A;
+  --good-soft:#E5F2EF;
+  --radius:6px;
+  --shadow:0 1px 2px rgba(22,32,43,.05);
+  --sans:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,monospace;
+  --gutter:16px;
+  --step-gap:14px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.65 var(--sans);
+  -webkit-font-smoothing:antialiased;
+  padding:0 var(--gutter) 84px;
+}
+#doc{max-width:480px;margin:0 auto}
+
+/* ---------- hero ---------- */
+.hero{padding:20px 0 16px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.kicker{
+  display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.09em;
+  color:var(--accent);text-transform:uppercase;margin:0 0 10px;
+}
+.hero h1{margin:0 0 8px;font-size:24px;line-height:1.28;letter-spacing:-.01em;font-weight:700}
+.hook{margin:0;font-size:15px;color:var(--ink-2);line-height:1.6}
+.hook b{color:var(--ink);font-weight:600}
+.meta-row{display:flex;gap:10px;margin-top:12px;font-size:12px;color:var(--ink-3);flex-wrap:wrap}
+.meta-row span{display:inline-flex;align-items:center;gap:5px}
+.meta-row i{width:3px;height:3px;border-radius:50%;background:var(--line-2);font-style:normal}
+
+/* ---------- step / panel ---------- */
+[data-step]{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:15px 15px 16px;margin:0 0 var(--step-gap);
+  scroll-margin-top:14px;
+}
+.step-head{display:flex;align-items:baseline;gap:9px;margin:0 0 10px}
+.step-no{
+  font:600 11px/1 var(--mono);color:var(--accent);background:var(--accent-soft);
+  padding:4px 6px;border-radius:3px;flex:none;
+}
+.step-head h2{margin:0;font-size:16px;line-height:1.35;font-weight:650}
+.step p{margin:0 0 9px;font-size:14px;color:var(--ink-2);line-height:1.68}
+.step p:last-child{margin-bottom:0}
+.step p strong,.step p b{color:var(--ink);font-weight:600}
+figure{margin:12px 0 0}
+figcaption{font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.55}
+code{font:12.5px/1.6 var(--mono);background:var(--bg);padding:1px 5px;border-radius:3px;color:var(--accent-ink);border:1px solid var(--line)}
+.callout{
+  margin:12px 0 0;padding:10px 12px;border-left:2px solid var(--accent);
+  background:var(--accent-soft);border-radius:0 var(--radius) var(--radius) 0;
+  font-size:13px;color:var(--accent-ink);line-height:1.6;
+}
+.callout.warn{border-left-color:var(--hot);background:var(--hot-soft);color:#8A3208}
+.callout.note{border-left-color:var(--line-2);background:var(--bg);color:var(--ink-2)}
+
+/* ---------- generic atoms ---------- */
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tag{font:600 11px/1 var(--sans);padding:4px 7px;border-radius:3px;background:var(--bg);border:1px solid var(--line);color:var(--ink-2)}
+.tag.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.mini{font-size:12px;color:var(--ink-3);line-height:1.5}
+.mono{font-family:var(--mono)}
+hr.sep{border:0;border-top:1px solid var(--line);margin:14px 0}
+
+/* clickable chip */
+.chip{
+  font:13px/1 var(--sans);padding:7px 9px;border-radius:4px;background:var(--panel);
+  border:1px solid var(--line-2);color:var(--ink);cursor:pointer;transition:.18s transform,.18s background,.18s border-color;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.chip:hover{border-color:var(--accent)}
+.chip:active{transform:translateY(1px)}
+.chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ---------- tokens (注意力演示用) ---------- */
+.tokline{display:flex;flex-wrap:wrap;gap:5px}
+.tok{
+  position:relative;font:13px/1 var(--sans);padding:8px 8px;border-radius:4px;
+  background:var(--bg);border:1px solid var(--line-2);color:var(--ink-2);
+  cursor:pointer;transition:.2s transform,.2s background,.2s color,.2s border-color;
+  -webkit-tap-highlight-color:transparent;
+}
+.tok.sel{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-2px)}
+.tok.warm{background:var(--accent-soft);border-color:#BBD3EE;color:var(--accent-ink)}
+
+/* weight bars */
+.wbars{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.wrow{display:grid;grid-template-columns:52px 1fr 46px;align-items:center;gap:8px}
+.wrow .lbl{font:12px/1 var(--sans);color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wtrack{height:14px;background:var(--bg);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.wfill{display:block;height:100%;width:0;background:var(--accent);transition:width .55s cubic-bezier(.22,.61,.36,1)}
+.wrow.top .wfill{background:var(--hot)}
+.wrow.top .lbl{color:var(--ink);font-weight:600}
+.wval{font:11.5px/1 var(--mono);color:var(--ink-3);text-align:right}
+
+/* svg stage */
+.stage{width:100%;display:block;overflow:visible;background:var(--panel)}
+.stage text{font-family:var(--sans)}
+.link{fill:none;stroke:var(--line-2);stroke-width:1}
+.link.live{stroke:var(--accent)}
+.pkt{fill:var(--accent)}
+
+/* stat */
+.stat{display:flex;align-items:baseline;gap:6px}
+.stat .v{font:700 26px/1 var(--mono);color:var(--accent);letter-spacing:-.02em}
+.stat .u{font-size:12px;color:var(--ink-3)}
+.stat.hot .v{color:var(--hot)}
+
+/* compare */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vs>div{border:1px solid var(--line);border-radius:4px;padding:9px 10px;background:var(--bg)}
+.vs h4{margin:0 0 5px;font-size:12px;font-weight:650;color:var(--ink-2)}
+.vs ul{margin:0;padding-left:15px;font-size:12.5px;color:var(--ink-2);line-height:1.6}
+
+/* footer */
+.doc-foot{margin:20px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);line-height:1.6}
+.doc-foot a{color:var(--accent);text-decoration:none;border-bottom:1px solid #BBD3EE}
+
+/* ---------- 控制条 ---------- */
+.dock{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:20;
+  width:100%;max-width:480px;padding:9px var(--gutter) calc(9px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.96);border-top:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;
+}
+.dock button{
+  font:600 12px/1 var(--sans);padding:9px 11px;border-radius:4px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line-2);color:var(--ink);
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.dock button:active{transform:translateY(1px)}
+.dock button.pri{background:var(--accent);border-color:var(--accent);color:#fff;min-width:74px}
+.dock .prog{font:11.5px/1 var(--mono);color:var(--ink-3);margin-left:auto;white-space:nowrap}
+.dock .bar{position:absolute;top:0;left:0;height:2px;background:var(--accent);transition:width .3s linear}
+
+/* ============================================================
+   动效库  ——  只在 html.js 存在时启用隐藏，保证无 JS 也能读
+   ============================================================ */
+html.js .anim{opacity:0}
+html.js .anim.a-rise{transform:translateY(9px)}
+html.js .anim.a-pop{transform:scale(.9)}
+html.js .anim.a-slide{transform:translateX(-10px)}
+
+.anim.on{opacity:1!important;transform:none!important}
+.anim.a-fadelink{transition:opacity .5s linear}
+.a-rise.on,.a-pop.on,.a-slide.on{transition:opacity .38s ease,transform .38s cubic-bezier(.22,.61,.36,1)}
+
+/* 关键帧类动效：由 .playing 驱动 */
+@keyframes flow{to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes sweep{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+
+.dash{stroke-dasharray:6 6}
+html.js .step.in .dash{animation:flow 1.1s linear forwards}
+html.js .is-playing .loop{animation:pulse 1.5s ease-in-out infinite}
+.spin{animation:spin 1.8s linear infinite}
+html.js .step.in .sweep{animation:sweep .9s cubic-bezier(.22,.61,.36,1) forwards}
+
+@media (prefers-reduced-motion:reduce){
+  .anim,.anim.on{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}
+  .dash,.step.in .dash,.is-playing .loop,.step.in .sweep,.spin{animation:none!important}
+  .dock{position:static;transform:none;max-width:none}
+}
+
+/* ============================================================
+   poster 模式：?poster=N  →  只保留 hero + 指定步骤，压成封面构图
+   ============================================================ */
+body.poster{padding:0 0 24px;background:var(--panel)}
+body.poster #doc{max-width:760px}
+body.poster [data-step]:not(.poster-pick){display:none}
+body.poster .poster-pick{border-color:var(--line);margin:0}
+body.poster .hero{border-bottom:1px solid var(--line);padding:18px 20px 14px;margin:0 0 14px}
+body.poster .hero h1{font-size:29px}
+body.poster .poster-pick{padding:14px 20px 16px}
+body.poster .dock{display:none}
+body.poster [data-anim]{opacity:1!important;transform:none!important;transition:none!important}
+@media (min-width:640px){
+  body.poster #doc{display:block}
+}
+
+/* 《Attention 到底在算什么》专有样式 */
+
+/* step 2 · QKV 三卡 */
+.card-qkv{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:9px 9px 10px}
+.card-qkv>b{display:block;font-size:17px;color:var(--accent);line-height:1}
+.qh{font-size:12.5px;font-weight:600;color:var(--ink);margin:5px 0 7px}
+.qd{font-size:11px;color:var(--ink-3);line-height:1.5;margin-top:7px}
+.bars5{display:flex;flex-direction:column;gap:3px}
+.bars5>span{display:block;height:6px;background:#fff;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.bars5 i{display:block;height:100%;width:0;border-radius:1px;transition:width .32s cubic-bezier(.22,.61,.36,1)}
+
+/* step 3 · 公式分步揭示 */
+#formula{display:flex;flex-wrap:wrap;gap:6px;font-size:12px}
+#formula span{background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:5px 7px;color:var(--ink-2)}
+#formula .f1{border-color:var(--line-2)}
+#formula .f2,#formula .f3{opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s}
+#formula .f4{opacity:0;background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;transform:translateY(4px);transition:opacity .4s,transform .4s}
+#formula .f2.lit,#formula .f3.lit,#formula .f4.lit{opacity:1;transform:none}
+
+/* step 3 · 权重条 */
+.wrow.self .lbl{color:var(--accent);font-weight:700}
+.wrow.self .wtrack{background:var(--accent-soft);border-color:#C9DCF2}
+.wrow .wtrack{position:relative}
+#barCaption{font-size:12px;color:var(--ink-3);line-height:1.6;margin-top:10px;display:block}
+
+/* step 4 / 5 · svg 舞台 */
+#mix{height:auto;margin-top:8px}
+#quad{margin-top:6px;background:var(--bg);border:1px solid var(--line);border-radius:4px}
+#mixNote{margin-top:12px}
+
+/* step 5 · 结论卡分步出现 */
+#quadNote{opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;margin-top:12px}
+#quadNote.lit{opacity:1;transform:none}
+
+/* step 6 · 误解对照 */
+#myths{grid-template-columns:1fr 1fr;gap:8px}
+#myths>div{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:9px 10px}
+#myths>div:nth-child(even){background:var(--accent-soft);border-color:#C9DCF2}
+#myths h4{margin:0 0 5px;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--ink-3)}
+#myths>div:nth-child(even) h4{color:var(--accent)}
+#myths li{margin:0;list-style:none;font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+#myths ul{padding:0;margin:0}
+</style>
+</head>
+<body>
+<main id="doc">
+<header class="hero">
+  <p class="kicker">原理 · Transformer</p>
+  <h1>Attention 到底在算什么</h1>
+  <p class="hook">很多人把注意力理解成"模型看到了重点"。它其实更朴素：一次<b>加权查表</b>。每个词拿自己的问题去问全句所有的词，按匹配程度把对方的信息加权平均回来。</p>
+  <div class="meta-row">
+    <span>6 步交互动画</span><i></i><span>点任意词可重算</span><i></i><span>约 4 分钟</span>
+  </div>
+</header>
+
+<section class="step" data-step="1" data-dur="2600">
+  <div class="step-head"><span class="step-no">01</span><h2>先把一句话切成 token</h2></div>
+  <p>这是整场计算的起点。句子里每个 token 都会独立走向后面的三个角色。</p>
+  <div class="tokline" id="lane1"></div>
+  <p class="callout">当前提问的词是 <b>「它」</b>——指代词最难，因为它自己没有任何内容，全靠别人给它定义。</p>
+</section>
+
+<section class="step" data-step="2" data-dur="2800">
+  <div class="step-head"><span class="step-no">02</span><h2>每个词准备三张卡片</h2></div>
+  <p>同一个词被三个不同的矩阵各乘一遍，得到 <code>Q</code>（我要找什么）、<code>K</code>（我是什么）、<code>V</code>（我能给什么）。三张卡片内容不同，这是全部秘密所在。</p>
+  <div class="grid3" id="qkv"></div>
+  <p class="mini" style="margin-top:11px">下面换一个词当提问方，看它的三张卡片怎么变：</p>
+  <div class="tokline" id="lane2"></div>
+  <div class="callout note" style="margin-top:11px">教学简化：本页让每个词的 Q 直接等于它自己的特征向量，好让你专注看算法本身。真实模型里 Q/K/V 是三套学出来的权重。</div>
+</section>
+
+<section class="step" data-step="3" data-dur="3400" data-poster="1">
+  <div class="step-head"><span class="step-no">03</span><h2>打分 → 归一化：注意力长什么样</h2></div>
+  <p>提问方的 <code>Q</code> 和每个应答方的 <code>K</code> 做点积，除以 <code>√d</code> 防止数值炸开，再过 softmax——一列和为 1 的权重就出来了。</p>
+  <div class="mono" id="formula" style="font-size:13px;color:var(--ink-2);margin:12px 0 4px"></div>
+  <div class="wbars" id="bars"></div>
+  <figcaption id="barCaption"></figcaption>
+</section>
+
+<section class="step" data-step="4" data-dur="3200">
+  <div class="step-head"><span class="step-no">04</span><h2>加权求和：词被"上下文化"了</h2></div>
+  <p>拿这列权重去混合所有词的 <code>V</code>。结果是一个全新的向量——它已经不是"它"了，而是<b>掺进了"猫"的那个"它"</b>。</p>
+  <div class="row" style="gap:14px;margin-top:6px">
+    <div class="mini" style="flex:1">「它」原本的 V</div>
+    <div class="mini" style="flex:1">混合后的新表示</div>
+  </div>
+  <svg class="stage" id="mix" viewBox="0 0 420 168" role="img" aria-label="值向量按权重混合成新的表示"></svg>
+  <p class="callout" id="mixNote"></p>
+</section>
+
+<section class="step" data-step="5" data-dur="4200">
+  <div class="step-head"><span class="step-no">05</span><h2>代价：每两个词都要握一次手</h2></div>
+  <p>上面那套打分，对句子里<b>每一对</b>词都要做一遍。序列长度 n 翻一倍，计算和显存翻四倍。动画会自己把词数从 4 涨到 18，你盯着连线看。</p>
+  <svg class="stage" id="quad" viewBox="0 0 420 260" role="img" aria-label="自注意力的全连接连线随词数暴涨"></svg>
+  <div class="grid3" style="margin-top:10px">
+    <div><div class="stat"><span class="v mono" id="qN">4</span><span class="u">个 token</span></div></div>
+    <div><div class="stat"><span class="v mono" id="qPair">16</span><span class="u">次打分 n²</span></div></div>
+    <div><div class="stat hot"><span class="v mono" id="qMul">1.0</span><span class="u">× 起步代价</span></div></div>
+  </div>
+  <p class="callout warn" id="quadNote">把这套算子放到 <b>32k 上下文</b>：32000² × 4 字节 ≈ <b>4.1GB</b>，而且每个注意力头都要一份。这就是长上下文贵的根源，也是稀疏注意力、滑窗、线性近似这一整个分支存在的理由。</p>
+</section>
+
+<section class="step" data-step="6" data-dur="2400">
+  <div class="step-head"><span class="step-no">06</span><h2>三个常见误解，顺手拆掉</h2></div>
+  <div class="vs" id="myths"></div>
+  <hr class="sep">
+  <p class="mini">一句话带走：<b>注意力 = 用相似度做的一次软检索</b>。理解这一点，KV Cache、稀疏注意力、MoE 路由、长上下文成本曲线，全是同一个式子的不同变形。</p>
+</section>
+
+<footer class="doc-foot"><p><b>AI 每日一识</b> · 2026-11-02 · 原理／Transformer 机制<br>
+本页自包含、可离线打开。权重数值由本页手工设定的语义特征向量真算得出，算法与真实实现一致；换任意一个词当提问方，结果会立刻重算。</p>
+</footer>
+</main>
+<div id="dock"></div>
+<script>/* ============================================================
+   ai-daily controls.js  ——  可_scrub_ 的分步动画播放器
+   所有时间都表达为归一化进度 p∈[0,1]，因此：
+     ?poster=N&at=0.55  可以把第 N 步定格在 55% 那一帧用来截封面
+     prefers-reduced-motion / ?static=1  直接落到 p=1 的完整可读终态
+   页面脚本只需实现 onFrame(i, p, el)，不自己管时钟。
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var root = document.documentElement;
+  var $$ = function (sel, ctx) {
+    return Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
+  };
+  var params = new URLSearchParams(location.search);
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || params.has('static');
+  var posterIdx = parseInt(params.get('poster') || '', 10) || 0;
+  var posterAt = parseFloat(params.get('at'));
+  if (!(posterAt >= 0 && posterAt <= 1)) posterAt = 1;
+
+  var steps = $$('[data-step]');
+
+  var st = { i: -1, playing: !reduced, t: 0, total: 2400, events: [], raf: 0, last: 0 };
+  var hooks = { onInit: null, onFrame: null };
+
+  /* ---------- 排期：把 [data-anim] 的累积延迟换成进度阈值 ---------- */
+  function schedule(el) {
+    var acc = 0, events = $$('.anim', el);
+    events.forEach(function (n) {
+      acc += parseFloat(n.getAttribute('data-delay') || '240');
+      n.__at = acc;
+      n.classList.remove('on');
+    });
+    var total = Math.max(acc + 320, parseFloat(el.getAttribute('data-dur') || '2400'));
+    st.events = events;
+    st.total = total;
+  }
+
+  function applyTo(p) {
+    for (var k = 0; k < st.events.length; k++) {
+      var n = st.events[k], on = (n.__at / st.total) <= p;
+      if (on !== n.classList.contains('on')) n.classList.toggle('on', on);
+    }
+    if (hooks.onFrame && st.i >= 0) hooks.onFrame(st.i, p, steps[st.i]);
+    if (dockBar) dockBar.style.width = (p * 100).toFixed(1) + '%';
+  }
+
+  function settle(el) {
+    $$('.anim', el).forEach(function (n) { n.classList.add('on'); });
+    if (hooks.onFrame) hooks.onFrame(steps.indexOf(el), 1, el);
+  }
+
+  /* ---------- 帧循环 ---------- */
+  function loop(now) {
+    st.raf = requestAnimationFrame(loop);
+    var dt = Math.min(now - st.last, 50);
+    st.last = now;
+    if (!st.playing || st.i < 0) return;
+    st.t = Math.min(st.t + dt, st.total);
+    applyTo(st.t / st.total);
+    if (st.t >= st.total) root.classList.remove('is-playing');
+    else root.classList.add('is-playing');
+  }
+
+  /* ---------- 激活某一步 ---------- */
+  function activate(i, replay) {
+    if (i < 0 || i >= steps.length) return;
+    if (st.i === i && !replay) return;
+    if (st.i >= 0 && st.i !== i) settle(steps[st.i]);   // 离开的步骤保持内容可读
+    st.i = i;
+    if (hooks.onInit) hooks.onInit(steps[i], i);   // 先生成 DOM，再收集 .anim
+    schedule(steps[i]);
+    st.t = reduced ? st.total : 0;
+    applyTo(st.t / st.total);
+    paintProgress();
+  }
+
+  function paintProgress() {
+    if (prog) prog.textContent = (st.i + 1) + ' / ' + steps.length;
+    if (btnPrev) btnPrev.disabled = st.i <= 0;
+    if (btnNext) btnNext.disabled = st.i >= steps.length - 1;
+  }
+
+  /* ---------- 控制条 ---------- */
+  var dock, dockBar, prog, btnPlay, btnPrev, btnNext, btnAgain;
+
+  function buildDock() {
+    dock = document.getElementById('dock');
+    if (!dock) return;
+    dock.className = 'dock';
+    dock.innerHTML =
+      '<i class="bar"></i>' +
+      '<button data-act="prev" aria-label="上一步">‹ 上一步</button>' +
+      '<button data-act="play" class="pri">暂停</button>' +
+      '<button data-act="next" aria-label="下一步">下一步 ›</button>' +
+      '<button data-act="replay">重播</button>' +
+      '<span class="prog"></span>';
+    dockBar = dock.querySelector('.bar');
+    prog = dock.querySelector('.prog');
+    btnPlay = dock.querySelector('[data-act=play]');
+    btnPrev = dock.querySelector('[data-act=prev]');
+    btnNext = dock.querySelector('[data-act=next]');
+    btnAgain = dock.querySelector('[data-act=replay]');
+
+    dock.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      var a = b.getAttribute('data-act');
+      if (a === 'play') setPlaying(!st.playing);
+      if (a === 'prev') jump(st.i - 1);
+      if (a === 'next') jump(st.i + 1);
+      if (a === 'replay') { st.t = 0; applyTo(0); setPlaying(true); activate(st.i, true); }
+    });
+    paintProgress();
+  }
+
+  function setPlaying(v) {
+    st.playing = v;
+    root.classList.toggle('is-playing', v);
+    if (btnPlay) btnPlay.textContent = v ? '暂停' : '播放';
+  }
+
+  function jump(i) {
+    if (i < 0 || i >= steps.length) return;
+    steps[i].scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  /* ---------- 进入视口中央即播放 ---------- */
+  function observe() {
+    if (!('IntersectionObserver' in window)) { activate(0); return; }
+    var io = new IntersectionObserver(function (list) {
+      list.forEach(function (en) {
+        if (en.isIntersecting) activate(steps.indexOf(en.target));
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    steps.forEach(function (s) { io.observe(s); });
+  }
+
+  /* ---------- poster 模式（截图用）：?poster=N&at=0..1 ---------- */
+  function posterMode(n) {
+    var pick = steps[n - 1] || steps[0];
+    document.body.classList.add('poster');
+    steps.forEach(function (s) { s.classList.toggle('poster-pick', s === pick); });
+    if (!pick) return;
+    st.i = steps.indexOf(pick);
+    if (hooks.onInit) hooks.onInit(pick, st.i);   // 先生成 DOM，再收集 .anim
+    schedule(pick);
+    $$('.anim', pick).forEach(function (n2) { n2.classList.toggle('on', (n2.__at / st.total) <= posterAt); });
+    if (hooks.onFrame) hooks.onFrame(st.i, posterAt, pick);
+  }
+
+  /* ---------- boot ---------- */
+  window.Motion = {
+    get reduced() { return reduced; },
+    get poster() { return document.body.classList.contains('poster'); },
+    get index() { return st.i; },
+    get playing() { return st.playing; },
+    steps: steps,
+    boot: function (h) {
+      hooks = h || {};
+      var p = parseInt(params.get('poster') || '', 10);
+      if (p) { posterMode(p); return; }
+      if (steps.length > 1 && !reduced) buildDock();
+      else if (steps.length) { dockBar = null; }
+      root.classList.toggle('is-playing', st.playing);
+      observe();
+      if (st.i < 0) activate(0);
+      st.last = performance.now();
+      st.raf = requestAnimationFrame(loop);
+    },
+    play: function () { setPlaying(true); },
+    pause: function () { setPlaying(false); },
+    goto: jump,
+    replay: function () { st.t = 0; applyTo(0); activate(st.i, true); }
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.target.matches('input,textarea,select')) return;
+    if (e.key === ' ') { e.preventDefault(); setPlaying(!st.playing); }
+    if (e.key === 'ArrowRight') jump(st.i + 1);
+    if (e.key === 'ArrowLeft') jump(st.i - 1);
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && st.playing) { st.playing = false; root.classList.remove('is-playing'); }
+    else if (!document.hidden && !reduced && !posterIdx) { setPlaying(true); }
+  });
+})();
+</script>
+<script>/* 《Attention 到底在算什么》页面逻辑
+   数值全部真算：点积 → /√d → softmax → 加权求和。
+   特征向量是为教学手工设定的语义轴，页面上已注明。 */
+(function () {
+  'use strict';
+  var D = 5, SQ = Math.sqrt(D);
+  var DIM = ['生命体', '具体物', '动作', '状态', '功能词'];
+  var TOK = [
+    { w: '那只', f: [-0.2, 0.3, 0.0, 0.0, 0.9] },
+    { w: '猫', f: [2.6, 1.3, -0.2, 0.1, -0.4] },
+    { w: '没有', f: [0.0, 0.0, 0.2, 0.1, 1.4] },
+    { w: '穿过', f: [0.1, 0.2, 1.7, 0.0, 0.2] },
+    { w: '马路', f: [0.2, 1.5, 0.1, 0.0, 0.1] },
+    { w: '因为', f: [0.0, 0.0, 0.2, 0.2, 1.7] },
+    { w: '它', f: [1.4, 0.15, 0.0, 0.25, -0.2] },
+    { w: '太', f: [0.0, 0.0, 0.0, 0.8, 1.1] },
+    { w: '累', f: [0.6, -0.1, 0.1, 1.7, 0.1] },
+    { w: '了', f: [0.0, 0.0, 0.3, 0.2, 1.6] }
+  ];
+  var SEL = 6, cur = [0, 0, 0, 0, 0, 0], built = {};
+
+  function $(s) { return document.querySelector(s); }
+  function clamp(v, a, b) { return v <= a ? 0 : v >= b ? 1 : (v - a) / (b - a); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function fmt(v, d) { return (v >= 0 ? '' : '-') + Math.abs(v).toFixed(d === undefined ? 2 : d); }
+  function absMax(v) { return Math.max.apply(null, v.map(Math.abs)); }
+
+  function raws(qi) {
+    return TOK.map(function (t) {
+      var s = 0;
+      for (var i = 0; i < D; i++) s += TOK[qi].f[i] * t.f[i];
+      return s / SQ;
+    });
+  }
+  function softmax(v) {
+    var m = Math.max.apply(null, v);
+    var e = v.map(function (x) { return Math.exp(x - m); });
+    var s = e.reduce(function (a, b) { return a + b; }, 0);
+    return e.map(function (x) { return x / s; });
+  }
+  function blend(a) {
+    var o = [0, 0, 0, 0, 0];
+    TOK.forEach(function (t, i) { for (var d = 0; d < D; d++) o[d] += a[i] * t.f[d]; });
+    return o;
+  }
+
+  var _a = null, _aSel = -1;
+  function attn() {
+    if (_aSel !== SEL) { _a = softmax(raws(SEL)); _aSel = SEL; }
+    return _a;
+  }
+
+  /* ---------- 词表 ---------- */
+  function lane(el, stagger) {
+    el.innerHTML = '';
+    TOK.forEach(function (t, i) {
+      var b = document.createElement('button');
+      b.className = 'tok anim a-rise' + (i === SEL ? ' sel' : '');
+      if (stagger) b.setAttribute('data-delay', '110');
+      b.textContent = t.w;
+      b.setAttribute('data-i', i);
+      el.appendChild(b);
+    });
+  }
+  function markLanes() {
+    var a = attn();
+    document.querySelectorAll('.tok').forEach(function (b) {
+      var i = +b.getAttribute('data-i');
+      b.classList.toggle('sel', i === SEL);
+      b.classList.toggle('warm', i !== SEL && a[i] > 0.08);
+      b.setAttribute('title', TOK[i].w + ' 的权重 ' + (a[i] * 100).toFixed(0) + '%');
+    });
+  }
+
+  /* ---------- step 2：Q / K / V ---------- */
+  var QKV = [
+    { k: 'Q', t: '我要找什么', d: '提问方：它想知道"我指的是谁"' },
+    { k: 'K', t: '我是什么', d: '应答方的标签，等着被比对' },
+    { k: 'V', t: '我能给什么', d: '真正会被搬运走的内容' }
+  ];
+  function buildQkv() {
+    $('#qkv').innerHTML = QKV.map(function (c) {
+      return '<div class="card-qkv"><b class="mono">' + c.k + '</b>' +
+        '<div class="qh">' + c.t + '</div><div class="bars5"></div>' +
+        '<div class="qd">' + c.d + '</div></div>';
+    }).join('');
+    $('#qkv').querySelectorAll('.card-qkv').forEach(function (n) {
+      n.classList.add('anim', 'a-pop'); n.setAttribute('data-delay', '260');
+    });
+  }
+  function paintQkv(p) {
+    var a = attn(), hi = a.indexOf(Math.max.apply(null, a));
+    var grow = clamp(p, 0.15, 0.7);
+    $('#qkv').querySelectorAll('.card-qkv').forEach(function (n, idx) {
+      var vec = idx === 2 ? TOK[hi].f : TOK[SEL].f, mx = absMax(vec) || 1;
+      n.querySelector('.bars5').innerHTML = vec.map(function (v, d) {
+        return '<span title="' + DIM[d] + ' ' + fmt(v) + '"><i style="width:' +
+          (Math.abs(v) / mx * 100 * grow).toFixed(1) + '%;background:' + (v < 0 ? 'var(--hot)' : 'var(--accent)') + '"></i></span>';
+      }).join('');
+      n.querySelector('.qd').textContent = idx === 2
+        ? '本页取权重最高的「' + TOK[hi].w + '」的 V（' + (a[hi] * 100).toFixed(0) + '%）'
+        : QKV[idx].d;
+    });
+  }
+
+  /* ---------- step 3：打分与归一化 ---------- */
+  function buildBars() {
+    $('#bars').innerHTML = TOK.map(function (t, i) {
+      return '<div class="wrow anim a-fadelink" data-delay="80" data-i="' + i + '">' +
+        '<span class="lbl">' + t.w + '</span><span class="wtrack"><span class="wfill"></span></span>' +
+        '<span class="wval mono"></span></div>';
+    }).join('');
+  }
+  function paintBars(p) {
+    var raw = raws(SEL), a = attn();
+    var rMin = Math.min.apply(null, raw), rMax = Math.max.apply(null, raw);
+    var aMax = Math.max.apply(null, a), best = a.indexOf(aMax);
+    var grow = clamp(p, 0.10, 0.42), toSoft = clamp(p, 0.50, 0.86);
+    $('#bars').querySelectorAll('.wrow').forEach(function (row) {
+      var i = +row.getAttribute('data-i');
+      var relRaw = (raw[i] - rMin) / ((rMax - rMin) || 1);
+      var v = lerp(relRaw, a[i] / aMax, toSoft) * grow;
+      row.querySelector('.wfill').style.width = (v * 100).toFixed(1) + '%';
+      row.querySelector('.wval').textContent = toSoft > 0.5 ? (a[i] * 100).toFixed(0) + '%' : fmt(raw[i]);
+      row.classList.toggle('top', i === best);
+      row.classList.toggle('self', i === SEL);
+    });
+    var r = raw[best];
+    $('#formula').innerHTML =
+      '<span class="f1">q·k = ' + fmt(TOK[SEL].f.reduce(function (s, v, d) { return s + v * TOK[best].f[d]; }, 0)) + '</span>' +
+      '<span class="f2">÷ √5 = ' + fmt(r) + '</span>' +
+      '<span class="f3">e^' + fmt(r) + ' = ' + fmt(Math.exp(r), 2) + '</span>' +
+      '<span class="f4">softmax = ' + (a[best] * 100).toFixed(0) + '%</span>';
+    ['#formula .f2', '#formula .f3', '#formula .f4'].forEach(function (s, i) {
+      $(s).classList.toggle('lit', p > [0.30, 0.52, 0.80][i]);
+    });
+    $('#barCaption').textContent = toSoft < 0.5
+      ? '现在显示的是原始匹配分（点积 ÷ √d）：有负有正，还没归一化，条长按最小值到最大值铺开。'
+      : 'softmax 之后：「' + TOK[best].w + '」拿到 ' + (aMax * 100).toFixed(0) +
+        '%，其余 9 个词合计 ' + ((1 - aMax) * 100).toFixed(0) + '%——注意没有一个是 0。注意力是软检索，不是硬选择。';
+  }
+
+  /* ---------- step 4：加权混合 ---------- */
+  var X0 = 78, BW = 250, RA = 30, RB = 122, BH = 9, GAP = 15;
+  function paintMix(p) {
+    var a = attn(), own = TOK[SEL].f, out = blend(a);
+    var mx = absMax(own.concat(out)) || 1;
+    var t = clamp(p, 0.28, 0.9);
+    var s = ['<text x="' + X0 + '" y="16" font-size="11.5" fill="#55636F">「' + TOK[SEL].w +
+      '」自己的 V —— 还没上下文化</text>',
+      '<text x="' + X0 + '" y="112" font-size="11.5" fill="#16202B">按权重混合后的新表示</text>'];
+    for (var d = 0; d < D; d++) {
+      var yA = RA + d * GAP, yB = RB + d * GAP;
+      var vOut = lerp(own[d], out[d], t);
+      s.push('<text x="' + (X0 - 10) + '" y="' + (yA + BH - 1) + '" text-anchor="end" font-size="10.5" fill="#8A97A3">' + DIM[d] + '</text>');
+      s.push('<rect x="' + X0 + '" y="' + yA + '" width="' + (Math.abs(own[d]) / mx * BW).toFixed(1) +
+        '" height="' + BH + '" rx="1.5" fill="' + (own[d] < 0 ? '#C2410C' : '#BBD3EE') + '"/>');
+      s.push('<rect x="' + X0 + '" y="' + yB + '" width="' + (Math.abs(vOut) / mx * BW).toFixed(1) +
+        '" height="' + BH + '" rx="1.5" fill="' + (vOut < 0 ? '#C2410C' : '#1B4B8F') + '"/>');
+      var delta = out[d] - own[d];
+      if (Math.abs(delta) > 0.04) {
+        s.push('<text x="' + (X0 + Math.abs(own[d]) / mx * BW + 6).toFixed(1) + '" y="' + (yB + BH - 1) +
+          '" font-size="10" fill="' + (delta > 0 ? '#15695A' : '#C2410C') + '" opacity="' + t.toFixed(2) + '">' +
+          (delta > 0 ? '+' : '') + fmt(delta) + '</text>');
+      }
+    }
+    var top = a.map(function (v, i) { return [v, i]; }).sort(function (x, y) { return y[0] - x[0]; }).slice(0, 4);
+    s.push('<text x="' + X0 + '" y="' + (RB + D * GAP + 16) + '" font-size="10.5" fill="#8A97A3">混合配比 ' +
+      top.map(function (q) { return TOK[q[1]].w + ' ' + (q[0] * 100).toFixed(0) + '%'; }).join(' · ') + '</text>');
+    $('#mix').innerHTML = s.join('');
+    var moved = out.map(function (v, d) { return [Math.abs(v - own[d]), d]; })
+      .sort(function (x, y) { return y[0] - x[0]; })[0][1];
+    $('#mixNote').innerHTML = '变化最大的是<b>' + DIM[moved] + '</b>：' + fmt(own[moved]) + ' → ' + fmt(out[moved]) +
+      '。同一个"' + TOK[SEL].w + '"，在这句里被改写成了带「猫」味道的向量——这就是"上下文化"。';
+  }
+
+  /* ---------- step 5：n² 的代价 ---------- */
+  function paintQuad(p) {
+    var n = 4 + Math.round(clamp(p, 0.04, 0.88) * 14);
+    var cx = 210, cy = 126, R = 100, pts = [], i, j;
+    for (i = 0; i < n; i++) {
+      var ang = -Math.PI / 2 + i * 2 * Math.PI / n;
+      pts.push([cx + R * Math.cos(ang), cy + R * Math.sin(ang)]);
+    }
+    var s = [];
+    for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {
+      s.push('<line x1="' + pts[i][0].toFixed(1) + '" y1="' + pts[i][1].toFixed(1) + '" x2="' +
+        pts[j][0].toFixed(1) + '" y2="' + pts[j][1].toFixed(1) + '" stroke="#1B4B8F" stroke-width="1" stroke-opacity="' +
+        (n > 12 ? 0.12 : 0.3) + '"/>');
+    }
+    for (i = 0; i < n; i++) {
+      s.push('<circle cx="' + pts[i][0].toFixed(1) + '" cy="' + pts[i][1].toFixed(1) +
+        '" r="5" fill="#fff" stroke="#1B4B8F" stroke-width="1.5"/>');
+      if (n <= 10) s.push('<text x="' + (cx + (pts[i][0] - cx) * 1.2).toFixed(1) + '" y="' +
+        (cy + (pts[i][1] - cy) * 1.2 + 3).toFixed(1) + '" font-size="10" fill="#8A97A3" text-anchor="middle">' + (i + 1) + '</text>');
+    }
+    $('#quad').innerHTML = s.join('');
+    $('#qN').textContent = n;
+    $('#qPair').textContent = (n * n).toLocaleString('en-US');
+    $('#qMul').textContent = (n * n / 16).toFixed(1);
+    $('#quadNote').classList.toggle('lit', p > 0.86);
+  }
+
+  /* ---------- step 6：误解 ---------- */
+  var MYTH = [
+    ['注意力是模型"看见了"重要的词', '它只是一次矩阵乘法。权重高说明这组 Q 与 K 在同一批特征方向上对齐，不存在"看"这个动作。'],
+    ['上下文越长，模型知道得就越多', 'n² 的代价意味着长上下文必然要打折；实测里权重常堆在开头几个 token（attention sink），中段反而被摊薄。'],
+    ['多头注意力是多套不同的注意力', '同一个式子把 d 拆成 d/h 维子空间各算一遍。头是把相似度投到不同特征方向，不是多个独立模型。'],
+    ['KV Cache 缓存的是算好的结果', '缓存的是历史 token 的 K 和 V。省下重复计算，换来显存随序列长度线性增长。']
+  ];
+  function buildMyths() {
+    $('#myths').innerHTML = MYTH.map(function (m) {
+      return '<div class="anim a-rise" data-delay="210"><h4>误解</h4><ul><li>' + m[0] + '</li></ul></div>' +
+        '<div class="anim a-rise" data-delay="210"><h4>实际</h4><ul><li>' + m[1] + '</li></ul></div>';
+    }).join('');
+  }
+
+  /* ---------- 装配 ---------- */
+  var INIT = [
+    function () { lane($('#lane1'), true); },
+    function () { buildQkv(); lane($('#lane2'), false); },
+    buildBars,
+    function () { },
+    function () { },
+    buildMyths
+  ];
+  var F = [markLanes, paintQkv, paintBars, paintMix, paintQuad, function () { }];
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.tok') : null;
+    if (!b) return;
+    var i = +b.getAttribute('data-i');
+    if (i === SEL) return;
+    SEL = i; _aSel = -1;
+    markLanes();
+    var k = Motion.index;
+    if (F[k]) F[k](cur[k]);
+    if (k !== 2) Motion.goto(2);
+  });
+
+  window.Motion.boot({
+    onInit: function (el, i) { if (!built[i] && INIT[i]) INIT[i](el); built[i] = 1; },
+    onFrame: function (i, p, el) { cur[i] = p; if (F[i]) F[i](p); }
+  });
+})();
+</script>
+</body>
+</html>

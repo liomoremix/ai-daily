@@ -1,0 +1,62 @@
+<header class="hero">
+  <p class="kicker">原理 · Transformer</p>
+  <h1>Attention 到底在算什么</h1>
+  <p class="hook">很多人把注意力理解成"模型看到了重点"。它其实更朴素：一次<b>加权查表</b>。每个词拿自己的问题去问全句所有的词，按匹配程度把对方的信息加权平均回来。</p>
+  <div class="meta-row">
+    <span>6 步交互动画</span><i></i><span>点任意词可重算</span><i></i><span>约 4 分钟</span>
+  </div>
+</header>
+
+<section class="step" data-step="1" data-dur="2600">
+  <div class="step-head"><span class="step-no">01</span><h2>先把一句话切成 token</h2></div>
+  <p>这是整场计算的起点。句子里每个 token 都会独立走向后面的三个角色。</p>
+  <div class="tokline" id="lane1"></div>
+  <p class="callout">当前提问的词是 <b>「它」</b>——指代词最难，因为它自己没有任何内容，全靠别人给它定义。</p>
+</section>
+
+<section class="step" data-step="2" data-dur="2800">
+  <div class="step-head"><span class="step-no">02</span><h2>每个词准备三张卡片</h2></div>
+  <p>同一个词被三个不同的矩阵各乘一遍，得到 <code>Q</code>（我要找什么）、<code>K</code>（我是什么）、<code>V</code>（我能给什么）。三张卡片内容不同，这是全部秘密所在。</p>
+  <div class="grid3" id="qkv"></div>
+  <p class="mini" style="margin-top:11px">下面换一个词当提问方，看它的三张卡片怎么变：</p>
+  <div class="tokline" id="lane2"></div>
+  <div class="callout note" style="margin-top:11px">教学简化：本页让每个词的 Q 直接等于它自己的特征向量，好让你专注看算法本身。真实模型里 Q/K/V 是三套学出来的权重。</div>
+</section>
+
+<section class="step" data-step="3" data-dur="3400" data-poster="1">
+  <div class="step-head"><span class="step-no">03</span><h2>打分 → 归一化：注意力长什么样</h2></div>
+  <p>提问方的 <code>Q</code> 和每个应答方的 <code>K</code> 做点积，除以 <code>√d</code> 防止数值炸开，再过 softmax——一列和为 1 的权重就出来了。</p>
+  <div class="mono" id="formula" style="font-size:13px;color:var(--ink-2);margin:12px 0 4px"></div>
+  <div class="wbars" id="bars"></div>
+  <figcaption id="barCaption"></figcaption>
+</section>
+
+<section class="step" data-step="4" data-dur="3200">
+  <div class="step-head"><span class="step-no">04</span><h2>加权求和：词被"上下文化"了</h2></div>
+  <p>拿这列权重去混合所有词的 <code>V</code>。结果是一个全新的向量——它已经不是"它"了，而是<b>掺进了"猫"的那个"它"</b>。</p>
+  <div class="row" style="gap:14px;margin-top:6px">
+    <div class="mini" style="flex:1">「它」原本的 V</div>
+    <div class="mini" style="flex:1">混合后的新表示</div>
+  </div>
+  <svg class="stage" id="mix" viewBox="0 0 420 168" role="img" aria-label="值向量按权重混合成新的表示"></svg>
+  <p class="callout" id="mixNote"></p>
+</section>
+
+<section class="step" data-step="5" data-dur="4200">
+  <div class="step-head"><span class="step-no">05</span><h2>代价：每两个词都要握一次手</h2></div>
+  <p>上面那套打分，对句子里<b>每一对</b>词都要做一遍。序列长度 n 翻一倍，计算和显存翻四倍。动画会自己把词数从 4 涨到 18，你盯着连线看。</p>
+  <svg class="stage" id="quad" viewBox="0 0 420 260" role="img" aria-label="自注意力的全连接连线随词数暴涨"></svg>
+  <div class="grid3" style="margin-top:10px">
+    <div><div class="stat"><span class="v mono" id="qN">4</span><span class="u">个 token</span></div></div>
+    <div><div class="stat"><span class="v mono" id="qPair">16</span><span class="u">次打分 n²</span></div></div>
+    <div><div class="stat hot"><span class="v mono" id="qMul">1.0</span><span class="u">× 起步代价</span></div></div>
+  </div>
+  <p class="callout warn" id="quadNote">把这套算子放到 <b>32k 上下文</b>：32000² × 4 字节 ≈ <b>4.1GB</b>，而且每个注意力头都要一份。这就是长上下文贵的根源，也是稀疏注意力、滑窗、线性近似这一整个分支存在的理由。</p>
+</section>
+
+<section class="step" data-step="6" data-dur="2400">
+  <div class="step-head"><span class="step-no">06</span><h2>三个常见误解，顺手拆掉</h2></div>
+  <div class="vs" id="myths"></div>
+  <hr class="sep">
+  <p class="mini">一句话带走：<b>注意力 = 用相似度做的一次软检索</b>。理解这一点，KV Cache、稀疏注意力、MoE 路由、长上下文成本曲线，全是同一个式子的不同变形。</p>
+</section>
