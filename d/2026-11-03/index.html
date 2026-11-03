@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B4B8F">
+<link rel="icon" href="data:,">
+<title>AI Native Company（AI 原生公司）到底是什么 · 图解</title>
+<meta name="description" content="面向完全不懂 AI 的人：用一百年前电气化的老故事，讲清 AI Native Company 是什么、凭什么人这么少、以及它做不到什么。">
+<script>document.documentElement.className += ' js'</script>
+<style>
+:root{
+  --bg:#F4F6F8; --panel:#fff; --ink:#16202B; --ink-2:#55636F; --ink-3:#8A97A3;
+  --line:#E2E7EB; --line-2:#CFD7DE;
+  --accent:#1B4B8F; --accent-ink:#123A70; --accent-soft:#E8F0FA; --accent-line:#C9DCF2;
+  --hot:#C2410C; --hot-ink:#8A3208; --hot-soft:#FBEDE4; --hot-line:#EBC6AE;
+  --good:#15695A; --good-ink:#1D5247; --good-soft:#E5F2EF; --good-line:#BBD9D1;
+  --radius:6px; --shadow:0 1px 2px rgba(22,32,43,.05);
+  --sans:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.78 var(--sans);-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 96px}
+
+/* ---------- 顶栏进度 ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--line);z-index:40}
+.topbar i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* ---------- 侧栏（桌面） ---------- */
+.rail{display:none}
+@media (min-width:1080px){
+  .rail{
+    display:block;position:fixed;left:calc(50% - 480px);top:120px;width:120px;z-index:30;
+    border-left:1px solid var(--line);padding-left:12px;
+  }
+  .rail a{
+    display:flex;gap:8px;align-items:baseline;text-decoration:none;color:var(--ink-3);
+    font:12px/1.5 var(--sans);padding:4px 0;transition:color .2s
+  }
+  .rail a em{font:600 10px/1.5 var(--mono);font-style:normal;letter-spacing:.04em}
+  .rail a:hover{color:var(--ink-2)}
+  .rail a.on{color:var(--accent);font-weight:600}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:52px 0 26px;border-bottom:1px solid var(--line)}
+.kicker{
+  display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.1em;color:var(--accent);
+  background:var(--accent-soft);padding:6px 9px;border-radius:3px;margin-bottom:16px
+}
+h1{margin:0 0 14px;font-size:31px;line-height:1.26;letter-spacing:-.015em;font-weight:700}
+h1 .u{
+  background:linear-gradient(var(--accent-soft),var(--accent-soft)) no-repeat;
+  background-size:0 62%;background-position:0 88%;transition:background-size 1.1s cubic-bezier(.22,.61,.36,1) .35s
+}
+.js .hero.in h1 .u{background-size:100% 62%}
+.lede{margin:0 0 22px;font-size:17px;color:var(--ink-2);line-height:1.8}
+.lede b{color:var(--ink);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.stat{background:var(--panel);padding:13px 11px}
+.stat .v{display:block;font:700 25px/1.1 var(--mono);letter-spacing:-.02em;color:var(--accent);white-space:nowrap}
+@media (max-width:520px){ .stat .v{font-size:19px} .stat .k{font-size:10.5px} }
+.stat.hot .v{color:var(--hot)}
+.stat .k{display:block;margin-top:5px;font-size:11.5px;line-height:1.5;color:var(--ink-3)}
+.scrollhint{margin:20px 0 0;font:12px/1 var(--mono);color:var(--ink-3)}
+
+/* ---------- 卡片 ---------- */
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:22px 20px 24px;margin:18px 0;scroll-margin-top:16px
+}
+.card h2{margin:0 0 4px;font-size:20px;line-height:1.4;font-weight:680;letter-spacing:-.01em}
+.card h3{margin:24px 0 8px;font-size:15.5px;font-weight:650;color:var(--ink)}
+.card p{margin:0 0 14px;color:var(--ink-2);font-size:15.5px;line-height:1.82}
+.card p:last-child{margin-bottom:0}
+.card b,.card strong{color:var(--ink);font-weight:600}
+.no-head{display:flex;gap:10px;align-items:baseline;margin-bottom:14px}
+.no{font:600 11px/1 var(--mono);color:var(--accent);background:var(--accent-soft);padding:5px 6px;border-radius:3px;flex:none}
+.card ul{margin:0 0 14px;padding-left:20px;color:var(--ink-2);font-size:15.5px;line-height:1.85}
+.card li{margin-bottom:7px}
+.card li b{color:var(--ink)}
+.term{color:var(--accent-ink);border-bottom:1px dashed #9DB8DC;cursor:help}
+.note{font-size:13px;color:var(--ink-3);line-height:1.7}
+.callout{
+  margin:16px 0 0;padding:12px 14px;border-left:2px solid var(--accent);
+  background:var(--accent-soft);border-radius:0 var(--radius) var(--radius) 0;
+  font-size:14px;color:var(--accent-ink);line-height:1.75
+}
+.callout.warn{border-left-color:var(--hot);background:var(--hot-soft);color:var(--hot-ink)}
+.callout.fact{border-left-color:var(--line-2);background:var(--bg);color:var(--ink-2)}
+.searchbox{list-style:none;display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 0;padding:0}
+.searchbox li{font:13px/1 var(--mono);padding:9px 11px;border-radius:4px;background:var(--bg);border:1px solid var(--line-2);color:var(--accent-ink)}
+figure{margin:18px 0 0}
+figcaption{margin-top:9px;font-size:12.5px;color:var(--ink-3);line-height:1.65}
+.stage{width:100%;display:block;overflow:visible;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius)}
+.stage text{font-family:var(--sans)}
+.stage text.mono{font-family:var(--mono)}
+.btnrow + .stage,.btnrow + .panx .stage{margin-top:14px}
+/* 窄屏时按原尺寸看：图太密，缩到 358px 宽标签只有 6px，读不动 → 允许横向拖动 */
+.panx{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+@media (max-width:680px){ .panx .stage{min-width:600px} }
+.btn{
+  font:600 13px/1 var(--sans);padding:10px 13px;border-radius:4px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line-2);color:var(--ink);
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:.16s border-color,.16s background
+}
+.btn:hover{border-color:var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+
+/* 通用揭示 */
+html.js .rv{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,.61,.36,1)}
+html.js .card.in .rv{opacity:1;transform:none}
+.card.in .rv:nth-child(2){transition-delay:.05s}
+.card.in .rv:nth-child(3){transition-delay:.1s}
+
+/* ---------- 卡 1：渗透度滑杆 ---------- */
+.dial{margin-top:6px}
+.dial input{width:100%;accent-color:var(--accent);margin:6px 0 0}
+.dial .lab{display:flex;justify-content:space-between;font:12px/1 var(--mono);color:var(--ink-3)}
+
+/* ---------- 卡 3：对照表 ---------- */
+.cmp{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:6px}
+.cmp-h{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-bottom:1px solid var(--line)}
+.cmp-h span{padding:9px 11px;font:600 12px/1.4 var(--sans)}
+.cmp-h span:first-child{color:var(--ink-3);border-right:1px solid var(--line)}
+.cmp-h span:last-child{color:var(--accent)}
+.cmp-row{border-bottom:1px solid var(--line)}
+.cmp-row:last-child{border-bottom:0}
+.cmp-row>button{
+  display:grid;grid-template-columns:1fr 1fr;width:100%;border:0;background:none;cursor:pointer;
+  text-align:left;font-family:inherit;padding:11px 0;gap:0
+}
+.cmp-row>button:hover{background:#FAFBFC}
+.cmp-row i{font-style:normal;padding:0 11px;font-size:13.5px;line-height:1.6}
+.cmp-row i:first-child{color:var(--ink-3);border-right:1px solid var(--line)}
+.cmp-row i:last-child{color:var(--ink)}
+.cmp-row .ex{
+  display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s ease;
+  background:var(--accent-soft)
+}
+.cmp-row.open .ex{grid-template-rows:1fr}
+.cmp-row .ex>div{overflow:hidden;padding:0 12px}
+.cmp-row.open .ex>div{padding:11px 12px}
+.cmp-row .ex p{margin:0;font-size:13.5px;line-height:1.72;color:var(--accent-ink)}
+.cmp-row .ex em{display:block;margin-top:5px;font-style:normal;font-size:12px;color:#4A6B95}
+
+/* ---------- 卡 4：点阵 + 榜 ---------- */
+.dots{display:block;margin-top:14px}
+.dots .who{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font:600 12px/1.5 var(--sans);color:var(--ink-2);margin-bottom:7px}
+.dots .who b{font:700 17px/1.2 var(--mono);color:var(--ink)}
+.dots .who .note{font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.grid-dots{display:flex;flex-wrap:wrap;gap:3px}
+.grid-dots i{width:9px;height:9px;border-radius:2px;background:var(--line-2);opacity:0;transform:scale(.4)}
+.grid-dots i.on{opacity:1;transform:none;transition:opacity .25s ease,transform .25s ease}
+.grid-dots i.a{background:var(--hot)}
+.grid-dots i.b{background:var(--accent)}
+.grid-dots i.part{background:var(--hot);height:5px;margin-top:4px}
+.x72{text-align:center;font:700 22px/1 var(--mono);color:var(--hot);margin:14px 0 2px;letter-spacing:-.02em}
+.rank{margin-top:6px}
+.rk{display:grid;grid-template-columns:118px 1fr 74px;align-items:center;gap:9px;margin-bottom:7px}
+.rk .nm{font-size:12.5px;color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk .tr{height:15px;background:var(--bg);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.rk .fl{display:block;height:100%;width:0;background:var(--accent);transition:width .7s cubic-bezier(.22,.61,.36,1)}
+.rk.hi .fl{background:var(--hot)}
+.rk.hi .nm{color:var(--ink);font-weight:600}
+.rk .vv{font:11.5px/1 var(--mono);color:var(--ink-3)}
+
+/* ---------- 卡 5：研究条形 ---------- */
+.study{margin-top:6px}
+.st{display:grid;grid-template-columns:1fr 118px 1fr;align-items:center;gap:6px;margin-bottom:8px}
+.st .lb{font-size:13px;color:var(--ink-2);text-align:right;line-height:1.45}
+.st .ax{position:relative;height:22px;border-left:1px dashed var(--line-2)}
+.st .ax i{position:absolute;top:4px;height:14px;border-radius:2px;width:0;transition:width .6s cubic-bezier(.22,.61,.36,1)}
+.st .ax i.neg{right:0;background:var(--line-2)}
+.st .ax i.pos{left:1px;background:var(--accent)}
+.st .ax i.good{background:var(--good)}
+.st .vv{font:600 12.5px/1.4 var(--mono);white-space:nowrap}
+.st .vv.neg{color:var(--ink-3)}
+.st .vv.pos{color:var(--accent)}
+.legend{display:flex;gap:14px;font:11.5px/1 var(--sans);color:var(--ink-3);margin-top:10px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- 卡 7：智能体小队 ---------- */
+.team{margin-top:6px}
+.flow{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.job{
+  flex:1 1 100px;border:1px solid var(--line);border-radius:4px;padding:9px 10px;background:var(--bg);
+  font-size:12.5px;color:var(--ink-2);line-height:1.5;transition:.25s border-color,.25s background,.25s color
+}
+.job b{display:block;font:600 12px/1.4 var(--sans);color:var(--ink-3);margin-bottom:3px}
+.job.busy{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent-ink)}
+.job.busy b{color:var(--accent)}
+.job.pass{background:var(--good-soft);border-color:var(--good-line);color:var(--good-ink)}
+.job.pass b{color:var(--good)}
+.job.fail{background:var(--hot-soft);border-color:var(--hot-line);color:var(--hot-ink)}
+.job.fail b{color:var(--hot)}
+.verdict{margin-top:12px;font:600 13.5px/1.6 var(--sans);min-height:22px}
+.verdict.ok{color:var(--good)}
+.verdict.no{color:var(--hot)}
+
+/* ---------- 卡 8：成本结构 ---------- */
+.cost{margin-top:6px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:66px 1fr 52px;align-items:center;gap:9px}
+.bar .bn{font-size:12.5px;color:var(--ink-2);text-align:right}
+.bar .bt{height:22px;background:var(--bg);border:1px solid var(--line);border-radius:3px;overflow:hidden;display:flex}
+.bar .bf{height:100%;width:0;transition:width .5s cubic-bezier(.22,.61,.36,1)}
+.bar .bf.pay{background:var(--accent)}
+.bar .bf.calc{background:var(--hot)}
+.bar .bv{font:11.5px/1 var(--mono);color:var(--ink-3)}
+.yr{font:700 26px/1 var(--mono);color:var(--ink);letter-spacing:-.02em}
+
+/* ---------- 卡 9：一周 ---------- */
+.week{margin-top:6px}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.day{border:1px solid var(--line);border-radius:4px;padding:9px 8px;background:var(--bg);min-height:96px;transition:.3s border-color,.3s background}
+.day b{display:block;font:600 11px/1 var(--mono);color:var(--ink-3);margin-bottom:6px}
+.day span{display:block;font-size:11.5px;line-height:1.5;color:var(--ink-2)}
+.day.on{background:var(--accent-soft);border-color:var(--accent-line)}
+.day.on b{color:var(--accent)}
+.day.on span{color:var(--accent-ink)}
+.bank{display:flex;align-items:center;gap:10px;margin-top:14px}
+.bank .bt{flex:1;height:26px;background:var(--bg);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.bank .bf{height:100%;width:0;background:var(--good);transition:width .6s cubic-bezier(.22,.61,.36,1)}
+.bank .bn{font:12px/1.5 var(--sans);color:var(--ink-2);width:104px;flex:none}
+.bank .bv{font:600 13px/1 var(--mono);color:var(--good)}
+
+/* ---------- 卡 10：盖章 ---------- */
+.stamps{display:grid;gap:9px;margin-top:6px}
+.stamp{
+  border:1px solid var(--hot-line);border-radius:4px;background:var(--hot-soft);padding:13px 14px;
+  display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start
+}
+.stamp .mk{
+  font:700 11px/1 var(--mono);color:var(--hot);border:1.5px solid var(--hot);border-radius:50%;
+  width:26px;height:26px;display:grid;place-items:center
+}
+.stamp h4{margin:0 0 4px;font-size:14.5px;font-weight:650;color:var(--hot-ink)}
+.stamp p{margin:0;font-size:13.5px;line-height:1.72;color:var(--hot-ink)}
+
+/* ---------- 卡 11：三视角 ---------- */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px}
+.pane{display:none}
+.pane.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ---------- 页脚 ---------- */
+footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.75}
+footer a{color:var(--accent);text-decoration:none;border-bottom:1px solid #BBD3EE}
+footer ul{margin:8px 0 0;padding-left:18px}
+footer li{margin-bottom:5px;word-break:break-all}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html.js .rv{opacity:1!important;transform:none!important}
+  .grid-dots i{opacity:1!important;transform:none!important}
+  .js .hero h1 .u{background-size:100% 62%!important}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><i id="prog"></i></div>
+
+<nav class="rail" id="rail" aria-label="目录"></nav>
+
+<div class="wrap">
+
+<header class="hero" id="hero">
+  <span class="kicker">AI 原生公司 · AI Native Company</span>
+  <h1><span class="u">一家公司「用了 AI」和「长成 AI」，差的是整栋楼</span></h1>
+  <p class="lede">最近很多人都在说 <b>AI Native Company（AI 原生公司，简称 ANC）</b>。这个词听着玄，其实一句话能说清：<b>它不是「员工手里多了个 AI 工具」，而是「公司的楼层、流程、分工，围绕 AI 重新盖了一遍」。</b>下面用一百年前电气化的老故事，把它讲明白——包括它做不到什么。</p>
+  <div class="stats">
+    <div class="stat hot"><span class="v" data-count="60" data-suffix=" 人">0</span><span class="k">Midjourney 做到约 3 亿美元年收入，第三方估算只用了几十个人</span></div>
+    <div class="stat"><span class="v" data-count="4300" data-suffix=" 人">0</span><span class="k">同样约 3 亿美元收入的 Turing，用了 4300 人</span></div>
+    <div class="stat"><span class="v" data-count="40" data-suffix=" 年">0</span><span class="k">电力商用后，等了近 40 年工厂才真正被它改变</span></div>
+  </div>
+  <p class="scrollhint">↓ 12 张卡，约 8 分钟。大部分卡都能点。</p>
+</header>
+
+<!-- ============ 1 ============ -->
+<section class="card" id="c1">
+  <div class="no-head"><span class="no">01</span><h2>先用一句人话说清它是什么</h2></div>
+  <p class="rv">「AI 原生」这个词，重点不在 AI，在<b>原生</b>。原生 = 这家公司<b>生下来就是照着 AI 的样子长的</b>：谁先干活、经验存在哪、加人还是加机器，都是按 AI 的脾气定的。</p>
+  <p class="rv">反过来，大多数公司的现状是：公司早就长好了，AI 是后来<b>塞进来的一个工具</b>。塞进去的那块补丁，改不了整栋楼。</p>
+  <p class="rv">下面这个滑杆，把这两件事的区别画给你看。拖动它，看同一间公司从「打补丁」变成「重排」：</p>
+  <figure class="rv">
+    <svg class="stage" id="dial-svg" viewBox="0 0 620 210" role="img" aria-label="同一间公司从旧流程加 AI 补丁，变成围绕 AI 重新排列流程"></svg>
+    <div class="dial">
+      <div class="lab"><span>← 给旧流程打补丁</span><span>围绕 AI 重排流程 →</span></div>
+      <input type="range" id="dial" min="0" max="100" value="0" aria-label="AI 渗透度">
+    </div>
+    <figcaption>示意：六个环节在同一间公司里的摆法。左端是「人做完，AI 帮忙检查」；右端是「AI 先做初稿，人只负责挑错和拍板」——环节顺序变了，人站的位置也变了。</figcaption>
+  </figure>
+  <div class="callout">判断一家公司是不是 AI 原生，别看它买没买 AI 工具——买了不等于用了。看一件事：<b>它的流程有没有为 AI 改过。</b></div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="card" id="c2">
+  <div class="no-head"><span class="no">02</span><h2>一百年前，工厂犯过一模一样的错</h2></div>
+  <p class="rv">这是全篇最重要的一张图，看懂它，「原生」两个字就不用解释了。</p>
+  <p class="rv">19 世纪末的工厂，靠<b>地下室一台大蒸汽机</b>驱动。动力沿一根贯穿全楼的<b>中央传动轴</b>传上去，再用皮带分给每台机器。所以：厂房必须又窄又高，机器必须挤在传动轴旁边，工人站在哪儿、料怎么运，全都得迁就那台中央动力机。</p>
+  <p class="rv">电动机来了。第一批老板做的最省事的事，就是<b>把蒸汽机换成一台大电动机，别的一概不动</b>。传动轴还在转，皮带还在，楼还是那栋楼。结果：几乎没变快。</p>
+  <p class="rv">真正的变化发生在近 40 年后：等到<b>每台机器自带一个小电机</b>，机器就不必再围着传动轴排队了。厂房改成单层大平层，机器按「生产流程」而不是按「离动力源多近」来摆，装配线由此诞生。</p>
+  <figure class="rv">
+    <svg class="stage" id="factory" viewBox="0 0 620 250" role="img" aria-label="工厂电气化三阶段：中央传动轴、分组驱动、每台机器自带电机"></svg>
+    <div class="btnrow" id="stage-btns">
+      <button class="btn sel" data-s="0">① 换掉动力机<br><span class="note">1880s–1900</span></button>
+      <button class="btn" data-s="1">② 分组驱动<br><span class="note">1900s–1910s</span></button>
+      <button class="btn" data-s="2">③ 每台机器自带电机<br><span class="note">1920s 起</span></button>
+    </div>
+    <svg class="stage" id="prod" viewBox="0 0 620 192" role="img" aria-label="制造业生产率曲线：电力商用后约 40 年才明显加速"></svg>
+    <figcaption>下方曲线是制造业生产率的走势（示意形状，依据经济史学者 Paul David 1990 年论文《发电机与计算机》的论述）：电力 1880 年代已商用，但生产率要等到 1920 年代才明显加速。美国制造业里电动机的动力占比：1899 年 5% → 1909 年 23% → 1929 年 77%。</figcaption>
+  </figure>
+  <div class="callout warn"><b>把「电动机」换成「AI」，把「传动轴和皮带」换成你的审批流、部门墙和岗位说明书</b>——这就是今天绝大多数公司的样子：换了心脏，身体还是蒸汽时代的身体。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="card" id="c3">
+  <div class="no-head"><span class="no">03</span><h2>六个地方，能看出是「打补丁」还是「重排」</h2></div>
+  <p class="rv">这一节是<b>可点的</b>。每一行左边是「用了 AI」，右边是「长成 AI」。点任意一行，看一个具体的例子。</p>
+  <div class="cmp rv" id="cmp">
+    <div class="cmp-h"><span>用了 AI（补丁）</span><span>长成 AI（原生）</span></div>
+  </div>
+  <div class="callout fact">这六条不是玄学清单。哈佛商学院与 INSEAD 那项研究给「AI 原生」下的定义正是两条路：<b>流程路径</b>（内部全面用 AI 改变做事方式）和<b>产品路径</b>（把 AI 装进主营产品，让客户直接用产品干掉过去要一支团队才能干的活）。见下一张卡。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="card" id="c4">
+  <div class="no-head"><span class="no">04</span><h2>最反直觉的一幕：同样赚钱，人差 72 倍</h2></div>
+  <p class="rv">先别管定义，看数字。按第三方核查的口径，<b>Midjourney 约 60 人做出约 3 亿美元年收入</b>；而做软件工程外包的 <b>Turing 要做到同样的收入，需要 4300 人</b>。一个点代表 100 人：</p>
+  <figure class="rv">
+    <div class="dots">
+      <div class="who">Midjourney<b>≈ 60 人</b><span class="note">约 3 亿美元收入</span></div>
+      <div class="grid-dots" id="dots-a"></div>
+    </div>
+    <div class="x72" id="x72">×72</div>
+    <div class="dots">
+      <div class="who">Turing<b>4300 人</b><span class="note">同样的收入</span></div>
+      <div class="grid-dots" id="dots-b"></div>
+    </div>
+    <figcaption>数据来自非凡产研 2026 年 10 月核查更新的「全球 AI 公司人效库」（人效 = 收入估算 ÷ 员工数；收入含年化订阅收入与第三方估算，口径不完全同期）。注意：Midjourney 从未官方公布人数，公开估算从 40 到 163 人不等，所以「60 人」只能当量级看，不能当精确值。</figcaption>
+  </figure>
+  <h3>人均创收，把大公司甩在身后的量级</h3>
+  <p class="rv">下面这根是<b>对数刻度</b>（因为最大最小差了两百倍，用普通刻度小的那根会看不见）。看的是「一个员工一年对应多少收入」，单位万美元：</p>
+  <div class="rank rv" id="rank"></div>
+  <p class="note">口径：沃尔玛、苹果、Alphabet、微软为 2025 年前后财年公开数据；英伟达为 2026 财年（约 4.2 万人 / 2159 亿美元）；带 * 的 Turing、Midjourney、Anthropic 为第三方估算。年份、汇率、是否含供应商都不一致，只能看量级。</p>
+  <div class="callout">人效高<b>不等于</b>公司更好。Midjourney 卖的是标准化订阅，用户自己上手；而做企业交付、做人才服务的公司，光部署、集成、合规、持续服务就要堆人。<b>产品标准化程度和交付复杂度，最后都会写进员工人数里。</b></div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="card" id="c5">
+  <div class="no-head"><span class="no">05</span><h2>研究者眼里的 AI 原生公司，长这样</h2></div>
+  <p class="rv">哈佛商学院与 INSEAD 的研究者考察了 2020–2024 年间的 Y Combinator 公司及同期完成首轮融资的美国创投公司（2900 多家），把「把 AI 装进产品」的那批单独标成 <b>AI 原生初创</b>，再跟同行业、同批次的对手逐项对比。差异是这样的：</p>
+  <div class="study rv" id="study"></div>
+  <div class="legend"><span><i style="background:var(--line-2)"></i>比同行少</span><span><i style="background:var(--accent)"></i>比同行多</span><span><i style="background:var(--good)"></i>资深人才</span></div>
+  <p class="note" style="margin-top:14px">组织层级「少半级」不是百分比，所以没画进同一把尺里。</p>
+  <div class="callout warn"><b>这是相关性，不是因果。</b>也可能是「本来就打算做小而精的团队」更容易做成 AI 原生。但至少有一点被反复观察到：<b>初级岗位招得少了约 15%</b>——而初级岗正是新人学成本事的地方。这笔账在第 10 张卡会回来算。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="card" id="c6">
+  <div class="no-head"><span class="no">06</span><h2>楼怎么盖：金字塔塌成「小队 + 一层薄平台」</h2></div>
+  <p class="rv">前面那张工厂图里，「拆掉传动轴」在公司的世界里就是<b>拆掉中间层</b>。下面这张会自动演一遍：15 个人的公司，从五层金字塔塌成「三个小队 + 一层薄平台」。没看到的话点按钮。</p>
+  <figure class="rv">
+    <svg class="stage" id="org" viewBox="0 0 620 300" role="img" aria-label="组织图从五层金字塔变成三个小队加一层薄平台"></svg>
+    <div class="btnrow"><button class="btn" id="org-btn">拆掉中间层 →</button></div>
+    <figcaption>15 个节点，从左边的五层结构重排到右边：三个端到端小队 + 一层薄平台。两个节点淡出，代表被取消的中间审批位。</figcaption>
+  </figure>
+  <h3>真实世界里已经这么做的</h3>
+  <ul>
+    <li><b>Perplexity</b>：成立不到两年、员工不足 50 人，做数千万用户的搜索产品；内部按 2–3 人小队运作，协作原则被写成一句话——<b>「先问 AI，再打扰同事」</b>。</li>
+    <li><b>MiniMax</b>：公开报道称其超过 80% 的代码由 AI 完成，CEO 之下的管理层级不超过三层，415 名员工对应人均创收约 134 万元，是另一家千人规模同行的两倍以上。</li>
+    <li><b>Meta 的 Reality Labs 试点</b>：把原来 10–20 人的产品团队拆成 3–5 人的小队（内部叫 pod），砍掉中间管理层，所有人统一叫 Builder，四周一个冲刺。Amazon 也把部分白领头衔简化成 builder 和 builder lead。</li>
+  </ul>
+  <div class="callout">咨询界总结成三个动作：<b>①小而授权的产品小队</b>（2–5 人端到端负责一件从头到尾的活，也就是一个「工作流」，带预算、带问责）；<b>②薄薄一层平台与治理</b>（中心团队只负责让小队又快又安全，而不是垄断 AI）；<b>③AI 的责任内嵌在业务职能里</b>（不是单独设一个中央实验室）。Gartner 预测：设首席 AI 官的企业占比会从 2024 年的 5% 涨到 2027 年的 40%。</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="card" id="c7">
+  <div class="no-head"><span class="no">07</span><h2>一个人带一队「智能体」，是种什么体验</h2></div>
+  <p class="rv">先解释这个词。<span class="term" data-explained>智能体（Agent）</span>——就像你带一个<b>读过很多书、能自己动手查资料、自己动手办事的实习生</b>：你不用教它每一步怎么点鼠标，你说目标，它自己拆步骤去做，做完交回来给你看。</p>
+  <p class="rv">于是一家 ANC 里最常见的工作画面变成：<b>一个人同时派活给好几个这样的「实习生」</b>，自己从「干活的人」变成「派活 + 验收的人」。点一下，看这一轮怎么跑：</p>
+  <div class="team rv">
+    <svg class="stage" id="team" viewBox="0 0 620 190" role="img" aria-label="一个人给六个智能体派活，产出回流后由人验收"></svg>
+    <div class="flow" id="jobs"></div>
+    <p class="verdict" id="verdict">按「跑一轮」开始。</p>
+    <div class="btnrow">
+      <button class="btn sel" id="run">▶ 跑一轮（人认真验收）</button>
+      <button class="btn" id="run-lazy">▶ 跑一轮（人懒得看）</button>
+    </div>
+  </div>
+  <div class="callout warn">第二个按钮才是重点：<b>AI 的产出看起来总是很完整、很自信</b>，格式漂亮、语气笃定，所以「不检查」几乎不会被立刻发现。ANC 的分工不是「AI 干活、人休息」，而是<b>把人的时间从生产挪到判断上</b>——写清要求、认出错误、承担后果。</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="card" id="c8">
+  <div class="no-head"><span class="no">08</span><h2>钱花在哪：从「工资单」挪到「电费单」</h2></div>
+  <p class="rv">这解释了一个常见困惑：为什么这些公司<b>融资不多、也不急着招人</b>？因为它们的扩张方式变了——活变多时，先加<b>算力</b>（买机器额度、跑更多程序），而不是先加人。拖一下年份看结构怎么迁移：</p>
+  <div class="cost rv">
+    <div class="bars">
+      <div class="bar"><span class="bn">人力</span><span class="bt"><i class="bf pay" id="f-pay"></i></span><span class="bv" id="v-pay">–</span></div>
+      <div class="bar"><span class="bn">算力</span><span class="bt"><i class="bf calc" id="f-calc"></i></span><span class="bv" id="v-calc">–</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
+      <span class="yr" id="yr">第 1 年</span>
+      <input type="range" id="cslider" min="1" max="8" value="1" style="flex:1;accent-color:var(--accent)" aria-label="公司年龄">
+    </div>
+    <p class="note" style="margin-top:10px"><b>这是示意图，不是任何一家公司的真实账本。</b>真实比例因行业差别极大：做企业交付的公司算力便宜、实施人力贵；做标准化订阅的公司才可能把这条线压得这么低。</p>
+  </div>
+  <div class="callout">关键不是「省钱」。是<b>把可复制的那部分工作，从「每做一次付一次工资」搬到「做一次配置、之后按机器时长付费」的地方</b>。这才解释了为什么小团队能撑起几亿美元收入。</div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="card" id="c9">
+  <div class="no-head"><span class="no">09</span><h2>真正的复利：把判断写成机器能读的说明书</h2></div>
+  <p class="rv">很多公司用了 AI 却没变强，差别就在最后一步。看一家 ANC 的一周怎么过：</p>
+  <div class="week rv">
+    <div class="days" id="days"></div>
+    <div class="bank">
+      <span class="bn">公司沉淀下来的<br>「AI 能读的说明书」</span>
+      <span class="bt"><i class="bf" id="bankfill"></i></span>
+      <span class="bv" id="banknum">0 条</span>
+    </div>
+    <div class="btnrow"><button class="btn sel" id="week-btn">▶ 跑完这一周</button><button class="btn" id="week-again">再来一周</button></div>
+    <p class="note" style="margin-top:12px" id="week-cap">周一到周五，一条工单走完四步。注意最后一步。</p>
+  </div>
+  <h3>为什么这一步决定成败</h3>
+  <p class="rv">传统公司里，老师傅的判断力<b>存在他脑子里</b>：他离职，经验就跟着走了；他休假，事就卡住。ANC 多做了一件事——每次人否掉 AI 的输出，就把「为什么不行、什么才算行」写成一条新规则，存进共享库。于是：</p>
+  <ul>
+    <li>下个月再遇到同类问题，AI 直接按新规则做，<b>不用再问人</b>；</li>
+    <li>新人进来，读的是规则库，不是「去找老王」；</li>
+    <li>公司的能力<b>不再等于人数 × 工时</b>，而是「人数 × 他们沉淀下来的判断力」——后者可以复制、可以叠加。</li>
+  </ul>
+  <div class="callout">这就是那句「组织熵减」的实际含义：传统组织最大的成本不是工资，是<b>协同内耗</b>——经验沉不下来、事情要过三道手。把判断写成规则，等于把内耗一次性消掉，并且<b>永久留在公司里</b>。</div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="card" id="c10">
+  <div class="no-head"><span class="no">10</span><h2>它做不到什么（这条最容易被讲漏）</h2></div>
+  <p class="rv">讲到这儿很容易变成吹捧。停一下——下面四件事，是这类公司<b>目前真的办不到</b>的，或者说，是它省下的钱最终以别的形式还回去的地方：</p>
+  <div class="stamps rv" id="stamps">
+    <div class="stamp"><span class="mk">1</span><div><h4>它会一本正经地说错</h4><p>AI 的输出永远「看起来很完整」，包括它错的时候。它不会在编造的地方标红。所以第 7 张卡那个「懒得看」的按钮，在真实公司里就是事故来源。<b>没有验收环节的 AI 原生，只是自动化了错误。</b></p></div></div>
+    <div class="stamp"><span class="mk">2</span><div><h4>它不会自己决定「什么重要」</h4><p>你让它优化客服，它就真的去追求「回复更快」，然后把客户服务得冷冷清清。目标、优先级、什么情况下宁可慢一点——这些是人的活，AI 给不出「应该」。</p></div></div>
+    <div class="stamp"><span class="mk">3</span><div><h4>出事它不负责</h4><p>合同、监管、赔偿、名誉，最后都落在签字的人身上。首席 AI 官这个岗位在 2024 年只有 5% 的企业设、2027 年被预测达到 40%——<b>这个角色的出现本身就是信号：旧的问责分布失效了，得有人重新接住。</b></p></div></div>
+    <div class="stamp"><span class="mk">4</span><div><h4>被砍掉的初级岗，是新人练手的地方</h4><p>研究观察到 AI 原生公司初级员工占比低约 15%、资深员工高 20%。省的是眼前的人力，代价是<b>十年后资深的人从哪儿长出来</b>。同时，扁平化并不自动带来轻松：有调查显示三分之一多的员工在压平后反而觉得没了方向，近一半高管怀疑自己管不过来剩下的人。</p></div></div>
+  </div>
+  <div class="callout warn">还有一条时间上的：电气化等了 40 年，经济学家后来把这种滞后总结成<b>「生产率 J 曲线」</b>——新技术刚进来时，企业要先花钱改软件、清资料、培训人、重排流程，产出<b>先往下凹一段</b>，等新流程跑顺了才往上抬。指望「装上就变强」，本身就是打补丁式思维。</div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="card" id="c11">
+  <div class="no-head"><span class="no">11</span><h2>这跟你有什么关系</h2></div>
+  <p class="rv">不管你在哪，这件事都在改你的日常。挑一个身份看：</p>
+  <div class="tabs rv" id="tabs">
+    <button class="btn sel" data-p="0">要找工作的人</button>
+    <button class="btn" data-p="1">带团队的人</button>
+    <button class="btn" data-p="2">只是普通用户</button>
+  </div>
+  <div class="pane on" data-pane="0">
+    <ul>
+      <li>把简历上「我会做 X」改成<b>「我能交付 X，并且我能认出 X 哪里做错了」</b>。前者 AI 越来越能做，后者是人的位置。</li>
+      <li>入门岗在变少，但资深岗在变多（研究里高 20%）。<b>会提问、会写清要求、会验收</b>的人，比只会执行的人涨得快。</li>
+      <li>面试时反问一句：「你们哪条流程是为 AI 重排过的？」答得出来的公司，和只发个账号让你自己用的公司，是两种东西。</li>
+    </ul>
+  </div>
+  <div class="pane" data-pane="1">
+    <ul>
+      <li><b>别从「发工具」开始</b>，从「挑一条流程端到端重做」开始。发工具是换电动机，重做流程才是拆传动轴。</li>
+      <li>把老师傅的判断写成 AI 能读的说明书，并且<b>把它当资产考核</b>——否则人一走，能力跟着走。</li>
+      <li>给小队预算和问责，而不是给一堆审批。2–5 人、端到端 own 一件事，是反复出现的形状。</li>
+      <li>提前想清楚初级岗怎么办：不设计入口，五年后你招不到资深的人。</li>
+    </ul>
+  </div>
+  <div class="pane" data-pane="2">
+    <ul>
+      <li>你用的产品，背后可能只有几十个人。这不是它不靠谱的证据，但也意味着<b>它没有那么多人在盯着质量</b>。</li>
+      <li>「这是人写的还是机器写的」会越来越难分辨——因为机器写得太像人了。判断依据要从「语气」换成<b>「有没有人在验收、出错找谁」</b>。</li>
+      <li>看到「AI 全自动」的宣传保持一点怀疑：全自动的下游一定有人签字，找不到那个人，就找不到责任。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section class="card" id="c12">
+  <div class="no-head"><span class="no">12</span><h2>一句话带走</h2></div>
+  <p class="rv"><b>AI 原生不是「用了 AI」，而是把公司的楼层、流程和分工围绕 AI 重新盖了一遍——就像一百年前那些终于拆掉传动轴的工厂。</b>它的可见特征是人少、层级薄、扩张先加机器不加人；它的隐藏动作只有一个：把人的判断写成机器能读的规则，并且让这些规则永久留在公司里。</p>
+  <p class="rv">想再挖一层，搜这两个词：</p>
+  <ul class="searchbox">
+    <li>AI Native 公司 组织 结构</li>
+    <li>生产率 J 曲线 电气化 历史</li>
+  </ul>
+</section>
+
+<footer>
+  <p><b>口径与出处</b>：本页所有数字均来自公开报道与研究，年份和统计口径不一致，只能看量级；第 8 张卡是<b>示意图，不含任何公司真实账本</b>。本页零外部依赖，可离线打开。</p>
+  <ul>
+    <li>哈佛商学院 × INSEAD 对 2020–2024 年 YC 与美国早期创投公司的研究（2900+ 家样本），中文报道见 <a href="https://www.ithome.com/html/win8/972807.htm" rel="noopener">IT之家 / Business Insider</a>；组织形态讨论见 <a href="https://www.163.com/dy/article/L0K7OR7V0556BW9D.html" rel="noopener">网易科技转述</a></li>
+    <li>全球 AI 公司人效榜（2026-10 核查）：<a href="https://finance.sina.cn/2026-10-29/detail-iniwxekn5928906.d.html" rel="noopener">非凡产研</a>；Midjourney 人数口径提醒：<a href="https://aibusiness.vc/startups/midjourney-500m-zero-funding" rel="noopener">aibusiness.vc</a></li>
+    <li>大公司人均创收对比：<a href="https://m.gelonghui.com/live/2113217" rel="noopener">格隆汇图解</a>；苹果 / 英伟达：<a href="https://asymco.com/2026-03-12/how-many-employees-does-apple-have-what-do-they-do/" rel="noopener">Asymco</a></li>
+    <li>电气化与生产率时滞（Paul David, <i>The Dynamo and the Computer</i>, 1990）与「生产率 J 曲线」：<a href="https://m.huxiu.com/article/4840026.html" rel="noopener">虎嗅《当我们站在变革的开端》</a>、<a href="https://m.163.com/dy/article/L710VT5905118QJ9.html" rel="noopener">《一百年前，工厂也犯过今天的 AI 错误》</a></li>
+    <li>ANC 定义与组织动作（Perplexity、MiniMax、Beehive 三动作、Gartner CAIO 预测）：<a href="https://m.toutiao.com/article/7686407597158564386/" rel="noopener">《什么是 AI Native 公司（ANC）》</a>、<a href="https://blog.csdn.net/weixin_38171602/article/details/164327182" rel="noopener">《AI Native 来了，我们 IT 部门每个人的位置都在被重画》</a></li>
+  </ul>
+</footer>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var SVGNS = 'http://www.w3.org/2000/svg';
+function $(s){ return document.querySelector(s); }
+function $$(s){ return [].slice.call(document.querySelectorAll(s)); }
+function clamp(v,a,b){ return v<=a?0 : v>=b?1 : (v-a)/(b-a); }
+function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; }
+function lerp(a,b,t){ return a+(b-a)*t; }
+function mix(c1,c2,t){
+  return 'rgb('+Math.round(lerp(c1[0],c2[0],t))+','+Math.round(lerp(c1[1],c2[1],t))+','+Math.round(lerp(c1[2],c2[2],t))+')';
+}
+var C = { ink:[22,32,43], ink2:[85,99,111], ink3:[138,151,163], line:[226,231,235], line2:[207,215,222],
+          accent:[27,75,143], hot:[194,65,12], good:[21,105,90], white:[255,255,255], bg:[244,246,248] };
+function txt(x,y,s,size,color,anchor,weight,fam){
+  return '<text x="'+x+'" y="'+y+'" font-size="'+(size||12)+'" fill="'+(color||'#8A97A3')+
+    '" text-anchor="'+(anchor||'start')+'" font-weight="'+(weight||'400')+
+    '" class="'+(fam && String(fam).indexOf('mono')>-1 ? 'mono' : 'sans')+'">'+s+'</text>';
+}
+function rect(x,y,w,h,fill,rx,extra){
+  return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(0,w).toFixed(1)+
+    '" height="'+Math.max(0,h).toFixed(1)+'" fill="'+fill+'" rx="'+(rx||0)+'"'+(extra||'')+'/>';
+}
+function line(x1,y1,x2,y2,stroke,w,extra){
+  return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+
+    '" stroke="'+stroke+'" stroke-width="'+(w||1)+'"'+(extra||'')+'/>';
+}
+function circ(cx,cy,r,fill,extra){ return '<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+r+'" fill="'+fill+'"'+(extra||'')+'/>'; }
+
+/* 场景登记：进入视口后按时长播一遍，p 从 0 到 1 */
+var LAST = {};
+function play(id, dur, fn){
+  var host = document.getElementById(id);
+  if(!host) return;
+  LAST[id] = 1;
+  function run(p){ LAST[id]=p; fn(p, host); }
+  if(RM){ run(1); return; }
+  host.__run = run;
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.disconnect();
+      var t0 = 0;
+      requestAnimationFrame(function step(now){
+        t0 = t0 || now;
+        var p = Math.min(1,(now-t0)/dur);
+        run(ease(p));
+        if(p<1) requestAnimationFrame(step);
+      });
+    });
+  },{ threshold:0.2, rootMargin:'0px 0px -10% 0px' });
+  io.observe(host);
+}
+
+/* 给每张图套一个可横拖的盒子（窄屏才真的会滚） */
+$$('svg.stage').forEach(function(sv){
+  var box=document.createElement('div'); box.className='panx';
+  sv.parentNode.insertBefore(box,sv); box.appendChild(sv);
+});
+
+/* ---------- 卡片 / hero 揭示 ---------- */
+$$('.card').forEach(function(c){
+  if(RM){ c.classList.add('in'); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.disconnect(); } });
+  },{threshold:0.08});
+  io.observe(c);
+});
+if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(){ $('#hero').classList.add('in'); }); }
+
+/* ---------- hero 数字滚动 ---------- */
+(function(){
+  var nodes = $$('.stat .v');
+  function go(n){
+    var target = +n.getAttribute('data-count'), suf = n.getAttribute('data-suffix')||'';
+    if(RM){ n.textContent = target + suf; return; }
+    var t0=0;
+    requestAnimationFrame(function step(now){
+      t0=t0||now;
+      var p=Math.min(1,(now-t0)/1300), v=Math.round(target*ease(p));
+      n.textContent = v.toLocaleString('en-US') + suf;
+      if(p<1) requestAnimationFrame(step);
+    });
+  }
+  setTimeout(function(){ nodes.forEach(go); }, RM?0:250);
+})();
+
+/* ---------- 顶栏进度 + 侧栏 ---------- */
+(function(){
+  var bar=$('#prog'), rail=$('#rail'), cards=$$('.card');
+  cards.forEach(function(c,i){
+    var h=c.querySelector('h2'); if(!h) return;
+    var a=document.createElement('a');
+    var t=h.textContent.trim(); a.href='#'+c.id;
+    a.innerHTML='<em>'+String(i+1).padStart(2,'0')+'</em><span>'+(t.length>5?t.slice(0,5)+'…':t)+'</span>';
+    rail.appendChild(a);
+  });
+  var links=$$('#rail a');
+  function on(){
+    var max=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(max>0?scrollY/max*100:0).toFixed(1)+'%';
+    var cur=0;
+    cards.forEach(function(c,i){ if(c.getBoundingClientRect().top<innerHeight*0.42) cur=i; });
+    links.forEach(function(a,i){ a.classList.toggle('on', i===cur); });
+  }
+  addEventListener('scroll',on,{passive:true}); on();
+})();
+
+/* ============ 卡 1：渗透度滑杆 ============ */
+(function(){
+  var host=$('#dial-svg'), sl=$('#dial');
+  if(!host) return;
+  var GREY=[207,215,222], BLUE=[27,75,143];
+  /* 六个环节：from = 挤在中央竖轴旁（蒸汽式），to = 按流程横向排开 */
+  var steps=['接需求','找资料','做初稿','内部评审','改','交付'];
+  var from=[[150,52],[150,86],[150,120],[150,154],[150,188],[150,222]];
+  var to  =[[46,104],[140,104],[234,104],[328,104],[422,104],[516,104]];
+  function draw(p){
+    var s='';
+    /* 中央传动轴：随进度淡出 */
+    var shaftOp=(1-clamp(p,0.15,0.85));
+    s+=rect(118,26,10,170,mix(GREY,C.bg,1-clamp(p,0.15,0.85)),2,'opacity="'+shaftOp.toFixed(2)+'"');
+    s+=txt(123,212,'中央传动轴',10.5,mix(C.ink3,C.white,1-shaftOp),'middle');
+    s+=rect(60,196,60,26,mix(GREY,C.line2,p*.5),3);
+    s+=txt(90,213,'动力机',10.5,'#55636F','middle');
+    /* 横向流程线 */
+    s+=line(46,140,600,140,mix(C.line,C.accent,p),1.5,'stroke-dasharray="4 4" opacity="'+(p*0.9).toFixed(2)+'"');
+    for(var i=0;i<steps.length;i++){
+      var x=lerp(from[i][0],to[i][0],p), y=lerp(from[i][1],to[i][1],p);
+      var isHuman=(i===0||i===5), isJudge=(i===3);
+      var fill = isHuman? mix(C.accent,C.accent,p) : mix(C.line2,C.accent,clamp(p,0,1)*0.18);
+      var stroke = isHuman? '#1B4B8F' : mix(GREY,BLUE,p*0.7);
+      var w=lerp(96,86,p), h=26;
+      s+='<g>';
+      s+=rect(x-w/2,y-h/2,w,h,isHuman?'#E8F0FA':mix(C.white,C.bg,0)+'' ,4,'stroke="'+stroke+'"');
+      s+=txt(x,y+4,steps[i],12.5,isHuman?'#123A70':mix(C.ink2,C.ink,p),'middle','600');
+      /* 皮带：淡出 */
+      if(shaftOp>0.02){
+        s+=line(x-w/2,y,x-6,y,'#CFD7DE',1,'opacity="'+shaftOp.toFixed(2)+'"');
+      }
+      /* AI 标记：从「补丁」位置移到「初稿」位置 */
+      var ax=lerp(x+w/2-6, x, p), ay=lerp(y-16, y-20, p);
+      var aop=clamp(p,0,1)*0.95+0.05;
+      s+='<g opacity="'+aop.toFixed(2)+'">';
+      s+=rect(ax-1,y-30,22,13,p>0.5?'#FBEDE4':'#F4F6F8',3,'stroke="'+(p>0.5?'#C2410C':'#CFD7DE')+'"');
+      s+=txt(ax+10,y-20.5,'AI',9.5,p>0.5?'#C2410C':'#8A97A3','middle','700',null);
+      s+='</g>';
+      s+='</g>';
+    }
+    /* 人的位置标注 */
+    s+=txt(328,44,p<0.5?'人从头做到尾，AI 只在旁边帮一下':'AI 先做初稿，人只站在两头：说清要求 + 拍板',12.5,mix(C.ink3,C.accent,p),'middle','600');
+    s+=rect(46,166,554,30,p>0.5?'#E5F2EF':'#F4F6F8',4,'stroke="'+(p>0.5?'#BBD9D1':'#E2E7EB')+'"');
+    s+=txt(328,185,p<0.5?'经验存在员工个人脑子里，人走带走':'每次挑出的错，写成一条新规则留下',12,mix(C.ink3,C.good,p),'middle');
+    host.innerHTML=s;
+  }
+  play('dial-svg',1,draw);
+  sl.addEventListener('input',function(){ draw(+sl.value/100); });
+  /* 自动演示一次：从 0 推到 1 再回到 0，让用户知道能拖 */
+  if(!RM){
+    var started=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting||started) return; started=true; io.disconnect();
+        var t0=0;
+        requestAnimationFrame(function step(now){
+          t0=t0||now; var k=Math.min(1,(now-t0)/2600);
+          var v = k<0.6 ? ease(k/0.6) : 1-ease((k-0.6)/0.4)*0.75;
+          sl.value=Math.round(v*100); draw(v);
+          if(k<1) requestAnimationFrame(step);
+        });
+      });
+    },{threshold:0.35});
+    io.observe(host);
+  } else { sl.value=100; draw(1); }
+})();
+
+/* ============ 卡 2：工厂三阶段 + 生产率曲线 ============ */
+(function(){
+  var host=$('#factory'); if(!host) return;
+  var STAGE=0;
+  /* 5 台机器：三种布局 */
+  var layouts=[
+    [[150,60],[150,105],[150,150],[150,195],[230,60]],
+    [[150,72],[150,120],[150,168],[255,72],[255,140]],
+    [[70,150],[175,150],[280,150],[385,150],[490,150]]
+  ];
+  var names=['织机','锤机','车床','锯台','打包'];
+  function draw(){
+    var L=layouts[STAGE], s='';
+    /* 厂房：三阶段从「窄高多层」变「宽单层」 */
+    var bw=lerp(230,560,STAGE/2), bh=lerp(200,120,STAGE/2), by=lerp(18,110,STAGE/2);
+    s+=rect(20,by,bw,bh,'#fff',4,'stroke="#CFD7DE"');
+    for(var f=1;f<(3-STAGE);f++){
+      s+=line(20,by+f*bh/(3-STAGE),20+bw,by+f*bh/(3-STAGE),'#E2E7EB',1);
+    }
+    /* 中央传动轴 */
+    if(STAGE<2){
+      s+=rect(128,by+8,7,bh-16,'#B9C6D2',2);
+      s+=txt(131,by+2,'中央传动轴',10,'#8A97A3','middle');
+      if(STAGE===0){ s+=rect(238,by+8,7,bh-16,'#B9C6D2',2); }
+    }
+    /* 动力机 */
+    var ew=lerp(64,34,STAGE/2);
+    s+=rect(28,by+bh-42,ew,32,'#E8F0FA',3,'stroke="#1B4B8F"');
+    s+=txt(28+ew/2,by+bh-22,STAGE===0?'大电机':'小电机',10.5,'#123A70','middle','600');
+    /* 机器 */
+    for(var i=0;i<5;i++){
+      var x=L[i][0], y=L[i][1];
+      s+=rect(x,y,54,26,'#F4F6F8',3,'stroke="#8A97A3"');
+      s+=txt(x+27,y+17,names[i],11,'#55636F','middle');
+      if(STAGE<2){
+        s+=line(x,y+13,135,y+13,'#CFD7DE',1.5);
+        s+=circ(135,y+13,3.5,'#B9C6D2');
+      } else {
+        s+=rect(x+38,y-11,15,11,'#FBEDE4',2,'stroke="#C2410C"');
+        s+=txt(x+45.5,y-2.5,'M',8.5,'#C2410C','middle','700');
+      }
+    }
+    if(STAGE===1){
+      s+=rect(238,by+bh-40,30,28,'#E8F0FA',3,'stroke="#1B4B8F"');
+      s+=txt(253,by+bh-22,'组',10.5,'#123A70','middle','600');
+    }
+    /* 阶段说明 */
+    var caps=['机器围着传动轴摆：楼必须又窄又高，离轴远的机器没动力。',
+              '开始分组：一台小电机带几台机器，位置稍微松绑。',
+              '每台机器自带电机：传动轴消失，机器按「流程」而不是按「离动力源多近」来摆 → 单层厂房 + 装配线。'];
+    s+=txt(20,246,caps[STAGE],11.5,'#55636F','start');
+    /* 右侧：电动机动力占比 + 生产率曲线 */
+    var pct=[5,23,77][STAGE], yrs=['1899','1909','1929'][STAGE];
+    s+=rect(470,20,130,74,'#F4F6F8',4,'stroke="#E2E7EB"');
+    s+=txt(482,38,'美国制造业电动机动力占比',10.5,'#8A97A3');
+    s+=txt(482,66,pct+'%',26,'#1B4B8F','start','700','var(--mono)');
+    s+=txt(540,66,'· '+yrs+' 年',11,'#8A97A3');
+    s+=rect(482,74,104,4,'#E2E7EB',2); s+=rect(482,74,104*pct/100,4,'#1B4B8F',2);
+    host.innerHTML=s;
+  }
+  draw();
+  $$('#stage-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#stage-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); STAGE=+b.getAttribute('data-s'); draw();
+    });
+  });
+  /* 生产率曲线 */
+  play('prod',2200,function(p){
+    var host=$('#prod'); if(!host) return;
+    var X=function(y){ return 30+(y-1880)/(1935-1880)*560; };
+    var Y=function(v){ return 150-v*118; };
+    var pts=[],y;
+    for(y=1880;y<=1935;y++){
+      var k=(y-1880)/55;
+      var v = y<1920 ? 0.06+0.05*k : 0.06+0.05*((1920-1880)/55) + (y-1920)/15*0.82;
+      pts.push([X(y),Y(Math.min(1,v))]);
+    }
+    var upto=Math.max(2,Math.round(pts.length*p));
+    var d='M'+pts.slice(0,upto).map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' L');
+    var s=rect(20,10,580,155,'#fff',4,'stroke="#E2E7EB"');
+    s+=line(30,150,590,150,'#CFD7DE',1)+line(30,12,30,150,'#CFD7DE',1);
+    s+=txt(14,86,'生产率',10.5,'#8A97A3','start');
+    s+=line(X(1882),12,X(1882),150,'#E2E7EB',1,'stroke-dasharray="3 4"');
+    s+=txt(X(1882)+4,146,'1880s 电力商用',10,'#8A97A3');
+    s+=line(X(1920),12,X(1920),150,'#C2410C',1,'stroke-dasharray="3 4"');
+    s+=txt(X(1920)+4,24,'1920s 才起飞',10,'#C2410C','start','600');
+    s+=rect(X(1882),158,X(1920)-X(1882),5,'#FBEDE4',2);
+    s+=txt((X(1882)+X(1920))/2,180,'≈ 40 年时滞',11.5,'#C2410C','middle','700');
+    s+='<path d="'+d+'" fill="none" stroke="#1B4B8F" stroke-width="2.5" stroke-linecap="round"/>';
+    var last=pts[upto-1];
+    s+=circ(last[0],last[1],4,'#1B4B8F','stroke="#fff" stroke-width="1.5"');
+    host.innerHTML=s;
+  });
+})();
+
+/* ============ 卡 3：六行对照 ============ */
+(function(){
+  var host=$('#cmp'); if(!host) return;
+  var rows=[
+    ['谁先动手','人做完，再让 AI 帮忙检查一遍','AI 先出初稿，人负责挑错和拍板',
+     '一家做客服系统的团队把「写回复」整个交给 AI，人只写「什么算答对」的验收标准。回复量涨了十几倍，人没加。'],
+    ['活变多时','先招人、先加部门','先加机器额度，人只做判断和例外',
+     '同样约 3 亿美元收入，Midjourney 几十人，Turing 4300 人。差别不在努力，在于「可复制的那部分」放在哪儿做。'],
+    ['经验存在哪','存在老员工脑子里，离职就带走','写成 AI 能读的规则，越攒越厚',
+     '人否掉一次 AI 的输出，就把「为什么不行」写成一条规则入库。下个月同类问题 AI 自己做对，不再需要人。'],
+    ['流程','老流程 + 新工具，审批一道不少','流程按 AI 的脾气重画，审批变成验收标准',
+     'Meta 的 Reality Labs 试点：10–20 人团队拆成 3–5 人小队，砍中间管理层，统一叫 Builder，四周一个冲刺。'],
+    ['组织形状','按职能切部门，一件事跨四个部门','2–5 人小队端到端 own 一件事，带预算和问责',
+     '咨询界把它总结成三个动作：小而授权的小队 + 薄薄一层平台治理 + AI 责任内嵌在业务里（不是设个中央实验室）。'],
+    ['谁为 AI 的错签字','没人认领，「是机器算的」','责任内嵌到业务岗位，每支小队自己签验收',
+     'Gartner 预测设首席 AI 官的企业从 2024 年 5% 涨到 2027 年 40%——这个岗位出现，说明旧的问责分布已经不够用了。']
+  ];
+  rows.forEach(function(r,i){
+    var d=document.createElement('div');
+    d.className='cmp-row';
+    d.innerHTML='<button><i>'+r[1]+'</i><i>'+r[2]+'</i></button>'+
+      '<div class="ex"><div><p><b>'+r[0]+'：</b>'+r[3]+'</p><em>点这一行收起</em></div></div>';
+    host.appendChild(d);
+    d.querySelector('button').addEventListener('click',function(){
+      var open=d.classList.contains('open');
+      $$('.cmp-row',host).forEach(function(x){x.classList.remove('open');});
+      if(!open) d.classList.add('open');
+    });
+  });
+  var first=host.querySelector('.cmp-row'); if(first) first.classList.add('open');
+})();
+
+/* ============ 卡 4：点阵 + 人效榜 ============ */
+(function(){
+  var a=$('#dots-a'), b=$('#dots-b');
+  if(!a) return;
+  a.innerHTML='<i class="part"></i>';
+  var html='';
+  for(var i=0;i<43;i++) html+='<i class="b"></i>';
+  b.innerHTML=html;
+  play('dots-b',1400,function(p){
+    $$('#dots-b i').forEach(function(n,i){
+      n.classList.toggle('on', i/43 < p);
+    });
+    $$('#dots-a i').forEach(function(n){ n.classList.add('on'); });
+  });
+  var list=[
+    ['Turing*',7,true],['沃尔玛',32.4,false],['微软',94,false],['Alphabet',211,false],
+    ['苹果',250,false],['Midjourney*',500,true],['英伟达',510,false],['Anthropic*',1264,true]
+  ];
+  var host=$('#rank');
+  var lo=Math.log(5), hi=Math.log(1500);
+  host.innerHTML=list.map(function(r,i){
+    return '<div class="rk'+(r[2]?' hi':'')+'" data-i="'+i+'"><span class="nm">'+r[0]+'</span>'+
+      '<span class="tr"><i class="fl"></i></span><span class="vv">'+r[1]+' 万</span></div>';
+  }).join('');
+  play('rank',1800,function(p){
+    $$('.rk',host).forEach(function(row,i){
+      var v=list[+row.getAttribute('data-i')][1];
+      var w=clamp((Math.log(v)-lo)/(hi-lo),0,1);
+      row.querySelector('.fl').style.width=(w*100*Math.min(1,p*1.3)).toFixed(1)+'%';
+    });
+  });
+})();
+
+/* ============ 卡 5：研究对比条 ============ */
+(function(){
+  var host=$('#study'); if(!host) return;
+  var rows=[
+    ['团队规模',-25,'%','比同行少四分之一'],
+    ['工程师占比',13,'个百分点','技术岗更密'],
+    ['初级员工占比',-15,'%','入门岗被压掉'],
+    ['管理者占比',-15,'%','中间层变薄'],
+    ['资深员工占比',20,'%','更依赖有判断力的人'],
+    ['人均估值',30,'%','同样行业同批次的对手为基准']
+  ];
+  host.innerHTML=rows.map(function(r,i){
+    var neg=r[1]<0;
+    return '<div class="st" data-i="'+i+'"><span class="lb">'+r[0]+'</span>'+
+      '<span class="ax"><i class="'+(neg?'neg':(r[1]===20?'good':'pos'))+'"></i></span>'+
+      '<span class="vv '+(neg?'neg':'pos')+'">'+(neg?'−':'+')+Math.abs(r[1])+' '+r[2]+'</span></div>';
+  }).join('')+
+  '<div class="st"><span class="lb">组织层级</span><span class="ax" style="border:0"></span><span class="vv neg">− 半级</span></div>';
+  play('study',1600,function(p){
+    $$('.st[data-i]',host).forEach(function(row){
+      var r=rows[+row.getAttribute('data-i')];
+      var i=row.querySelector('i');
+      var w=Math.abs(r[1])/30*56*clamp(p*1.25,0,1);
+      i.style.width=w.toFixed(1)+'px';
+    });
+  });
+})();
+
+/* ============ 卡 6：组织 morph ============ */
+(function(){
+  var host=$('#org'), btn=$('#org-btn'); if(!host) return;
+  /* 15 个节点：五层金字塔 → 三小队 + 薄平台，两个审批位取消 */
+  var pyr=[[310,40],[200,95],[420,95],[140,150],[310,150],[480,150],[90,205],[235,205],[385,205],[530,205],
+           [60,262],[185,262],[310,262],[435,262],[560,262]];
+  var flat=[[560,80],[150,240],[265,240],[380,240],[490,240],[560,240],
+            [95,80],[150,120],[95,160],[265,80],[320,120],[265,160],[435,80],[490,120],[435,160]];
+  var fade=[4,5];        /* 被取消的两个中间审批位 */
+  var platf=[1,2,3];     /* 转进薄平台的原中层 */
+  var role=['exec','mgr','mgr','mgr','mgr','mgr','ic','ic','ic','ic','ic','ic','ic','ic','ic'];
+  function draw(p){
+    var s='';
+    s+=txt(20,24,p<0.5?'传统：五层金字塔':'AI 原生常见形状：三个小队 + 一层薄平台',13,mix(C.ink,C.accent,p),'start','650');
+    /* 分组框 */
+    if(p>0.35){
+      var o=clamp(p,0.35,0.8);
+      [[40,50,150,140,'小队 A'],[210,50,150,140,'小队 B'],[380,50,150,140,'小队 C'],[120,215,300,45,'薄平台：安全 / 数据 / 成本']].forEach(function(g,gi){
+        s+=rect(g[0],g[1],g[2],g[3],gi===3?'#E5F2EF':'#F4F6F8',5,'stroke="'+(gi===3?'#BBD9D1':'#E2E7EB')+'" opacity="'+o.toFixed(2)+'"');
+        s+=txt(g[0]+8,g[1]+15,gi===3?g[4]:g[4],10.5,gi===3?'#15695A':'#8A97A3','start','600');
+      });
+    }
+    /* 金字塔的层线 */
+    if(p<0.7){
+      var o2=1-clamp(p,0.2,0.7);
+      [70,125,180,235].forEach(function(y){ s+=line(40,y,580,y,'#E2E7EB',1,'opacity="'+o2.toFixed(2)+'"'); });
+    }
+    /* 连线：金字塔用父子线，重排后上级关系消失 */
+    var linkOp=clamp(p,0.35,0.85);
+    [[0,1],[0,2],[1,3],[1,4],[2,5],[3,6],[3,7],[4,8],[5,9],[6,10],[7,11],[8,12],[9,13],[9,14]].forEach(function(l){
+      var A=[lerp(pyr[l[0]][0],flat[l[0]][0],p),lerp(pyr[l[0]][1],flat[l[0]][1],p)];
+      var B=[lerp(pyr[l[1]][0],flat[l[1]][0],p),lerp(pyr[l[1]][1],flat[l[1]][1],p)];
+      s+=line(A[0],A[1],B[0],B[1],'#CFD7DE',1,'opacity="'+(0.9*(1-linkOp)).toFixed(2)+'"');
+    });
+    for(var i=0;i<15;i++){
+      var x=lerp(pyr[i][0],flat[i][0],p), y=lerp(pyr[i][1],flat[i][1],p);
+      var op=1; if(fade.indexOf(i)>-1) op=1-clamp(p,0.55,0.95);
+      var r=role[i];
+      var isPlat=p>0.45&&platf.indexOf(i)>-1;
+      var fill=isPlat?'#15695A':(r==='exec'?'#1B4B8F':(r==='mgr'?'#7D9EC7':'#CFD7DE'));
+      s+=circ(x,y,r==='exec'?13:(r==='mgr'?11:9),fill,'opacity="'+op.toFixed(2)+'"');
+      if(isPlat){ s+=txt(x,y+3.5,'平',9.5,'#fff','middle','700'); }
+      if(r==='exec'){ s+=txt(x,y+4,'CEO',9.5,'#fff','middle','700'); }
+    }
+    s+=txt(20,290,p<0.5?'一件事要从一线爬到第五层再爬回来，来回三次。':'三件事各有一支 3 人小队端到端负责；平台只做护栏，不做关卡。',11.5,mix(C.ink3,C.ink2,p),'start');
+    host.innerHTML=s;
+  }
+  var open=RM;
+  draw(RM?1:0);
+  if(RM){ btn.classList.add('sel'); btn.textContent='← 回到金字塔'; }
+  var animating=false;
+  btn.addEventListener('click',function(){
+    if(animating) return;
+    animating=true;
+    open=!open; btn.classList.toggle('sel',open);
+    btn.textContent = open?'← 回到金字塔':'拆掉中间层 →';
+    var t0=0, from=open?0:1, to=open?1:0;
+    if(RM){ draw(to); animating=false; return; }
+    requestAnimationFrame(function step(now){
+      t0=t0||now; var k=Math.min(1,(now-t0)/1100);
+      draw(lerp(from,to,ease(k)));
+      if(k<1) requestAnimationFrame(step); else animating=false;
+    });
+  });
+  /* 进入视口自动演一遍 */
+  if(!RM){
+    var done=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting&&!done){ done=true; io.disconnect(); btn.click(); } });
+    },{threshold:0.4});
+    io.observe(host);
+  }
+})();
+
+/* ============ 卡 7：一人带一队智能体 ============ */
+(function(){
+  var host=$('#team'), jobs=$('#jobs'), verdict=$('#verdict');
+  if(!host) return;
+  var TASKS=['查资料并整理','写初稿','跑测试','改文案','对账','找漏洞'];
+  jobs.innerHTML=TASKS.map(function(t,i){
+    return '<span class="job" data-i="'+i+'"><b>智能体 '+(i+1)+'</b><span>'+t+'</span></span>';
+  }).join('');
+  function frame(p,lazy){
+    var s=txt(20,22,'你（一个人，负责派活和验收）',12.5,'#123A70','start','650');
+    var px=310, py=95;
+    for(var i=0;i<6;i++){
+      var ang=Math.PI*(0.15+ i*0.28);
+      var x=px+Math.cos(ang)*230*(i%2?-1:1)*(i<3?0.75:1);
+      x=px+(i-2.5)*104;
+      var y=i%2?140:60;
+      var on=p> (i+1)/9;
+      s+=line(px,py,x,y,on?'#1B4B8F':'#E2E7EB',1.5,'opacity="'+(on?0.75:0.4)+'"');
+      s+=circ(x,y,15,on?'#E8F0FA':'#F4F6F8','stroke="'+(on?'#1B4B8F':'#CFD7DE')+'"');
+      s+=txt(x,y+4,'A'+(i+1),10.5,on?'#123A70':'#8A97A3','middle','700','var(--mono)');
+    }
+    s+=circ(px,py,22,'#1B4B8F'); s+=txt(px,py+4.5,'人',12,'#fff','middle','700');
+    var tk=clamp(p,0.15,0.75);
+    var tx=lerp(px,562,tk), ty=lerp(py,200,tk);
+    if(p>0.12&&p<0.8) s+=circ(tx,ty,4.5,'#C2410C');
+    s+=rect(40,170,540,22,p>0.8?(lazy?'#FBEDE4':'#E5F2EF'):'#F4F6F8',4,'stroke="'+(p>0.8?(lazy?'#EBC6AE':'#BBD9D1'):'#E2E7EB')+'"');
+    s+=txt(310,185,p<=0.12?'等你派活':(p<0.8?'六个智能体同时在跑，产出正往回流…':(lazy?'人没看 → 一处编造直接发出去了 ✗':'人抽查两处，否掉一条 → 全部通过 ✓')),
+      11.5,p>0.8?(lazy?'#C2410C':'#15695A'):'#8A97A3','middle','600');
+    host.innerHTML=s;
+  }
+  var lazy=false, running=false;
+  function run(isLazy){
+    if(running) return; running=true; lazy=isLazy;
+    $$('#jobs .job').forEach(function(j){ j.className='job'; });
+    verdict.className='verdict'; verdict.textContent='派活中…';
+    if(RM){ frame(1,lazy);
+      $$('#jobs .job').forEach(function(j){ j.classList.add(lazy && +j.getAttribute('data-i')===2 ? 'fail' : 'pass'); });
+      finish(); return; }
+    var t0=0;
+    requestAnimationFrame(function step(now){
+      t0=t0||now; var p=Math.min(1,(now-t0)/2400);
+      frame(ease(p),lazy);
+      $$('#jobs .job').forEach(function(j,i){
+        var k=+j.getAttribute('data-i');
+        if(p>0.12+k*0.09) j.classList.add('busy');
+        if(p>0.8){ j.classList.remove('busy'); j.classList.add(lazy&&k===2?'fail':'pass'); }
+      });
+      if(p<1) requestAnimationFrame(step); else finish();
+    });
+  }
+  function finish(){
+    running=false;
+    if(lazy){ verdict.className='verdict no'; verdict.textContent='打回：AI 的产出格式完美、语气笃定，包括它错的时候。「没看」就等于把错误自动化了。'; }
+    else { verdict.className='verdict ok'; verdict.textContent='通过：人被否掉的那一条，会被写成一条新规则存起来——下次同类问题不用再问人。'; }
+  }
+  frame(0,false);
+  $('#run').addEventListener('click',function(){
+    $$('#run,#run-lazy').forEach(function(b){b.classList.remove('sel');});
+    this.classList.add('sel'); run(false);
+  });
+  $('#run-lazy').addEventListener('click',function(){
+    $$('#run,#run-lazy').forEach(function(b){b.classList.remove('sel');});
+    this.classList.add('sel'); run(true);
+  });
+  if(!RM){
+    var done=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting&&!done){ done=true; io.disconnect(); run(false); } });
+    },{threshold:0.35});
+    io.observe(host);
+  }
+})();
+
+/* ============ 卡 8：成本结构 ============ */
+(function(){
+  var sl=$('#cslider'); if(!sl) return;
+  function draw(y){
+    var k=(y-1)/7;
+    var pay=Math.round(lerp(82,38,k)), calc=Math.round(lerp(4,34,k));
+    $('#f-pay').style.width=pay+'%'; $('#f-calc').style.width=calc+'%';
+    $('#v-pay').textContent=pay+'%'; $('#v-calc').textContent=calc+'%';
+    $('#yr').textContent='第 '+y+' 年';
+  }
+  sl.addEventListener('input',function(){ draw(+sl.value); });
+  play('cslider',1,draw);
+  if(!RM){
+    var done=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting||done) return; done=true; io.disconnect();
+        var t0=0;
+        requestAnimationFrame(function step(now){
+          t0=t0||now; var p=Math.min(1,(now-t0)/2200);
+          sl.value=Math.round(lerp(1,8,ease(p))); draw(+sl.value);
+          if(p<1) requestAnimationFrame(step);
+        });
+      });
+    },{threshold:0.4});
+    io.observe(sl);
+  } else draw(8);
+})();
+
+/* ============ 卡 9：一周 + 规则库 ============ */
+(function(){
+  var days=$('#days'), cap=$('#week-cap'); if(!days) return;
+  var D=[['周一','先问 AI：这类问题以前怎么定的？'],
+         ['周二','AI 出三版初稿，人挑一版'],
+         ['周三','人否掉一版：口径错了'],
+         ['周四','把「什么才算对」写成一条新规则入库'],
+         ['周五','同类问题 AI 自己做对，人没被吵']];
+  days.innerHTML=D.map(function(d){ return '<div class="day"><b>'+d[0]+'</b><span>'+d[1]+'</span></div>'; }).join('');
+  var rules=0, loops=0, running=false;
+  function set(p){
+    $$('.day',days).forEach(function(d,i){ d.classList.toggle('on', i/5 < p); });
+    var shown = rules + (p>=1 ? 1 : 0);          /* 走完的这一周，当场入库一条 */
+    $('#bankfill').style.width=Math.min(100, shown/24*100)+'%';
+    $('#banknum').textContent=shown+' 条';
+    cap.textContent = p<1 ? '工单正在走第五步——这一步决定下周还要不要人。'
+      : (loops<=1 ? '第 1 周结束：规则库 '+shown+' 条。下次同类问题，AI 自己做对。'
+                  : '第 '+loops+' 周结束：规则库 '+shown+' 条。这就是复利——它不写在任何一张报表的人力成本里。');
+  }
+  function run(){
+    if(running) return; running=true; loops++;
+    if(RM){ set(1); rules++; running=false; return; }
+    var t0=0;
+    requestAnimationFrame(function step(now){
+      t0=t0||now; var p=Math.min(1,(now-t0)/2600);
+      set(ease(p));
+      if(p<1) requestAnimationFrame(step); else { rules++; running=false; }
+    });
+  }
+  set(0);
+  $('#week-btn').addEventListener('click',run);
+  $('#week-again').addEventListener('click',function(){ this.classList.add('sel'); run(); });
+  if(!RM){
+    var done=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting&&!done){ done=true; io.disconnect(); run(); } });
+    },{threshold:0.4});
+    io.observe(days);
+  } else { rules=6; loops=7; set(1); }
+})();
+
+/* ============ 卡 10：盖章 ============ */
+(function(){
+  var host=$('#stamps'); if(!host) return;
+  if(RM){ $$('.stamp',host).forEach(function(s){ s.style.opacity=1; s.style.transform='none'; }); return; }
+  $$('.stamp',host).forEach(function(s){ s.style.opacity=0; s.style.transform='translateY(14px)'; s.style.transition='opacity .45s ease, transform .5s cubic-bezier(.22,.61,.36,1)'; });
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return; io.disconnect();
+      $$('.stamp',host).forEach(function(s,i){
+        setTimeout(function(){ s.style.opacity=1; s.style.transform='none'; }, i*230);
+      });
+    });
+  },{threshold:0.2});
+  io.observe(host);
+})();
+
+/* ============ 卡 11：三视角 ============ */
+(function(){
+  var tabs=$('#tabs'); if(!tabs) return;
+  $$('#tabs .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#tabs .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel');
+      var k=b.getAttribute('data-p');
+      $$('.pane').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-pane')===k); });
+    });
+  });
+})();
+})();
+</script>
+</body>
+</html>
