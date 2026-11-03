@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-03",
+  "id": "ai-native-company",
+  "category": "概念",
+  "series": "名词解释",
+  "subject": "AI 原生公司",
+  "title": "一家公司「用了 AI」和「长成 AI」，差的是整栋楼",
+  "hook": "同样做 3 亿美元生意：Midjourney 约 60 人，Turing 4300 人。差的不是工具，是公司怎么盖。",
+  "read_minutes": 8,
+  "tags": [
+    "科普",
+    "AI 组织",
+    "AI 原生公司"
+  ],
+  "scene": "老板给全公司开了 AI 账号，活还是照老流程干——这是「用了 AI」，不是「长成 AI」。",
+  "ai_link": "AI 接走的先是「照规则传话、汇总、填表」这类中间层，所以公司得重排楼层，而不是给旧流程加个按钮。",
+  "analogy": "一百年前工厂把蒸汽机换成电动机，也是先原地换；等了近 40 年，车间和动线重新排过，生产率才真正起飞。",
+  "boundary": "它做不到：只加工具不重排流程，产出不会自己变好；小队自治也可能带来重复造轮子和失控。",
+  "takeaway": "AI 原生不是买了多少 AI，而是公司这栋楼有没有按 AI 重画一遍。",
+  "search_terms": [
+    "AI Native Company 是什么",
+    "AI 原生公司和用了 AI 的公司有什么区别"
+  ],
+  "terms": [
+    "AI 原生公司",
+    "ANC",
+    "AI 智能体"
+  ],
+  "sources": [
+    {
+      "title": "哈佛商学院 × INSEAD：2020–2024 年 YC 与美国早期创投公司研究（中文报道）",
+      "url": "https://www.ithome.com/html/win8/972807.htm"
+    },
+    {
+      "title": "全球 AI 公司人效榜（2026-10 核查）",
+      "url": "https://finance.sina.cn/2026-10-29/detail-iniwxekn5928906.d.html"
+    },
+    {
+      "title": "Paul David《The Dynamo and the Computer》(1990) 与生产率时滞（中文解读）",
+      "url": "https://m.huxiu.com/article/4840026.html"
+    },
+    {
+      "title": "什么是 AI Native 公司（ANC）：Perplexity、MiniMax、Gartner CAIO 预测",
+      "url": "https://m.toutiao.com/article/7686407597158564386/"
+    },
+    {
+      "title": "Asymco：苹果员工人数与人均创收",
+      "url": "https://asymco.com/2026-03-12/how-many-employees-does-apple-have-what-do-they-do/"
+    }
+  ],
+  "poster": {
+    "source": "hero",
+    "width": 820,
+    "height": 485
+  },
+  "cards": 12
+}
