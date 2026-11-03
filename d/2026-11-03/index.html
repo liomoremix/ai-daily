@@ -251,6 +251,21 @@ html.js .card.in .rv{opacity:1;transform:none}
 .pane.on{display:block;animation:fade .35s ease}
 @keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
+/* ---------- 结尾：两个问题 ---------- */
+.ask{
+  margin:18px 0 0;padding:22px 20px 20px;background:var(--accent-soft);
+  border:1px solid var(--accent-line);border-radius:var(--radius)
+}
+.ask .eyebrow{margin:0 0 16px;font:600 11px/1 var(--mono);letter-spacing:.12em;color:var(--accent)}
+.ask ol{list-style:none;margin:0;padding:0}
+.ask li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:15px 0 0;border-top:1px solid var(--accent-line)}
+.ask li + li{margin-top:15px}
+.ask .qn{font:700 12px/1.9 var(--mono);color:var(--accent)}
+.ask .qt{margin:0;font-size:17px;line-height:1.65;font-weight:600;color:var(--accent-ink);letter-spacing:-.005em}
+.ask .qs{margin:7px 0 0;font-size:13.5px;line-height:1.75;color:#4A6B95}
+.ask .tail{margin:16px 0 0;padding-top:13px;border-top:1px dashed var(--accent-line);font-size:13px;line-height:1.7;color:#4A6B95}
+@media (max-width:520px){ .ask{padding:18px 15px 16px} .ask .qt{font-size:16px} }
+
 /* ---------- 页脚 ---------- */
 footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.75}
 footer a{color:var(--accent);text-decoration:none;border-bottom:1px solid #BBD3EE}
@@ -496,6 +511,28 @@ footer li{margin-bottom:5px;word-break:break-all}
     <li>AI Native 公司 组织 结构</li>
     <li>生产率 J 曲线 电气化 历史</li>
   </ul>
+</section>
+
+<!-- ============ 结尾提问 ============ -->
+<section class="ask" id="ask" aria-labelledby="ask-h">
+  <h2 class="eyebrow" id="ask-h">最后，两个问题</h2>
+  <ol role="list">
+    <li>
+      <span class="qn" aria-hidden="true">Q1</span>
+      <div>
+        <p class="qt">你所在的团队，哪一步流程其实只是在「配合分工」，而不是在「做事」？</p>
+        <p class="qs">每周同步会、层层审批、为了汇报而做的汇报。假设今天从零开始，只为了把事做完——它还会存在吗？</p>
+      </div>
+    </li>
+    <li>
+      <span class="qn" aria-hidden="true">Q2</span>
+      <div>
+        <p class="qt">如果 AI 接走你手上「做」的那一半，剩下那一半，够不够撑起你的位置？</p>
+        <p class="qs">把活拆成两半：一半是「做」，一半是「说清要求、认出错误、承担后果」。前一半正在被 AI 接走——后一半，你练了多少？</p>
+      </div>
+    </li>
+  </ol>
+  <p class="tail">没有标准答案。但答得越具体，越知道自己下一步该动哪里。</p>
 </section>
 
 <footer>
