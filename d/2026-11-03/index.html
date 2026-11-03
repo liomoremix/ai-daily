@@ -388,7 +388,7 @@ footer li{margin-bottom:5px;word-break:break-all}
   <p class="rv">先解释这个词。<span class="term" data-explained>智能体（Agent）</span>——就像你带一个<b>读过很多书、能自己动手查资料、自己动手办事的实习生</b>：你不用教它每一步怎么点鼠标，你说目标，它自己拆步骤去做，做完交回来给你看。</p>
   <p class="rv">于是一家 ANC 里最常见的工作画面变成：<b>一个人同时派活给好几个这样的「实习生」</b>，自己从「干活的人」变成「派活 + 验收的人」。点一下，看这一轮怎么跑：</p>
   <div class="team rv">
-    <svg class="stage" id="team" viewBox="0 0 620 190" role="img" aria-label="一个人给六个智能体派活，产出回流后由人验收"></svg>
+    <svg class="stage" id="team" viewBox="0 0 620 194" role="img" aria-label="一个人给六个智能体派活，产出回流后由人验收"></svg>
     <div class="flow" id="jobs"></div>
     <p class="verdict" id="verdict">按「跑一轮」开始。</p>
     <div class="btnrow">
@@ -627,30 +627,34 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   var GREY=[207,215,222], BLUE=[27,75,143];
   /* 六个环节：from = 挤在中央竖轴旁（蒸汽式），to = 按流程横向排开 */
   var steps=['接需求','找资料','做初稿','内部评审','改','交付'];
-  var from=[[150,52],[150,86],[150,120],[150,154],[150,188],[150,222]];
-  var to  =[[46,104],[140,104],[234,104],[328,104],[422,104],[516,104]];
+  var from=[[150,36],[150,59],[150,82],[150,105],[150,128],[150,151]];
+  var to  =[[89,104],[182.6,104],[276.2,104],[369.8,104],[463.4,104],[557,104]];
   function draw(p){
     var s='';
-    /* 中央传动轴：随进度淡出 */
+    /* 中央传动轴 + 动力机 + 标签：随进度整体淡出 */
     var shaftOp=(1-clamp(p,0.15,0.85));
-    s+=rect(118,26,10,170,mix(GREY,C.bg,1-clamp(p,0.15,0.85)),2,'opacity="'+shaftOp.toFixed(2)+'"');
-    s+=txt(123,212,'中央传动轴',10.5,mix(C.ink3,C.white,1-shaftOp),'middle');
-    s+=rect(60,196,60,26,mix(GREY,C.line2,p*.5),3);
-    s+=txt(90,213,'动力机',10.5,'#55636F','middle');
+    s+='<g opacity="'+shaftOp.toFixed(2)+'">';
+    s+=rect(80,26,10,108,'#CFD7DE',2);
+    s+=rect(30,134,52,28,'#CFD7DE',3);
+    s+=txt(56,152,'动力机',10.5,'#55636F','middle','600');
+    s+=txt(85,18,'中央传动轴',10.5,'#8A97A3','middle');
+    s+='</g>';
     /* 横向流程线 */
     s+=line(46,140,600,140,mix(C.line,C.accent,p),1.5,'stroke-dasharray="4 4" opacity="'+(p*0.9).toFixed(2)+'"');
     for(var i=0;i<steps.length;i++){
-      var x=lerp(from[i][0],to[i][0],p), y=lerp(from[i][1],to[i][1],p);
+      /* 分两拍：先横向拉开（保持各自高度，互不遮挡），再统一落到流程线上 */
+      var x=lerp(from[i][0],to[i][0],ease(clamp(p,0,0.75)));
+      var y=lerp(from[i][1],to[i][1],ease(clamp(p,0.45,1)));
       var isHuman=(i===0||i===5), isJudge=(i===3);
       var fill = isHuman? mix(C.accent,C.accent,p) : mix(C.line2,C.accent,clamp(p,0,1)*0.18);
       var stroke = isHuman? '#1B4B8F' : mix(GREY,BLUE,p*0.7);
-      var w=lerp(96,86,p), h=26;
+      var w=lerp(96,86,p), h=20;
       s+='<g>';
       s+=rect(x-w/2,y-h/2,w,h,isHuman?'#E8F0FA':mix(C.white,C.bg,0)+'' ,4,'stroke="'+stroke+'"');
-      s+=txt(x,y+4,steps[i],12.5,isHuman?'#123A70':mix(C.ink2,C.ink,p),'middle','600');
+      s+=txt(x,y+4,steps[i],12,isHuman?'#123A70':mix(C.ink2,C.ink,p),'middle','600');
       /* 皮带：淡出 */
       if(shaftOp>0.02){
-        s+=line(x-w/2,y,x-6,y,'#CFD7DE',1,'opacity="'+shaftOp.toFixed(2)+'"');
+        s+=line(x-w/2-12,y,x-w/2,y,'#CFD7DE',1,'opacity="'+shaftOp.toFixed(2)+'"');
       }
       /* AI 标记：从「补丁」位置移到「初稿」位置 */
       var ax=lerp(x+w/2-6, x, p), ay=lerp(y-16, y-20, p);
