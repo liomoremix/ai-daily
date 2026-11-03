@@ -403,7 +403,7 @@ footer li{margin-bottom:5px;word-break:break-all}
   <p class="rv">先解释这个词。<span class="term" data-explained>智能体（Agent）</span>——就像你带一个<b>读过很多书、能自己动手查资料、自己动手办事的实习生</b>：你不用教它每一步怎么点鼠标，你说目标，它自己拆步骤去做，做完交回来给你看。</p>
   <p class="rv">于是一家 ANC 里最常见的工作画面变成：<b>一个人同时派活给好几个这样的「实习生」</b>，自己从「干活的人」变成「派活 + 验收的人」。点一下，看这一轮怎么跑：</p>
   <div class="team rv">
-    <svg class="stage" id="team" viewBox="0 0 620 194" role="img" aria-label="一个人给六个智能体派活，产出回流后由人验收"></svg>
+    <svg class="stage" id="team" viewBox="0 0 620 250" role="img" aria-label="一个人给六个智能体派活：认真验收会抽查并打回错误的一条，懒得看则把六条含错误的产出一起交付"></svg>
     <div class="flow" id="jobs"></div>
     <p class="verdict" id="verdict">按「跑一轮」开始。</p>
     <div class="btnrow">
@@ -997,57 +997,152 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   var host=$('#team'), jobs=$('#jobs'), verdict=$('#verdict');
   if(!host) return;
   var TASKS=['查资料并整理','写初稿','跑测试','改文案','对账','找漏洞'];
+  var SHORT=['资料','初稿','测试','文案','对账','漏洞'];
+  var AX=[64,160,256,352,448,544], AY=[40,104,40,104,40,104];
+  var HX=310, HY=66, CW=62, CH=32, CY=124, BAD=2;
   jobs.innerHTML=TASKS.map(function(t,i){
     return '<span class="job" data-i="'+i+'"><b>智能体 '+(i+1)+'</b><span>'+t+'</span></span>';
   }).join('');
+
+  var CHIP=[{x:36,w:150},{x:198,w:116},{x:326,w:116},{x:454,w:130}];
+  var STY={
+    dim:['#F4F6F8','#E2E7EB','#8A97A3'],
+    info:['#E8F0FA','#9BB8DC','#123A70'],
+    hot:['#FBEDE4','#EBC6AE','#C2410C'],
+    good:['#E5F2EF','#BBD9D1','#15695A']
+  };
+  function chip(i,label,state){
+    var c=CHIP[i], st=STY[state];
+    return rect(c.x,172,c.w,26,st[0],4,'stroke="'+st[1]+'"')+
+      txt(c.x+c.w/2,189.5,label,11,st[2],'middle','600');
+  }
+  function lens(x,y,hot){
+    var col=hot?'#C2410C':'#1B4B8F', fill=hot?'#FBEDE4':'#E8F0FA';
+    var g=circ(x,y,8,fill,'stroke="'+col+'" stroke-width="1.6"');
+    g+=line(x+5.6,y+5.6,x+10,y+10,col,2.2,'stroke-linecap="round"');
+    if(hot) g+=txt(x,y+3.2,'×',9.5,col,'middle','700');
+    return g;
+  }
+
   function frame(p,lazy){
-    var s=txt(20,22,'你（一个人，负责派活和验收）',12.5,'#123A70','start','650');
-    var px=310, py=95;
-    for(var i=0;i<6;i++){
-      var ang=Math.PI*(0.15+ i*0.28);
-      var x=px+Math.cos(ang)*230*(i%2?-1:1)*(i<3?0.75:1);
-      x=px+(i-2.5)*104;
-      var y=i%2?140:60;
-      var on=p> (i+1)/9;
-      s+=line(px,py,x,y,on?'#1B4B8F':'#E2E7EB',1.5,'opacity="'+(on?0.75:0.4)+'"');
-      s+=circ(x,y,15,on?'#E8F0FA':'#F4F6F8','stroke="'+(on?'#1B4B8F':'#CFD7DE')+'"');
-      s+=txt(x,y+4,'A'+(i+1),10.5,on?'#123A70':'#8A97A3','middle','700','var(--mono)');
+    var s=txt(20,20,'一个人 + 六个智能体：你只做派活和验收',12.5,'#123A70','start','650');
+    var i,x,y,on;
+
+    /* 派活：连线从人这里长到六个智能体 */
+    for(i=0;i<6;i++){
+      x=AX[i]; y=AY[i];
+      var dx=x-HX, dy=y-HY, len=Math.sqrt(dx*dx+dy*dy), ux=dx/len, uy=dy/len;
+      on=ease(clamp(p,0.03+i*0.016,0.13+i*0.016));
+      var sx=HX+ux*19, sy=HY+uy*19;
+      s+=line(sx,sy,lerp(sx,x-ux*12,on),lerp(sy,y-uy*12,on),'#1B4B8F',1.4,'opacity="'+(0.22+0.5*on)+'"');
+      s+=circ(x,y,12,on>0.6?'#E8F0FA':'#F4F6F8','stroke="'+(on>0.6?'#1B4B8F':'#CFD7DE')+'"');
+      s+=txt(x,y+3.6,'A'+(i+1),9.5,on>0.6?'#123A70':'#8A97A3','middle','700','mono');
     }
-    s+=circ(px,py,22,'#1B4B8F'); s+=txt(px,py+4.5,'人',12,'#fff','middle','700');
-    var tk=clamp(p,0.15,0.75);
-    var tx=lerp(px,562,tk), ty=lerp(py,200,tk);
-    if(p>0.12&&p<0.8) s+=circ(tx,ty,4.5,'#C2410C');
-    s+=rect(40,170,540,22,p>0.8?(lazy?'#FBEDE4':'#E5F2EF'):'#F4F6F8',4,'stroke="'+(p>0.8?(lazy?'#EBC6AE':'#BBD9D1'):'#E2E7EB')+'"');
-    s+=txt(310,185,p<=0.12?'等你派活':(p<0.8?'六个智能体同时在跑，产出正往回流…':(lazy?'人没看 → 一处编造直接发出去了 ✗':'人抽查两处，否掉一条 → 全部通过 ✓')),
-      11.5,p>0.8?(lazy?'#C2410C':'#15695A'):'#8A97A3','middle','600');
+    s+=circ(HX,HY,19,'#1B4B8F')+txt(HX,HY+4.6,'人',12.5,'#fff','middle','700');
+
+    /* 产出回流：六张卡依次出现；第 3 张是要命的测试结果 */
+    var seen1=!lazy&&p>=0.585;
+    for(i=0;i<6;i++){
+      var t=ease(clamp(p,0.16+i*0.05,0.27+i*0.05));
+      if(t<=0.01) continue;
+      var isBad=i===BAD&&(lazy?p>=0.86:p>=0.675);
+      var isSeen=i===0&&seen1;
+      var fill='#F4F6F8', bd='#E2E7EB', ink='#55636F', sc='#8A97A3', st='';
+      if(isBad){ fill='#FBEDE4'; bd='#C2410C'; ink='#8A3208'; sc='#C2410C'; st='✗ 编造'; }
+      else if(isSeen){ fill='#E8F0FA'; bd='#1B4B8F'; ink='#123A70'; sc='#15695A'; st='✓ 通过'; }
+      else if(p>=0.86){ st='已交付'; sc='#55636F'; }
+      var cx=AX[i]-CW/2;
+      s+='<g opacity="'+t.toFixed(2)+'" transform="translate(0 '+(1-t)*7+')">'+
+        rect(cx,CY,CW,CH,fill,5,'stroke="'+bd+'"')+
+        txt(cx+7,CY+12.5,(i+1)+' '+SHORT[i],10,ink,'start','600')+
+        (st?txt(cx+7,CY+25.5,st,9,sc,'start','650'):'')+
+      '</g>';
+    }
+
+    /* 认真验收：放大镜停在要看的卡片上，虚线框标出正在看哪一条 */
+    if(!lazy&&p>=0.54&&p<0.86){
+      var ti=p<0.64?0:2;
+      s+=rect(AX[ti]-CW/2-4,CY-4,CW+8,CH+8,'none',7,
+        'stroke="'+(ti===2&&p>=0.675?'#C2410C':'#1B4B8F')+'" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.8"');
+    }
+    var lx=HX, ly=104;
+    if(!lazy&&p>=0.54){
+      if(p<0.585){ var a=ease(clamp(p,0.54,0.585)); lx=lerp(HX,AX[0],a); ly=lerp(104,116,a); }
+      else if(p<0.64){ lx=AX[0]; ly=116; }
+      else { var b=ease(clamp(p,0.64,0.695)); lx=lerp(AX[0],AX[2],b); ly=116; }
+    }
+    s+=lens(lx,ly,lazy&&p>=0.54);
+    if(lazy&&p>=0.54){
+      s+=rect(241,96,58,16,'#FBEDE4',8,'stroke="#EBC6AE"');
+      s+=txt(270,107.5,'跳过验收',9.5,'#C2410C','middle','700');
+    }
+
+    /* 打回的那一条落到下面的处理位 */
+    if(!lazy&&p>=0.675) s+=line(AX[2],CY+CH,AX[2],172,'#C2410C',1.4,'stroke-dasharray="3 3" opacity="0.75"');
+
+    if(!lazy){
+      var c1;
+      if(p<0.54) c1=['抽查 0 条','dim'];
+      else if(p<0.64) c1=['正在抽查第 1 条','info'];
+      else if(p<0.695) c1=['正在抽查第 3 条','info'];
+      else c1=['抽查 2 条','info'];
+      s+=chip(0,c1[0],c1[1])+
+        chip(1,p>=0.675?'打回 1 条':'打回 0 条',p>=0.675?'hot':'dim')+
+        chip(2,p>=0.72?'写进规则库 +1':'规则库 +0',p>=0.72?'good':'dim')+
+        chip(3,p>=0.86?'交付 5 条 ✓':'交付中…',p>=0.86?'good':'dim');
+    } else {
+      s+=chip(0,'抽查 0 条','dim')+chip(1,'打回 0 条','dim')+chip(2,'规则库 +0','dim')+
+        chip(3,p>=0.86?'交付 6 条 ✗':'交付中…',p>=0.86?'hot':'dim');
+    }
+
+    var bf='#F4F6F8', bl='#E2E7EB', bi='#55636F', msg;
+    if(p<0.06) msg='等你派活…';
+    else if(p<0.16) msg='① 派活：六个智能体同时开工';
+    else if(p<0.54) msg='② 产出回流：六份结果交回来，看起来都很完整';
+    else if(!lazy){
+      if(p<0.64) msg='③ 认真验收：先抽查第 1 条…';
+      else if(p<0.695) msg='③ 认真验收：再抽查第 3 条…';
+      else if(p<0.86) msg='④ 第 3 条站不住 → 打回，并写成一条新规则';
+      else { msg='抽查 2 条 → 打回 1 条 → 规则 +1 → 交付 5 条 ✓'; bf='#E5F2EF'; bl='#BBD9D1'; bi='#15695A'; }
+    } else {
+      if(p<0.86) msg='③ 懒得看：一份都不打开，直接放过';
+      else { msg='抽查 0 条 → 6 条全部交付，其中 1 条是编造 ✗'; bf='#FBEDE4'; bl='#EBC6AE'; bi='#C2410C'; }
+    }
+    s+=rect(30,212,560,22,bf,4,'stroke="'+bl+'"');
+    s+=txt(310,226.5,msg,11,bi,'middle','600');
+
     host.innerHTML=s;
   }
-  var lazy=false, running=false;
+
+  var lazy=false, runId=0;
   function run(isLazy){
-    if(running) return; running=true; lazy=isLazy;
+    var my=++runId;
+    lazy=isLazy;
     $$('#jobs .job').forEach(function(j){ j.className='job'; });
     verdict.className='verdict'; verdict.textContent='派活中…';
-    if(RM){ frame(1,lazy);
-      $$('#jobs .job').forEach(function(j){ j.classList.add(lazy && +j.getAttribute('data-i')===2 ? 'fail' : 'pass'); });
-      finish(); return; }
+    if(RM){
+      frame(1,lazy);
+      $$('#jobs .job').forEach(function(j){ j.classList.add(+j.getAttribute('data-i')===BAD?'fail':'pass'); });
+      finish(); return;
+    }
     var t0=0;
     requestAnimationFrame(function step(now){
-      t0=t0||now; var p=Math.min(1,(now-t0)/2400);
-      frame(ease(p),lazy);
-      $$('#jobs .job').forEach(function(j,i){
+      if(my!==runId) return;
+      t0=t0||now;
+      var p=Math.min(1,(now-t0)/3200);
+      frame(p,lazy);
+      $$('#jobs .job').forEach(function(j){
         var k=+j.getAttribute('data-i');
-        if(p>0.12+k*0.09) j.classList.add('busy');
-        if(p>0.8){ j.classList.remove('busy'); j.classList.add(lazy&&k===2?'fail':'pass'); }
+        if(p>0.14+k*0.03) j.classList.add('busy');
+        if(p>=0.86){ j.classList.remove('busy'); j.classList.add(k===BAD?'fail':'pass'); }
       });
       if(p<1) requestAnimationFrame(step); else finish();
     });
   }
   function finish(){
-    running=false;
-    if(lazy){ verdict.className='verdict no'; verdict.textContent='打回：AI 的产出格式完美、语气笃定，包括它错的时候。「没看」就等于把错误自动化了。'; }
-    else { verdict.className='verdict ok'; verdict.textContent='通过：人被否掉的那一条，会被写成一条新规则存起来——下次同类问题不用再问人。'; }
+    if(lazy){ verdict.className='verdict no'; verdict.textContent='没拦住：6 条全部交付，其中 1 条是编造。「没看」等于把错误自动化了。'; }
+    else { verdict.className='verdict ok'; verdict.textContent='通过：被否掉的那 1 条，会被写成一条新规则存起来——下次同类问题不用再问人。'; }
   }
-  frame(0,false);
   $('#run').addEventListener('click',function(){
     $$('#run,#run-lazy').forEach(function(b){b.classList.remove('sel');});
     this.classList.add('sel'); run(false);
@@ -1056,7 +1151,12 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     $$('#run,#run-lazy').forEach(function(b){b.classList.remove('sel');});
     this.classList.add('sel'); run(true);
   });
-  if(!RM){
+  if(RM){
+    frame(1,false);
+    $$('#jobs .job').forEach(function(j){ j.classList.add(+j.getAttribute('data-i')===BAD?'fail':'pass'); });
+    finish();
+  } else {
+    frame(0,false);
     var done=false;
     var io=new IntersectionObserver(function(es){
       es.forEach(function(e){ if(e.isIntersecting&&!done){ done=true; io.disconnect(); run(false); } });
