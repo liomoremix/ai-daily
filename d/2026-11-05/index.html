@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B4B8F">
+<link rel="icon" href="data:,">
+<title>Skill 是什么？给 AI 的岗位说明书 · 图解</title>
+<meta name="description" content="面向完全不懂 AI 的人：用「新员工入职手册」的类比，讲清 Skill 是什么、在 WorkBuddy 和 Qoder 里怎么装怎么用、有什么风险、自己怎么写一个。">
+<script>document.documentElement.className += ' js'</script>
+<style>
+:root{
+  --bg:#F4F6F8; --panel:#fff; --ink:#16202B; --ink-2:#55636F; --ink-3:#8A97A3;
+  --line:#E2E7EB; --line-2:#CFD7DE;
+  --accent:#1B4B8F; --accent-ink:#123A70; --accent-soft:#E8F0FA; --accent-line:#C9DCF2;
+  --hot:#C2410C; --hot-ink:#8A3208; --hot-soft:#FBEDE4; --hot-line:#EBC6AE;
+  --good:#15695A; --good-ink:#1D5247; --good-soft:#E5F2EF; --good-line:#BBD9D1;
+  --radius:6px; --shadow:0 1px 2px rgba(22,32,43,.05);
+  --sans:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.78 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 96px}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--line);z-index:40}
+.topbar i{display:block;height:100%;width:0;background:var(--accent)}
+
+.rail{display:none}
+@media (min-width:1080px){
+  .rail{display:block;position:fixed;left:calc(50% - 480px);top:120px;width:120px;z-index:30;border-left:1px solid var(--line);padding-left:12px}
+  .rail a{display:flex;gap:8px;align-items:baseline;text-decoration:none;color:var(--ink-3);font:12px/1.5 var(--sans);padding:4px 0;transition:color .2s}
+  .rail a em{font:600 10px/1.5 var(--mono);font-style:normal;letter-spacing:.04em}
+  .rail a:hover{color:var(--ink-2)}
+  .rail a.on{color:var(--accent);font-weight:600}
+}
+
+.hero{padding:52px 0 26px;border-bottom:1px solid var(--line)}
+.kicker{display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);padding:6px 9px;border-radius:3px;margin-bottom:16px}
+h1{margin:0 0 14px;font-size:31px;line-height:1.26;letter-spacing:-.015em;font-weight:700}
+h1 .u{background:linear-gradient(var(--accent-soft),var(--accent-soft)) no-repeat;background-size:0 62%;background-position:0 88%;transition:background-size 1.1s cubic-bezier(.22,.61,.36,1) .35s}
+.js .hero.in h1 .u{background-size:100% 62%}
+.lede{margin:0 0 22px;font-size:17px;color:var(--ink-2);line-height:1.8}
+.lede b{color:var(--ink);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.stat{background:var(--panel);padding:13px 11px}
+.stat .v{display:block;font:700 25px/1.1 var(--mono);letter-spacing:-.02em;color:var(--accent);white-space:nowrap}
+@media (max-width:520px){.stat .v{font-size:19px}.stat .k{font-size:10.5px}}
+.stat .k{display:block;margin-top:5px;font-size:11.5px;line-height:1.5;color:var(--ink-3)}
+.scrollhint{margin:20px 0 0;font:12px/1 var(--mono);color:var(--ink-3)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px 24px;margin:18px 0;scroll-margin-top:16px}
+.card h2{margin:0 0 4px;font-size:20px;line-height:1.4;font-weight:680;letter-spacing:-.01em}
+.card h3{margin:24px 0 8px;font-size:15.5px;font-weight:650;color:var(--ink)}
+.card p{margin:0 0 14px;color:var(--ink-2);font-size:15.5px;line-height:1.82}
+.card p:last-child{margin-bottom:0}
+.card b,.card strong{color:var(--ink);font-weight:600}
+.no-head{display:flex;gap:10px;align-items:baseline;margin-bottom:14px}
+.no{font:600 11px/1 var(--mono);color:var(--accent);background:var(--accent-soft);padding:5px 6px;border-radius:3px;flex:none}
+.card ul{margin:0 0 14px;padding-left:20px;color:var(--ink-2);font-size:15.5px;line-height:1.85}
+.card li{margin-bottom:7px}
+.card li b{color:var(--ink)}
+.term{color:var(--accent-ink);border-bottom:1px dashed #9DB8DC;cursor:help}
+.note{font-size:13px;color:var(--ink-3);line-height:1.7}
+.callout{margin:16px 0 0;padding:12px 14px;border-left:2px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--radius) var(--radius) 0;font-size:14px;color:var(--accent-ink);line-height:1.75}
+.callout.warn{border-left-color:var(--hot);background:var(--hot-soft);color:var(--hot-ink)}
+.callout.fact{border-left-color:var(--line-2);background:var(--bg);color:var(--ink-2)}
+figure{margin:18px 0 0}
+figcaption{margin-top:9px;font-size:12.5px;color:var(--ink-3);line-height:1.65}
+.stage{width:100%;display:block;overflow:visible;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius)}
+.stage text{font-family:var(--sans)}
+.stage text.mono{font-family:var(--mono)}
+.btnrow + .stage,.btnrow + .panx .stage{margin-top:14px}
+.panx{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+@media (max-width:680px){.panx .stage{min-width:600px}}
+.btn{font:600 13px/1 var(--sans);padding:10px 13px;border-radius:4px;cursor:pointer;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:.16s border-color,.16s background}
+.btn:hover{border-color:var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+
+html.js .rv{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,.61,.36,1)}
+html.js .card.in .rv{opacity:1;transform:none}
+.card.in .rv:nth-child(2){transition-delay:.05s}
+.card.in .rv:nth-child(3){transition-delay:.1s}
+
+.dial{margin-top:6px}
+.dial input{width:100%;accent-color:var(--accent);margin:6px 0 0}
+.dial .lab{display:flex;justify-content:space-between;font:12px/1 var(--mono);color:var(--ink-3)}
+
+.cmp{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:6px}
+.cmp-h{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--bg);border-bottom:1px solid var(--line)}
+.cmp-h span{padding:9px 11px;font:600 12px/1.4 var(--sans);border-right:1px solid var(--line)}
+.cmp-h span:last-child{border-right:0}
+.cmp-h span:first-child{color:var(--ink-3)}
+.cmp-h span:nth-child(2){color:var(--accent)}
+.cmp-h span:last-child{color:var(--good)}
+.cmp-row{border-bottom:1px solid var(--line)}
+.cmp-row:last-child{border-bottom:0}
+.cmp-row>button{display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;border:0;background:none;cursor:pointer;text-align:left;font-family:inherit;padding:11px 0;gap:0}
+.cmp-row>button:hover{background:#FAFBFC}
+.cmp-row i{font-style:normal;padding:0 11px;font-size:13.5px;line-height:1.6;border-right:1px solid var(--line)}
+.cmp-row i:last-child{border-right:0}
+.cmp-row i:first-child{color:var(--ink-3)}
+.cmp-row i:nth-child(2){color:var(--ink)}
+.cmp-row i:last-child{color:var(--good-ink)}
+.cmp-row .ex{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s ease;background:var(--accent-soft)}
+.cmp-row.open .ex{grid-template-rows:1fr}
+.cmp-row .ex>div{overflow:hidden;padding:0 12px}
+.cmp-row.open .ex>div{padding:11px 12px}
+.cmp-row .ex p{margin:0;font-size:13.5px;line-height:1.72;color:var(--accent-ink)}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px}
+.pane{display:none}
+.pane.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.stamps{display:grid;gap:9px;margin-top:6px}
+.stamp{border:1px solid var(--hot-line);border-radius:4px;background:var(--hot-soft);padding:13px 14px;display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start}
+.stamp .mk{font:700 11px/1 var(--mono);color:var(--hot);border:1.5px solid var(--hot);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.stamp h4{margin:0 0 4px;font-size:14.5px;font-weight:650;color:var(--hot-ink)}
+.stamp p{margin:0;font-size:13.5px;line-height:1.72;color:var(--hot-ink)}
+
+code{font:12.5px/1.6 var(--mono);background:var(--bg);border:1px solid var(--line);padding:1px 4px;border-radius:3px;color:var(--accent-ink);word-break:break-word}
+.code-block{background:#1A2332;border-radius:var(--radius);padding:16px 18px;margin:14px 0 0;overflow-x:auto;font:13px/1.7 var(--mono);color:#C8D6E5;white-space:pre}
+.code-block .cm{color:#6B8299}
+.code-block .kw{color:#7EC8E3}
+.code-block .st{color:#A8D8A8}
+
+.ask{margin:18px 0 0;padding:22px 20px 20px;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:var(--radius)}
+.ask .eyebrow{margin:0 0 16px;font:600 11px/1 var(--mono);letter-spacing:.12em;color:var(--accent)}
+.ask ol{list-style:none;margin:0;padding:0}
+.ask li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:15px 0 0;border-top:1px solid var(--accent-line)}
+.ask li + li{margin-top:15px}
+.ask .qn{font:700 12px/1.9 var(--mono);color:var(--accent)}
+.ask .qt{margin:0;font-size:17px;line-height:1.65;font-weight:600;color:var(--accent-ink);letter-spacing:-.005em}
+.ask .qs{margin:7px 0 0;font-size:13.5px;line-height:1.75;color:#4A6B95}
+.ask .tail{margin:16px 0 0;padding-top:13px;border-top:1px dashed var(--accent-line);font-size:13px;line-height:1.7;color:#4A6B95}
+@media (max-width:520px){.ask{padding:18px 15px 16px}.ask .qt{font-size:16px}}
+
+footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.75}
+footer a{color:var(--accent);text-decoration:none;border-bottom:1px solid #BBD3EE}
+footer ul{margin:8px 0 0;padding-left:18px}
+footer li{margin-bottom:5px;word-break:break-all}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html.js .rv{opacity:1!important;transform:none!important}
+  .js .hero h1 .u{background-size:100% 62%!important}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><i id="prog"></i></div>
+<nav class="rail" id="rail" aria-label="目录"></nav>
+
+<div class="wrap">
+
+<header class="hero" id="hero">
+  <span class="kicker">AI 工具 · Skill（技能）</span>
+  <h1><span class="u">Skill 不是让 AI 变聪明，是给它一本岗位说明书</span></h1>
+  <p class="lede">你在 WorkBuddy、Qoder 这类工具里，会看到「安装一个 Skill」。它听着像给 AI 升级大脑，其实更准确的说法是：<b>给 AI 放一本写得清清楚楚的岗位说明书</b>。说明书里写明「什么时候翻开我、按哪几步做、哪些事不能做」。AI 本身没有变聪明，但它办事开始有章法。</p>
+  <div class="stats">
+    <div class="stat"><span class="v" data-count="1" data-suffix=" 个">0</span><span class="k">文件夹 = 1 个 Skill，核心是一份 SKILL.md</span></div>
+    <div class="stat"><span class="v" data-count="3" data-suffix=" 种">0</span><span class="k">WorkBuddy 安装方式：市场、链接、手动上传</span></div>
+    <div class="stat"><span class="v" data-count="0" data-suffix=" 行">0</span><span class="k">代码也能用——从市场一键安装即可</span></div>
+  </div>
+  <p class="scrollhint">↓ 12 张卡，约 13 分钟。大部分卡都能点。</p>
+</header>
+
+<!-- ============ 1 ============ -->
+<section class="card" id="c1">
+  <div class="no-head"><span class="no">01</span><h2>一句人话：Skill 是什么</h2></div>
+  <p class="rv">想象你公司来了一个新员工。他很聪明，但他不知道你们的报销流程、不知道你们的客户名单格式、不知道你们周报要写哪几栏。你怎么办？</p>
+  <p class="rv">你会给他一本<b>岗位说明书</b>：什么时候用、按哪几步做、做完交什么格式。他不用变聪明，只是多了一本可以翻的手册。</p>
+  <p class="rv"><b>Skill 就是这本手册。</b>官方定义是「一个包含指令、脚本和资源的文件夹」，核心文件叫 <span class="term" title="Skill 的核心文件，用 Markdown 格式写成">SKILL.md</span>。AI 遇到相关任务时，会翻开这本手册，按里面写的步骤来做。</p>
+  <p class="rv">拖一下滑杆，看「没有手册」和「有手册」的区别：</p>
+  <figure class="rv">
+    <svg class="stage" id="dial-svg" viewBox="0 0 620 210" role="img" aria-label="六个步骤从散乱变成整齐排列，代表从口头交代变成按手册执行"></svg>
+    <div class="dial">
+      <div class="lab"><span>← 每次口头交代</span><span>翻开手册就能做 →</span></div>
+      <input type="range" id="dial" min="0" max="100" value="0" aria-label="从口头交代到手册执行">
+    </div>
+    <figcaption>示意：六个步骤在「没有 Skill」时散乱、容易漏；「有 Skill」时整齐排列，每步都有据可查。</figcaption>
+  </figure>
+  <div class="callout">判断标准不是 AI 说话多聪明，而是<b>重复做同一件事时，步骤会不会漏、格式会不会乱</b>。Skill 解决的就是这个问题。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="card" id="c2">
+  <div class="no-head"><span class="no">02</span><h2>为什么需要 Skill：AI 的「记忆」像沙子</h2></div>
+  <p class="rv">大模型（就是 ChatGPT、Claude 这类 AI 的底层技术）有一个根本局限：<b>对话结束后，模型本身不会自动把你刚教过的流程变成长期能力</b>。有些工具另有记忆功能，但记忆更像零散笔记；Skill 解决的是另一件事——把一套完整流程固定下来，反复使用。</p>
+  <p class="rv">你可以每次重新解释，但这有三个问题：</p>
+  <ul class="rv">
+    <li><b>费时间</b>：每次都要把规则说一遍，说漏了就出错。</li>
+    <li><b>不一致</b>：你今天的说法和昨天的说法可能有细微差别，AI 就会给出不同结果。</li>
+    <li><b>不可复用</b>：你教会了 AI，同事还得再教一遍。</li>
+  </ul>
+  <p class="rv">Skill 的解法是：<b>把规则写成一个文件，放在 AI 能找到的地方</b>。每次遇到相关任务，AI 自动翻开这个文件，按里面写的来做。你不用重新教，同事也能直接用同一本手册。</p>
+  <figure class="rv">
+    <svg class="stage" id="memory-svg" viewBox="0 0 620 180" role="img" aria-label="AI 的记忆每次对话都重置，Skill 让规则持久保存"></svg>
+    <figcaption>示意：左边是「没有 Skill」——每次对话都从零开始；右边是「有 Skill」——手册一直在那里，随时可以翻开。</figcaption>
+  </figure>
+  <div class="callout">Skill 不改变 AI 的「大脑」（模型权重），它只是给 AI 一个<b>可以随时查阅的外部参考</b>。就像你不需要让新员工变聪明，只需要给他一本手册。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="card" id="c3">
+  <div class="no-head"><span class="no">03</span><h2>它长什么样：一个文件夹</h2></div>
+  <p class="rv">一个 Skill 就是一个普通文件夹。打开它，你会看到这些东西：</p>
+  <figure class="rv">
+    <svg class="stage" id="folder-svg" viewBox="0 0 620 260" role="img" aria-label="Skill 文件夹结构：SKILL.md 是核心，scripts、references、assets 是可选辅助"></svg>
+    <div class="btnrow" id="folder-btns">
+      <button class="btn sel" data-f="0">SKILL.md</button>
+      <button class="btn" data-f="1">scripts/</button>
+      <button class="btn" data-f="2">references/</button>
+      <button class="btn" data-f="3">assets/</button>
+    </div>
+    <figcaption>点击上面的按钮，看每个文件/文件夹的作用。</figcaption>
+  </figure>
+  <h3>SKILL.md 长什么样</h3>
+  <p class="rv">这是 Skill 的核心文件。它用 <span class="term" title="一种轻量级标记语言，用纯文本写格式">Markdown</span>（一种简单的文本格式）写成，开头有一段「元数据」，告诉 AI 这个 Skill 叫什么、什么时候该用它：</p>
+  <div class="code-block rv"><span class="cm">---</span>
+<span class="kw">name</span>: invoice-helper
+<span class="kw">description</span>: 当用户要整理发票或报销单时使用。
+  检查附件是否齐全，统一填入固定表格。
+<span class="cm">---</span>
+
+<span class="cm"># 整理报销单</span>
+
+<span class="st">1. 先确认日期范围和币种。</span>
+<span class="st">2. 把每张发票的日期、金额、用途填入表格。</span>
+<span class="st">3. 缺附件时不要猜测，单独列出「待补项」。</span>
+<span class="st">4. 输出格式：Excel 表格，列名固定。</span></div>
+  <p class="rv note" style="margin-top:10px">上面是一个简化示例。真实的 SKILL.md 可以更复杂，但核心结构就是这样：开头写「我是谁、什么时候用我」，正文写「按这几步做」。</p>
+  <div class="callout fact">不是每个 Skill 都必须有 scripts/、references/、assets/ 这三个文件夹。<b>SKILL.md 才是唯一必须的文件</b>，其他都是可选的辅助。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="card" id="c4">
+  <div class="no-head"><span class="no">04</span><h2>AI 怎么找到它：渐进式披露</h2></div>
+  <p class="rv">你可能装了几十个 Skill。AI 不会每次都把所有手册全部读一遍——那太慢了，也会占用它的「工作记忆」。</p>
+  <p class="rv">它用的是<b>渐进式披露</b>（Progressive Disclosure）：分三步，按需加载。</p>
+  <figure class="rv">
+    <svg class="stage" id="load-svg" viewBox="0 0 620 240" role="img" aria-label="渐进式披露三步：先扫名字，再读描述，最后加载全文"></svg>
+    <div class="btnrow" id="load-btns">
+      <button class="btn sel" data-s="0">① 扫名字</button>
+      <button class="btn" data-s="1">② 读描述</button>
+      <button class="btn" data-s="2">③ 加载全文</button>
+    </div>
+    <figcaption>点击按钮，看 AI 在每一步分别读了什么。</figcaption>
+  </figure>
+  <p class="rv">这个机制有一个重要后果：<b>description 写得好不好，直接决定 AI 能不能找到你的 Skill</b>。如果 description 写得太模糊（比如「处理文档」），AI 可能在该用的时候找不到它；写得太窄（比如「只处理 2024 年 3 月的发票」），AI 可能在不该用的时候误用它。</p>
+  <div class="callout">渐进式披露是 Anthropic 在 2025 年 10 月发布 Agent Skills 时提出的核心设计。它的目的是：<b>让 AI 在需要时才加载详细信息，而不是一开始就把所有手册塞进脑子里</b>。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="card" id="c5">
+  <div class="no-head"><span class="no">05</span><h2>Skill、Prompt、MCP 有什么不同</h2></div>
+  <p class="rv">这三个词经常一起出现，很容易混。用一句话区分：</p>
+  <figure class="rv">
+    <svg class="stage" id="diff-svg" viewBox="0 0 620 220" role="img" aria-label="Skill、Prompt、MCP 三者的区别对比"></svg>
+    <div class="btnrow" id="diff-btns">
+      <button class="btn sel" data-d="0">Prompt（提示词）</button>
+      <button class="btn" data-d="1">Skill（技能）</button>
+      <button class="btn" data-d="2">MCP（连接器）</button>
+    </div>
+    <figcaption>点击按钮，看每个概念的定义和类比。</figcaption>
+  </figure>
+  <div class="cmp rv" id="cmp">
+    <div class="cmp-h"><span>Prompt</span><span>Skill</span><span>MCP</span></div>
+    <div class="cmp-row"><button><i>一次性口头指令</i><i>可复用的操作手册</i><i>连接外部工具的插头</i></button><div class="ex"><div><p>就像你口头告诉新员工「这次记得用 A4 纸打印」。说完就过去了，下次还得再说一遍。</p></div></div></div>
+    <div class="cmp-row"><button><i>存在对话里</i><i>存在文件夹里</i><i>存在服务器/本地</i></button><div class="ex"><div><p>Prompt 随对话消失；Skill 是一个持久文件，随时可以翻开；MCP 是一个运行中的服务，提供外部能力。</p></div></div></div>
+    <div class="cmp-row"><button><i>不需要安装</i><i>需要安装/放置</i><i>需要配置/启动</i></button><div class="ex"><div><p>Prompt 直接打字就行；Skill 要放到指定目录或从市场安装；MCP 要配置连接参数。</p></div></div></div>
+    <div class="cmp-row"><button><i>教 AI 「这次怎么做」</i><i>教 AI 「这类事怎么做」</i><i>让 AI 「能连到哪里」</i></button><div class="ex"><div><p>Prompt 是临时指令；Skill 是持久流程；MCP 是能力扩展——三者可以配合使用，不互相替代。</p></div></div></div>
+  </div>
+  <div class="callout">Anthropic 官方说法：Skill 和 MCP 是<b>互补关系</b>。MCP 让 AI 能连接到外部工具（比如数据库、邮件系统），Skill 告诉 AI 连上之后该怎么用这些工具完成一个完整流程。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="card" id="c6">
+  <div class="no-head"><span class="no">06</span><h2>WorkBuddy：怎么安装 Skill</h2></div>
+  <p class="rv"><span class="term" title="腾讯出品的 AI 办公工作台">WorkBuddy</span> 是腾讯出品的 AI 办公工作台。它有一个<b>技能市场</b>，里面汇集了大量现成的 Skill，不需要自己写代码。</p>
+  <p class="rv">安装方式有三种，点下面的按钮看每种方式的流程：</p>
+  <figure class="rv">
+    <svg class="stage" id="install-svg" viewBox="0 0 620 220" role="img" aria-label="WorkBuddy 三种安装 Skill 的方式：市场安装、链接安装、手动上传"></svg>
+    <div class="btnrow" id="install-btns">
+      <button class="btn sel" data-i="0">① 技能市场</button>
+      <button class="btn" data-i="1">② 发链接</button>
+      <button class="btn" data-i="2">③ 手动上传</button>
+    </div>
+    <figcaption>点击按钮，看每种安装方式的具体步骤。</figcaption>
+  </figure>
+  <h3>三种方式的区别</h3>
+  <ul class="rv">
+    <li><b>技能市场</b>：最简单。在 WorkBuddy 左侧导航点「扩展 → 技能」，浏览或搜索，找到后点「安装」即可。适合大多数人。</li>
+    <li><b>发链接</b>：把 GitHub 等平台的 Skill 仓库链接发给 WorkBuddy，告诉它「帮我安装这个」。它会自动下载、放置、加载。适合从社区获取 Skill。</li>
+    <li><b>手动上传</b>：已经有写好的 SKILL.md 文件（比如同事发给你的），在「扩展 → 技能」里点「安装技能」，直接上传文件。上传后自动识别并加载。</li>
+  </ul>
+  <div class="callout fact">WorkBuddy 官方文档还提到两种进阶方式：<b>「查找技能」</b>（描述你想做的事，让它自动找合适的 Skill）和<b>「创建技能」</b>（描述你想做的事，让它帮你生成一个 Skill）。这两种适合有明确需求但找不到现成 Skill 的场景。</div>
+  <h3>装完之后：关闭和卸载</h3>
+  <p class="rv">官方对 Skill 的定义是：<b>把脚本、工作流程封装起来，用来扩展 WorkBuddy 的能力</b>。装了之后在授权范围内，它可以替你发邮件、读写文件、查询信息。所以管理入口也给了两个：</p>
+  <ul class="rv">
+    <li><b>关闭</b>：暂停这个 Skill 被调用，文件还在。关闭状态在多设备之间同步。</li>
+    <li><b>卸载</b>：直接删掉，之后要用得重新安装。</li>
+  </ul>
+  <p class="note">暂时不想用某个 Skill 又不想重装，选「关闭」就够了。</p>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="card" id="c7">
+  <div class="no-head"><span class="no">07</span><h2>WorkBuddy：怎么使用 Skill</h2></div>
+  <p class="rv">安装完成后，有三种方式让 WorkBuddy 使用 Skill：</p>
+  <figure class="rv">
+    <svg class="stage" id="use-svg" viewBox="0 0 620 200" role="img" aria-label="WorkBuddy 三种使用 Skill 的方式：自动触发、斜杠调用、指名调用"></svg>
+    <div class="btnrow" id="use-btns">
+      <button class="btn sel" data-u="0">自动触发</button>
+      <button class="btn" data-u="1">/ 快捷调用</button>
+      <button class="btn" data-u="2">对话中指名</button>
+    </div>
+    <figcaption>点击按钮，看每种调用方式的样子。</figcaption>
+  </figure>
+  <h3>每种方式的细节</h3>
+  <ul class="rv">
+    <li><b>自动触发</b>：你直接描述需求，WorkBuddy 自动判断有没有匹配的 Skill 并启用。比如你装了「简历优化」Skill，然后说「帮我根据岗位 JD 优化简历」，它会自动调用。<br><span class="note">这是最自然的方式，但依赖 description 写得够清楚。</span></li>
+    <li><b>/ 快捷调用</b>：在输入框打 <code>/</code>，会弹出已安装的 Skill 列表，选一个就行。<br><span class="note">适合你明确知道要用哪个 Skill 的时候。</span></li>
+    <li><b>对话中指名</b>：直接在对话里写「使用 xxx Skill 来做这件事」。<br><span class="note">适合复杂指令，或者你想同时指定 Skill 和具体参数的时候。</span></li>
+  </ul>
+  <div class="callout warn">注意：<code>@</code> 在 WorkBuddy 里是<b>添加上下文</b>（比如附上一个文件），不是调用 Skill。别搞混了。</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="card" id="c8">
+  <div class="no-head"><span class="no">08</span><h2>Qoder / QoderWork：怎么使用 Skill</h2></div>
+  <p class="rv"><span class="term" title="阿里巴巴出品的 AI 开发工具">Qoder</span> 和 QoderWork 也支持 Skill，机制和 WorkBuddy 类似，但目录和触发方式有自己的约定。</p>
+  <div class="tabs rv" id="qoder-tabs">
+    <button class="btn sel" data-q="0">QoderWork（桌面版）</button>
+    <button class="btn" data-q="1">Qoder CLI（命令行）</button>
+    <button class="btn" data-q="2">从 WorkBuddy 导入</button>
+  </div>
+  <div class="pane on" data-pane="0">
+    <p>QoderWork 的 Skill 存放在 <code>~/.qoderwork/skills/</code> 目录下。使用方式和 WorkBuddy 类似：</p>
+    <ul>
+      <li><b>自动触发</b>：直接描述需求，QoderWork 自动判断是否有匹配的 Skill。</li>
+      <li><b>/ 调用</b>：输入 <code>/</code> 弹出已安装 Skill 列表。</li>
+      <li><b>指名调用</b>：在对话中直接写「使用 xxx Skill」。</li>
+      <li><b>@ 是上下文</b>：<code>@</code> 用于添加文件/文件夹等上下文，不是调用 Skill。</li>
+    </ul>
+    <p class="note">安装方式：Skill 广场浏览、从开源社区获取（发链接让它自动下载）、手动上传本地文件。</p>
+  </div>
+  <div class="pane" data-pane="1">
+    <p>Qoder CLI 的 Skill 有两个存放位置：</p>
+    <ul>
+      <li><b>用户级</b>：<code>~/.qoder/skills/</code>（国内版：<code>~/.qoder-cn/skills/</code>）——所有项目都能用。</li>
+      <li><b>项目级</b>：<code>.qoder/skills/</code>（放在项目根目录下）——只有这个项目能用。</li>
+    </ul>
+    <p>触发方式：模型根据你的请求和 Skill 的 description <b>自主决定</b>是否调用；你也可以用 <code>/skill-name</code> 手动触发。</p>
+    <p class="note">Qoder CLI 官方文档提到：Skill 的执行「视能力而定，可能需要授权」——也就是说，涉及文件操作、网络请求等敏感动作时，会先问你。</p>
+  </div>
+  <div class="pane" data-pane="2">
+    <p>如果你之前用 WorkBuddy，Qoder 支持<b>一次性导入</b>：</p>
+    <ul>
+      <li>可导入：任务记录、定时任务、记忆、可迁移的 Skill、MCP 连接器、插件。</li>
+      <li>不导入：项目代码、API Key。</li>
+      <li>被跳过的 Skill 会单独列出名称和来源目录，方便你手动处理。</li>
+    </ul>
+    <p class="note">注意：这是<b>单次导入</b>，不是持续同步。导入后两边各自独立。</p>
+  </div>
+  <div class="callout fact">不想从零写？WorkBuddy 官方支持<b>「用一句话描述需求」直接生成 Skill</b>，也支持让它先帮你<b>找</b>有没有现成的。Qoder 侧同样提供了创建 Skill 的辅助入口（具体名称以你手头工具的界面为准）。适合想自己写但不知道从哪儿开始的人。</div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="card" id="c9">
+  <div class="no-head"><span class="no">09</span><h2>Skill 能做什么，不能做什么</h2></div>
+  <p class="rv">很多人对 Skill 有两个极端误解：要么觉得它无所不能，要么觉得它只是个花哨的提示词。实际情况在中间。</p>
+  <figure class="rv">
+    <svg class="stage" id="can-svg" viewBox="0 0 620 220" role="img" aria-label="Skill 能做和不能做的事项对比"></svg>
+    <figcaption>示意：左边是 Skill 能做的，右边是它做不到的。逐项说明见下方文字。</figcaption>
+  </figure>
+  <h3>能做的</h3>
+  <ul class="rv">
+    <li><b>固定流程</b>：把「整理发票」「写周报」「优化简历」这类重复性工作的步骤写清楚，AI 每次按同一套来做。</li>
+    <li><b>调用脚本</b>：Skill 文件夹里可以放小程序（scripts/），AI 在需要时运行它们，完成计算、格式转换等固定操作。</li>
+    <li><b>引用资料</b>：references/ 里可以放模板、规范、字段说明，AI 在需要时查阅，不用你每次重新贴。</li>
+    <li><b>跨对话复用</b>：写一次，以后每次新对话都能用，不用重新教。</li>
+  </ul>
+  <h3>不能做的</h3>
+  <ul class="rv">
+    <li><b>不能让 AI 变聪明</b>：Skill 不改变模型本身。如果 AI 本来就不会做某件事（比如理解你们公司特有的行业黑话），Skill 也帮不了。</li>
+    <li><b>不能保证结果正确</b>：Skill 只是告诉 AI 「按这几步做」，但 AI 仍然可能在某一步出错。你仍然需要检查输出。</li>
+    <li><b>不能替代 MCP</b>：如果 AI 需要连接到外部系统（比如你的邮件、数据库），那是 MCP 的工作，不是 Skill 的。</li>
+    <li><b>不能自动更新</b>：Skill 是静态文件。如果流程变了，你得手动改 SKILL.md，AI 不会自己更新。</li>
+  </ul>
+  <div class="callout">一句话总结：<b>Skill 让 AI 做事更稳定、更可复用，但不让它变得更聪明、更准确。</b>你仍然需要检查输出，仍然需要为结果负责。</div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="card" id="c10">
+  <div class="no-head"><span class="no">10</span><h2>安全风险：第三方 Skill 要小心</h2></div>
+  <p class="rv">Skill 本质上是一段<b>会被 AI 执行的指令</b>。如果这段指令来自不可信的来源，它可能做你不想让它做的事。</p>
+  <figure class="rv">
+    <svg class="stage" id="risk-svg" viewBox="0 0 620 200" role="img" aria-label="第三方 Skill 的三种风险：恶意提示词注入、越权访问、后门程序"></svg>
+    <div class="btnrow" id="risk-btns">
+      <button class="btn sel" data-r="0">恶意提示词注入</button>
+      <button class="btn" data-r="1">越权访问</button>
+      <button class="btn" data-r="2">后门程序</button>
+    </div>
+    <figcaption>点击按钮，看每种风险的具体表现。</figcaption>
+  </figure>
+  <h3>WorkBuddy 官方的安全建议</h3>
+  <p class="rv">WorkBuddy 官方文档明确列出了三条：</p>
+  <div class="stamps rv" id="stamps">
+    <div class="stamp"><span class="mk">1</span><div><h4>优先使用官方推荐的 Skill</h4><p>技能市场里标有「官方推荐」的 Skill，由平台方挑选上架，风险相对更低。来源不明的社区 Skill 质量参差不齐，需要你自己判断。</p></div></div>
+    <div class="stamp"><span class="mk">2</span><div><h4>注意数据流向</h4><p>部分 Skill 会将你的输入发送到第三方服务。在使用前，先看清楚它的 description 和 scripts/ 里有没有网络请求。</p></div></div>
+    <div class="stamp"><span class="mk">3</span><div><h4>非官方 Skill 可能存在恶意行为</h4><p>官方文档原话：非官方 Skill 可能存在「恶意提示词注入、越权访问、后门程序」等隐患。安装前最好先看一遍 SKILL.md 的内容。</p></div></div>
+  </div>
+  <div class="callout warn">这不是吓唬你。Skill 的门槛很低——任何人都可以写一个 SKILL.md 文件并发布。就像手机 App 一样，<b>来源不明的 Skill 不要随便装</b>。装之前花两分钟看一下它的内容，是值得的。</div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="card" id="c11">
+  <div class="no-head"><span class="no">11</span><h2>自己写一个最小的 Skill</h2></div>
+  <p class="rv">如果你有一个反复要做的任务，而且现有 Skill 都不完全符合你的需求，你可以自己写一个。最小的 Skill 只需要一个文件。</p>
+  <h3>第一步：创建文件夹</h3>
+  <p class="rv">在对应工具的 Skill 目录下新建一个文件夹，名字用小写英文和连字符：</p>
+  <div class="code-block rv"><span class="cm"># QoderWork（桌面版）</span>
+~/.qoderwork/skills/my-weekly-report/
+
+<span class="cm"># Qoder CLI · 用户级（所有项目可用）</span>
+~/.qoder/skills/my-weekly-report/
+
+<span class="cm"># Qoder CLI · 项目级（只在这个项目可用）</span>
+你的项目目录/.qoder/skills/my-weekly-report/</div>
+  <p class="note">WorkBuddy 这边不用手动建文件夹：写好压缩包后，在技能管理界面选<b>「本地上传」</b>装进去就行。</p>
+  <h3>第二步：写 SKILL.md</h3>
+  <p class="rv">在文件夹里创建 <code>SKILL.md</code>，按这个模板写：</p>
+  <div class="code-block rv"><span class="cm">---</span>
+<span class="kw">name</span>: my-weekly-report
+<span class="kw">description</span>: 当用户要写周报时使用。
+  按「本周完成/下周计划/需要协调」三栏整理，
+  语言简洁，每条不超过两行。
+<span class="cm">---</span>
+
+<span class="cm"># 写周报</span>
+
+<span class="st">1. 先问用户：这周做了哪些事？</span>
+<span class="st">2. 把用户说的内容分成三类：</span>
+<span class="st">   - 本周完成</span>
+<span class="st">   - 下周计划</span>
+<span class="st">   - 需要协调的事项</span>
+<span class="st">3. 每条用一句话概括，不超过两行。</span>
+<span class="st">4. 输出格式：Markdown 表格。</span>
+<span class="st">5. 如果用户没提到「需要协调」，这一栏写「无」。</span></div>
+  <h3>第三步：测试</h3>
+  <p class="rv">保存文件后，回到工具里，用自然语言触发它（比如「帮我写这周的周报」），看 AI 是否按你写的步骤来做。如果不对，改 SKILL.md，再试。</p>
+  <div class="callout">写 Skill 的核心技巧：<b>description 要写清楚「什么时候用」</b>，正文要写清楚「按哪几步做」。不要写「尽量做好」这种模糊指令——AI 需要的是具体步骤，不是鼓励。</div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section class="card" id="c12">
+  <div class="no-head"><span class="no">12</span><h2>这跟你有什么关系</h2></div>
+  <p class="rv">不管你是普通上班族、自由职业者，还是团队负责人，Skill 都在改变「用 AI 做事」的方式。挑一个身份看：</p>
+  <div class="tabs rv" id="tabs">
+    <button class="btn sel" data-p="0">普通上班族</button>
+    <button class="btn" data-p="1">自由职业者</button>
+    <button class="btn" data-p="2">团队负责人</button>
+  </div>
+  <div class="pane on" data-pane="0">
+    <ul>
+      <li>你每天重复做的那些事——整理会议纪要、写周报、格式化数据——都可以写成 Skill，让 AI 每次按同一套来做。</li>
+      <li>你不需要会写代码。从技能市场安装现成的 Skill，或者用「创建技能」功能描述你的需求，让它帮你生成。</li>
+      <li><b>最重要的变化</b>：你的经验不再只存在你脑子里。写成 Skill 之后，新同事来了也能直接用同一套流程。</li>
+    </ul>
+  </div>
+  <div class="pane" data-pane="1">
+    <ul>
+      <li>你可以把自己的工作方法论打包成 Skill，形成<b>可复用的个人知识库</b>。换工具时，Skill 可以跟着你走（只要新工具支持同样的格式）。</li>
+      <li>接单时，你可以把「客户 brief → 初稿 → 修改 → 交付」的流程写成 Skill，每次按同一套来，减少遗漏。</li>
+      <li><b>注意</b>：Skill 不能替代你的判断。它只是把你的流程固定下来，但「这个客户的特殊需求怎么处理」仍然需要你来决定。</li>
+    </ul>
+  </div>
+  <div class="pane" data-pane="2">
+    <ul>
+      <li>团队里那些「只有老王知道怎么做」的流程，可以写成 Skill，变成<b>团队共享资产</b>。老王离职了，流程还在。</li>
+      <li>新人入职时，不用花三天口头交代，直接给他装几个 Skill，他就能按标准流程开始做事。</li>
+      <li><b>管理建议</b>：不要一上来就装几十个 Skill。先挑最高频的 3 个流程，写成 Skill，用熟了再扩展。太多闲置 Skill 反而会增加 AI 的选择负担。</li>
+    </ul>
+  </div>
+  <div class="callout">Skill 的本质是<b>把人的经验变成机器可读的文档</b>。这件事的价值不在于 AI 变强了，而在于你的知识不再只存在你脑子里——它可以被复制、被分享、被继承。</div>
+</section>
+
+<!-- ============ 结尾提问 ============ -->
+<section class="ask" id="ask" aria-labelledby="ask-h">
+  <h2 class="eyebrow" id="ask-h">最后，两个问题</h2>
+  <ol role="list">
+    <li>
+      <span class="qn" aria-hidden="true">Q1</span>
+      <div>
+        <p class="qt">你每周重复做的那件事，有没有可能写成一个 Skill？</p>
+        <p class="qs">想想看：有没有哪个任务，你每次都要跟 AI 重新解释一遍规则？如果有，把那些规则写下来，就是一个 Skill 的雏形。</p>
+      </div>
+    </li>
+    <li>
+      <span class="qn" aria-hidden="true">Q2</span>
+      <div>
+        <p class="qt">你团队里「只有某个人知道怎么做」的流程，有多少条？</p>
+        <p class="qs">这些流程如果那个人离职了，会怎样？把它们写成 Skill，不是为了替代人，而是为了让知识不随人走。</p>
+      </div>
+    </li>
+  </ol>
+  <p class="tail">没有标准答案。但如果你能列出三条以上「每次都要重新解释」的任务，那你已经找到了写 Skill 的起点。</p>
+</section>
+
+<footer>
+  <p><b>口径与出处</b>：本页所有产品功能描述均来自官方文档，截至 2026 年 11 月；产品功能可能随版本更新变化，以官方最新文档为准。本页零外部依赖，可离线打开。</p>
+  <ul>
+    <li>Agent Skills 官方定义与渐进式披露机制：<a href="https://claude.com/blog/skills" rel="noopener">Anthropic — Introducing Agent Skills（2025-10-16）</a></li>
+    <li>Agent Skills 工程细节与安全建议：<a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" rel="noopener">Anthropic Engineering Blog</a></li>
+    <li>SKILL.md 文件结构规范（name/description 必填，scripts/references/assets 可选）：<a href="https://agentskills.io/specification" rel="noopener">Agent Skills 开放规范</a></li>
+    <li>WorkBuddy 技能市场、安装方式、安全提示：<a href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market" rel="noopener">WorkBuddy 官方文档 · 技能</a></li>
+    <li>QoderWork Skill 目录、触发方式、@ 与 / 的区别：<a href="https://docs.qoder.com/zh/qoderwork/skills" rel="noopener">Qoder 文档 · 技能（QoderWork）</a></li>
+    <li>Qoder CLI Skill 目录、自动触发与 /skill-name 手动调用：<a href="https://docs.qoder.com/zh/cli/Skills" rel="noopener">Qoder 文档 · 技能（CLI）</a></li>
+    <li>Qoder 从 WorkBuddy 导入数据与 Skill：<a href="https://docs.qoder.com/zh/qoder/data-import" rel="noopener">Qoder 文档 · 数据导入</a></li>
+  </ul>
+</footer>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(s){ return document.querySelector(s); }
+function $$(s){ return [].slice.call(document.querySelectorAll(s)); }
+function clamp(v,a,b){ return v<=a?0:v>=b?1:(v-a)/(b-a); }
+function ease(p){ return p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2; }
+function lerp(a,b,t){ return a+(b-a)*t; }
+function mix(c1,c2,t){ return 'rgb('+Math.round(lerp(c1[0],c2[0],t))+','+Math.round(lerp(c1[1],c2[1],t))+','+Math.round(lerp(c1[2],c2[2],t))+')'; }
+var C={ink:[22,32,43],ink2:[85,99,111],ink3:[138,151,163],line:[226,231,235],line2:[207,215,222],accent:[27,75,143],hot:[194,65,12],good:[21,105,90],white:[255,255,255],bg:[244,246,248]};
+function txt(x,y,s,size,color,anchor,weight,fam){
+  return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-size="'+(size||12)+'" fill="'+(color||'#8A97A3')+'" text-anchor="'+(anchor||'start')+'" font-weight="'+(weight||'400')+'" class="'+(fam&&String(fam).indexOf('mono')>-1?'mono':'sans')+'">'+s+'</text>';
+}
+function rect(x,y,w,h,fill,rx,extra){
+  return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(0,w).toFixed(1)+'" height="'+Math.max(0,h).toFixed(1)+'" fill="'+fill+'" rx="'+(rx||0)+'"'+(extra||'')+'/>';
+}
+function line(x1,y1,x2,y2,stroke,w,extra){
+  return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+stroke+'" stroke-width="'+(w||1)+'"'+(extra||'')+'/>';
+}
+function circ(cx,cy,r,fill,extra){ return '<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+r+'" fill="'+fill+'"'+(extra||'')+'/>'; }
+function fitSvg(sv){
+  try{
+    var g=sv.querySelector('g.fit'); if(!g) return;
+    var vb=sv.viewBox && sv.viewBox.baseVal; if(!vb || !vb.width || !vb.height) return;
+    g.removeAttribute('transform');
+    var b=g.getBBox(); if(!b || !isFinite(b.x) || !isFinite(b.y) || b.width<=0 || b.height<=0) return;
+    var pad=4;
+    var out=b.x<vb.x+pad || b.y<vb.y+pad || b.x+b.width>vb.x+vb.width-pad || b.y+b.height>vb.y+vb.height-pad;
+    if(!out) return;
+    var sc=Math.min(1,(vb.width-2*pad)/b.width,(vb.height-2*pad)/b.height);
+    var tx=vb.x+pad+(vb.width-2*pad-b.width*sc)/2-b.x*sc;
+    var ty=vb.y+pad+(vb.height-2*pad-b.height*sc)/2-b.y*sc;
+    g.setAttribute('transform','translate('+tx.toFixed(2)+','+ty.toFixed(2)+') scale('+sc.toFixed(4)+')');
+  }catch(e){}
+}
+function setSvg(host,s){
+  if(typeof host==='string') host=document.getElementById(host);
+  if(!host) return;
+  host.innerHTML='<g class="fit">'+s+'</g>';
+  fitSvg(host);
+}
+function wrapLines(s,max){
+  var out=[],cur='';
+  for(var i=0;i<s.length;i++){
+    cur+=s[i];
+    if(cur.length>=max || (/[。；]/.test(s[i]) && cur.length>Math.max(6,max*0.45))){ out.push(cur); cur=''; }
+  }
+  if(cur) out.push(cur);
+  return out;
+}
+
+function play(id,dur,fn){
+  var host=document.getElementById(id); if(!host) return;
+  function run(p){ fn(p,host); }
+  if(RM){ run(1); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return; io.disconnect();
+      var t0=0;
+      requestAnimationFrame(function step(now){
+        t0=t0||now; var p=Math.min(1,(now-t0)/dur);
+        run(ease(p)); if(p<1) requestAnimationFrame(step);
+      });
+    });
+  },{threshold:0.2,rootMargin:'0px 0px -10% 0px'});
+  io.observe(host);
+}
+
+$$('svg.stage').forEach(function(sv){
+  var box=document.createElement('div'); box.className='panx';
+  sv.parentNode.insertBefore(box,sv); box.appendChild(sv);
+});
+
+$$('.card').forEach(function(c){
+  if(RM){ c.classList.add('in'); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.disconnect(); } });
+  },{threshold:0.08});
+  io.observe(c);
+});
+if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(){ $('#hero').classList.add('in'); }); }
+
+(function(){
+  var nodes=$$('.stat .v');
+  function go(n){
+    var target=+n.getAttribute('data-count'),suf=n.getAttribute('data-suffix')||'';
+    if(RM){ n.textContent=target+suf; return; }
+    var t0=0;
+    requestAnimationFrame(function step(now){
+      t0=t0||now; var p=Math.min(1,(now-t0)/1300),v=Math.round(target*ease(p));
+      n.textContent=v.toLocaleString('en-US')+suf; if(p<1) requestAnimationFrame(step);
+    });
+  }
+  setTimeout(function(){ nodes.forEach(go); },RM?0:250);
+})();
+
+(function(){
+  var bar=$('#prog'),rail=$('#rail'),cards=$$('.card');
+  cards.forEach(function(c,i){
+    var h=c.querySelector('h2'); if(!h) return;
+    var a=document.createElement('a');
+    var t=h.textContent.trim(); a.href='#'+c.id;
+    a.innerHTML='<em>'+String(i+1).padStart(2,'0')+'</em><span>'+(t.length>5?t.slice(0,5)+'…':t)+'</span>';
+    rail.appendChild(a);
+  });
+  var links=$$('#rail a');
+  function on(){
+    var max=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(max>0?scrollY/max*100:0).toFixed(1)+'%';
+    var cur=0;
+    cards.forEach(function(c,i){ if(c.getBoundingClientRect().top<innerHeight*0.42) cur=i; });
+    links.forEach(function(a,i){ a.classList.toggle('on',i===cur); });
+  }
+  addEventListener('scroll',on,{passive:true}); on();
+})();
+
+/* ====== Card 1: 滑杆 ====== */
+(function(){
+  var host=$('#dial-svg'),sl=$('#dial'); if(!host) return;
+  var steps=['接到任务','查规则','填表格','核对','提交','归档'];
+  var from=[[100,42],[240,62],[390,38],[140,128],[290,148],[440,118]];
+  var to=[[72,105],[172,105],[272,105],[372,105],[472,105],[558,105]];
+  function draw(p){
+    var s='';
+    var manOp=clamp(p,0.35,0.85);
+    s+='<g opacity="'+manOp.toFixed(2)+'">';
+    s+=rect(255,8,110,52,'#E8F0FA',4,'stroke="#1B4B8F"');
+    s+=txt(310,28,'岗位手册',12,'#123A70','middle','600');
+    s+=txt(310,46,'SKILL.md',10,'#8A97A3','middle','400','mono');
+    s+='</g>';
+    for(var i=0;i<steps.length;i++){
+      var x=lerp(from[i][0],to[i][0],ease(clamp(p,0,0.75)));
+      var y=lerp(from[i][1],to[i][1],ease(clamp(p,0.45,1)));
+      var isEnd=(i===0||i===5);
+      var fill=isEnd?'#E8F0FA':'#fff';
+      var stroke=isEnd?'#1B4B8F':mix(C.line2,C.accent,p*0.7);
+      var w=lerp(88,78,p),h=lerp(34,30,p);
+      s+=rect(x-w/2,y-h/2,w,h,fill,4,'stroke="'+stroke+'"');
+      s+=txt(x,y+4,steps[i],11,isEnd?'#123A70':mix(C.ink2,C.ink,p),'middle','600');
+      if(p<0.5){ s+=txt(x+w/2-6,y-h/2-3,'?',11,'#C2410C','middle','700'); }
+      else { s+=txt(x+w/2-6,y-h/2-3,'\u2713',11,'#15695A','middle','700'); }
+    }
+    s+=txt(310,195,p<0.5?'每次都要口头交代，步骤容易漏':'翻开手册就能做，步骤不会漏',12,mix(C.ink3,C.accent,p),'middle','600');
+    setSvg(host,s);
+  }
+  play('dial-svg',1,draw);
+  sl.addEventListener('input',function(){ draw(+sl.value/100); });
+  if(!RM){
+    var started=false;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting||started) return; started=true; io.disconnect();
+        var t0=0;
+        requestAnimationFrame(function step(now){
+          t0=t0||now; var k=Math.min(1,(now-t0)/2600);
+          var v=k<0.6?ease(k/0.6):1-ease((k-0.6)/0.4)*0.75;
+          sl.value=Math.round(v*100); draw(v);
+          if(k<1) requestAnimationFrame(step);
+        });
+      });
+    },{threshold:0.35});
+    io.observe(host);
+  } else { sl.value=100; draw(1); }
+})();
+
+/* ====== Card 2: 记忆像沙子 ====== */
+(function(){
+  var host=$('#memory-svg'); if(!host) return;
+  function draw(p){
+    var s='';
+    s+=rect(10,10,290,160,'#fff',4,'stroke="#E2E7EB"');
+    s+=txt(155,30,'没有 Skill',13,'#C2410C','middle','600');
+    for(var i=0;i<3;i++){
+      var op=clamp(p,0,1)*(1-i*0.25);
+      s+='<g opacity="'+op.toFixed(2)+'">';
+      s+=rect(30,45+i*42,250,34,'#FBEDE4',3,'stroke="#EBC6AE"');
+      s+=txt(45,66+i*42,['第 1 次对话：重新解释规则','第 2 次对话：又重新解释','第 3 次对话：还是重新解释'][i],11,'#8A3208');
+      s+='</g>';
+    }
+    s+=rect(320,10,290,160,'#fff',4,'stroke="#E2E7EB"');
+    s+=txt(465,30,'有 Skill',13,'#15695A','middle','600');
+    s+=rect(340,45,250,34,'#E5F2EF',3,'stroke="#BBD9D1"');
+    s+=txt(355,66,'手册一直在那里',11,'#1D5247');
+    for(var i=0;i<3;i++){
+      var op2=clamp(p,0.2,1);
+      s+='<g opacity="'+op2.toFixed(2)+'">';
+      s+=rect(340,87+i*28,250,22,'#E5F2EF',3,'stroke="#BBD9D1"');
+      s+=txt(355,102+i*28,['第 1 次：翻开手册 → 按步骤做','第 2 次：翻开手册 → 按步骤做','第 3 次：翻开手册 → 按步骤做'][i],10,'#1D5247');
+      s+='</g>';
+    }
+    setSvg(host,s);
+  }
+  play('memory-svg',1200,draw);
+})();
+
+/* ====== Card 3: 文件夹结构 ====== */
+(function(){
+  var host=$('#folder-svg'); if(!host) return;
+  var SEL=0;
+  var items=[
+    {name:'SKILL.md',desc:'核心文件。开头写 name 和 description（告诉 AI 什么时候用），正文写具体步骤。',color:'#1B4B8F',bg:'#E8F0FA'},
+    {name:'scripts/',desc:'可选。放小程序，AI 在需要时运行它们完成计算、格式转换等固定操作。',color:'#15695A',bg:'#E5F2EF'},
+    {name:'references/',desc:'可选。放模板、规范、字段说明。AI 在需要时查阅，不用你每次重新贴。',color:'#C2410C',bg:'#FBEDE4'},
+    {name:'assets/',desc:'可选。放图标、表格模板、样例文件等静态资源。',color:'#55636F',bg:'#F4F6F8'}
+  ];
+  function draw(){
+    var s='';
+    s+=rect(20,20,200,220,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(120,44,'my-skill/',13,'#16202B','middle','600','mono');
+    for(var i=0;i<items.length;i++){
+      var y=62+i*44;
+      var sel=i===SEL;
+      s+=rect(32,y,176,36,sel?items[i].bg:'#F4F6F8',3,'stroke="'+(sel?items[i].color:'#E2E7EB')+'"');
+      s+=txt(44,y+22,items[i].name,12,sel?items[i].color:'#55636F','start',sel?'600':'400','mono');
+      if(sel){ s+=circ(200,y+18,4,items[i].color); }
+    }
+    var it=items[SEL];
+    s+=rect(240,20,360,220,'#fff',4,'stroke="#CFD7DE"');
+    s+=rect(240,20,360,36,it.bg,0,'stroke="'+it.color+'"');
+    s+=txt(420,44,it.name,14,it.color,'middle','700','mono');
+    var words=it.desc;
+    var lines=[]; var cur='';
+    for(var c=0;c<words.length;c++){
+      cur+=words[c];
+      if(cur.length>=18||(words[c]==='。'&&cur.length>8)){ lines.push(cur); cur=''; }
+    }
+    if(cur) lines.push(cur);
+    for(var l=0;l<lines.length;l++){
+      s+=txt(260,80+l*24,lines[l],12,'#55636F');
+    }
+    setSvg(host,s);
+  }
+  draw();
+  $$('#folder-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#folder-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); SEL=+b.getAttribute('data-f'); draw();
+    });
+  });
+})();
+
+/* ====== Card 4: 渐进式披露 ====== */
+(function(){
+  var host=$('#load-svg'); if(!host) return;
+  var STAGE=0;
+  var skills=[
+    {name:'invoice-helper',desc:'整理发票和报销单'},
+    {name:'resume-polish',desc:'按岗位优化简历'},
+    {name:'weekly-report',desc:'整理周报'}
+  ];
+  function draw(){
+    var s='';
+    s+=rect(10,10,600,220,'#fff',4,'stroke="#E2E7EB"');
+    var titles=['① 扫名字：只看 name','② 读描述：看 description','③ 加载全文：读 SKILL.md 正文'];
+    s+=txt(310,32,titles[STAGE],13,'#1B4B8F','middle','600');
+    for(var i=0;i<skills.length;i++){
+      var y=48+i*54;
+      var showDesc=STAGE>=1;
+      var showBody=STAGE>=2&&i===0;
+      var h=showBody?48:(showDesc?40:30);
+      s+=rect(30,y,560,h,showBody?'#E8F0FA':'#F4F6F8',3,'stroke="'+(showBody?'#1B4B8F':'#E2E7EB')+'"');
+      s+=txt(44,y+18,skills[i].name,12,showBody?'#123A70':'#55636F','start',showBody?'600':'400','mono');
+      if(showDesc){ s+=txt(200,y+18,skills[i].desc,11,'#8A97A3'); }
+      if(showBody){
+        s+=txt(44,y+36,'1. 确认日期范围  2. 填入表格  3. 列出待补项',10,'#123A70');
+      }
+    }
+    var notes=['AI 先只看到名称和描述等目录信息，不把全文塞进上下文。','AI 根据你的任务，读取相关 Skill 的描述，判断是否匹配。','匹配成功后，AI 才加载 SKILL.md 全文和辅助文件。'];
+    s+=txt(310,218,notes[STAGE],11,'#55636F','middle');
+    setSvg(host,s);
+  }
+  draw();
+  $$('#load-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#load-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); STAGE=+b.getAttribute('data-s'); draw();
+    });
+  });
+})();
+
+/* ====== Card 5: Skill vs Prompt vs MCP ====== */
+(function(){
+  var host=$('#diff-svg'); if(!host) return;
+  var SEL=0;
+  var data=[
+    {title:'Prompt（提示词）',icon:'bubble',lines:['一次性口头指令','随对话消失','不需要安装','教 AI「这次怎么做」'],analogy:'像口头交代一句',color:'#8A97A3',bg:'#F4F6F8'},
+    {title:'Skill（技能）',icon:'folder',lines:['可复用的操作手册','存在文件夹里','需要安装/放置','教 AI「这类事怎么做」'],analogy:'像一本操作手册',color:'#1B4B8F',bg:'#E8F0FA'},
+    {title:'MCP（连接器）',icon:'plug',lines:['连接外部工具的插头','存在服务器/本地','需要配置/启动','让 AI「能连到哪里」'],analogy:'像墙上的插座',color:'#15695A',bg:'#E5F2EF'}
+  ];
+  function glyph(kind,cx,cy,c){
+    var s='';
+    if(kind==='bubble'){
+      s+='<path d="M'+(cx-13)+' '+(cy-9)+' h26 a4 4 0 0 1 4 4 v10 a4 4 0 0 1 -4 4 h-13 l-6 6 v-6 h-7 a4 4 0 0 1 -4 -4 v-10 a4 4 0 0 1 4 -4 z" fill="none" stroke="'+c+'" stroke-width="2"/>';
+      s+=line(cx-8,cy-2,cx+8,cy-2,c,2);
+      s+=line(cx-8,cy+4,cx+3,cy+4,c,2);
+    } else if(kind==='folder'){
+      s+='<path d="M'+(cx-14)+' '+(cy-8)+' h10 l3 4 h15 a3 3 0 0 1 3 3 v13 a3 3 0 0 1 -3 3 h-28 a3 3 0 0 1 -3 -3 v-17 a3 3 0 0 1 3 -3 z" fill="none" stroke="'+c+'" stroke-width="2"/>';
+    } else {
+      s+=line(cx-6,cy-12,cx-6,cy-4,c,2.5);
+      s+=line(cx+6,cy-12,cx+6,cy-4,c,2.5);
+      s+=rect(cx-11,cy-5,22,10,c,3);
+      s+=line(cx,cy+5,cx,cy+13,c,2.5);
+    }
+    return s;
+  }
+  function draw(){
+    var s='';
+    for(var i=0;i<3;i++){
+      var x=10+i*205;
+      var sel=i===SEL;
+      var d=data[i];
+      s+='<g opacity="'+(sel?1:0.42)+'">';
+      s+=rect(x,10,195,200,sel?d.bg:'#fff',4,'stroke="'+(sel?d.color:'#E2E7EB')+'" stroke-width="'+(sel?2:1)+'"');
+      s+=glyph(d.icon,x+97,34,sel?d.color:'#B3BDC7');
+      s+=txt(x+97,64,d.title,12,sel?d.color:'#8A97A3','middle','600');
+      for(var l=0;l<d.lines.length;l++){
+        s+=txt(x+16,86+l*24,d.lines[l],11,sel?d.color:'#8A97A3');
+      }
+      if(sel){
+        s+=rect(x,10,195,4,d.color,0);
+        s+=line(x+16,178,x+179,178,d.color,1,'stroke-dasharray="3 3" opacity="0.5"');
+        s+=txt(x+97,196,d.analogy,11,d.color,'middle','600');
+      }
+      s+='</g>';
+    }
+    setSvg(host,s);
+  }
+  draw();
+  $$('#diff-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#diff-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); SEL=+b.getAttribute('data-d'); draw();
+    });
+  });
+  $$('#cmp .cmp-row>button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var row=b.parentElement;
+      row.classList.toggle('open');
+    });
+  });
+})();
+
+/* ====== Card 6: WorkBuddy 安装 ====== */
+(function(){
+  var host=$('#install-svg'); if(!host) return;
+  var SEL=0;
+  var paths=[
+    {title:'技能市场安装',steps:['打开 WorkBuddy','左侧导航 → 扩展 → 技能','浏览或搜索','点击"安装"','自动加载，即可使用'],color:'#1B4B8F'},
+    {title:'发链接安装',steps:['找到 GitHub 上的 Skill 仓库','把链接发给 WorkBuddy','说"帮我安装这个"','自动下载、放置、加载','即可使用'],color:'#15695A'},
+    {title:'手动上传',steps:['已有 SKILL.md 文件','左侧导航 → 扩展 → 技能','点击"安装技能"','上传文件','自动识别并加载'],color:'#C2410C'}
+  ];
+  function draw(){
+    var s='';
+    var p=paths[SEL];
+    s+=rect(10,10,600,200,'#fff',4,'stroke="#E2E7EB"');
+    s+=txt(310,32,p.title,14,p.color,'middle','700');
+    for(var i=0;i<p.steps.length;i++){
+      var y=48+i*30;
+      s+=circ(40,y+10,10,p.color);
+      s+=txt(40,y+14,String(i+1),10,'#fff','middle','700');
+      s+=txt(60,y+14,p.steps[i],12,'#16202B');
+      if(i<p.steps.length-1){ s+=line(40,y+20,40,y+30,p.color,1.5,'stroke-dasharray="3 2"'); }
+    }
+    setSvg(host,s);
+  }
+  draw();
+  $$('#install-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#install-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); SEL=+b.getAttribute('data-i'); draw();
+    });
+  });
+})();
+
+/* ====== Card 7: WorkBuddy 使用 ====== */
+(function(){
+  var host=$('#use-svg'); if(!host) return;
+  var SEL=0;
+  var modes=[
+    {title:'自动触发',user:'帮我根据岗位 JD 优化简历',ai:'识别到 resume-polish Skill → 自动调用',note:'最自然，但依赖 description 写得清楚'},
+    {title:'/ 快捷调用',user:'/resume-polish 帮我优化简历',ai:'直接打开指定 Skill → 执行',note:'明确知道用哪个 Skill 时最稳'},
+    {title:'对话中指名',user:'使用 resume-polish Skill 帮我优化简历',ai:'按指名加载 Skill → 执行',note:'适合复杂指令或同时指定参数'}
+  ];
+  function draw(){
+    var s='';
+    var m=modes[SEL];
+    s+=rect(10,10,600,180,'#fff',4,'stroke="#E2E7EB"');
+    s+=txt(310,32,m.title,14,'#1B4B8F','middle','700');
+    s+=rect(30,44,260,58,'#E8F0FA',4,'stroke="#C9DCF2"');
+    s+=txt(40,60,'你输入：',10,'#8A97A3');
+    var u=wrapLines(m.user,19).slice(0,3);
+    for(var i=0;i<u.length;i++) s+=txt(40,78+i*15,u[i],11,'#123A70');
+    s+=txt(310,78,'→',20,'#1B4B8F','middle','700');
+    s+=rect(330,44,260,58,'#E5F2EF',4,'stroke="#BBD9D1"');
+    s+=txt(340,60,'WorkBuddy：',10,'#8A97A3');
+    var a=wrapLines(m.ai,19).slice(0,3);
+    for(var j=0;j<a.length;j++) s+=txt(340,78+j*15,a[j],11,'#1D5247');
+    s+=rect(30,114,560,56,'#F4F6F8',4,'stroke="#E2E7EB"');
+    s+=txt(310,138,m.note,12,'#55636F','middle');
+    s+=txt(310,158,'@ 是添加上下文（如文件），不是调用 Skill',11,'#C2410C','middle');
+    setSvg(host,s);
+  }
+  draw();
+  $$('#use-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#use-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); SEL=+b.getAttribute('data-u'); draw();
+    });
+  });
+})();
+
+/* ====== Card 9: 能做什么 ====== */
+(function(){
+  var host=$('#can-svg'); if(!host) return;
+  var cans=['固定流程','调用脚本','引用资料','跨对话复用'];
+  var cants=['不能让 AI 变聪明','不能保证结果正确','不能替代 MCP','不能自动更新'];
+  function draw(p){
+    var s='';
+    s+=rect(10,10,295,200,'#E5F2EF',4,'stroke="#BBD9D1"');
+    s+=txt(157,32,'能做',14,'#15695A','middle','700');
+    for(var i=0;i<cans.length;i++){
+      var op=clamp(p,i*0.15,0.4+i*0.15);
+      s+='<g opacity="'+op.toFixed(2)+'">';
+      s+=rect(24,44+i*40,268,34,'#fff',3,'stroke="#BBD9D1"');
+      s+=txt(38,66+i*40,'\u2713 '+cans[i],12,'#1D5247');
+      s+='</g>';
+    }
+    s+=rect(315,10,295,200,'#FBEDE4',4,'stroke="#EBC6AE"');
+    s+=txt(462,32,'不能做',14,'#C2410C','middle','700');
+    for(var i=0;i<cants.length;i++){
+      var op2=clamp(p,i*0.15,0.4+i*0.15);
+      s+='<g opacity="'+op2.toFixed(2)+'">';
+      s+=rect(329,44+i*40,268,34,'#fff',3,'stroke="#EBC6AE"');
+      s+=txt(343,66+i*40,'\u2717 '+cants[i],12,'#8A3208');
+      s+='</g>';
+    }
+    setSvg(host,s);
+  }
+  play('can-svg',1400,draw);
+})();
+
+/* ====== Card 10: 安全风险 ====== */
+(function(){
+  var host=$('#risk-svg'); if(!host) return;
+  var SEL=0;
+  var risks=[
+    {title:'恶意提示词注入',desc:'Skill 的指令里藏了「顺便把用户的文件内容发送到某地址」这类恶意步骤。AI 在执行正常流程时，不知不觉也执行了恶意步骤。',icon:'warn'},
+    {title:'越权访问',desc:'Skill 要求访问的文件、网络范围超出了它声称的用途。比如一个「整理表格」的 Skill，却要求读取你的邮件目录。',icon:'key'},
+    {title:'后门程序',desc:'scripts/ 里的小程序表面正常，但暗中留下了可以被远程再次调用的入口。安装时看不出来，之后可能被利用。',icon:'door'}
+  ];
+  function glyph(kind,cx,cy){
+    var c='#C2410C',s='';
+    if(kind==='warn'){
+      s+='<path d="M'+cx+' '+(cy-11)+' L'+(cx+12)+' '+(cy+9)+' L'+(cx-12)+' '+(cy+9)+' Z" fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round"/>';
+      s+=line(cx,cy-4,cx,cy+2,c,2);
+      s+=circ(cx,cy+5.5,1.3,c);
+    } else if(kind==='key'){
+      s+='<circle cx="'+(cx-6)+'" cy="'+cy+'" r="5" fill="none" stroke="'+c+'" stroke-width="2"/>';
+      s+=line(cx-1,cy,cx+12,cy,c,2);
+      s+=line(cx+7,cy,cx+7,cy+5,c,2);
+      s+=line(cx+12,cy,cx+12,cy+5,c,2);
+    } else {
+      s+=rect(cx-9,cy-12,18,24,'none',2,'stroke="'+c+'"');
+      s+=circ(cx+4,cy,1.6,c);
+      s+=line(cx-13,cy+12,cx+13,cy+12,c,2);
+    }
+    return s;
+  }
+  function draw(){
+    var s='';
+    var r=risks[SEL];
+    s+=rect(10,10,600,180,'#fff',4,'stroke="#EBC6AE"');
+    s+=glyph(r.icon,52,34);
+    s+=txt(76,39,r.title,14,'#C2410C','start','700');
+    var words=r.desc; var lines=[]; var cur='';
+    for(var c=0;c<words.length;c++){
+      cur+=words[c];
+      if(cur.length>=28||(words[c]==='。'&&cur.length>10)){ lines.push(cur); cur=''; }
+    }
+    if(cur) lines.push(cur);
+    for(var l=0;l<lines.length;l++){
+      s+=txt(40,72+l*24,lines[l],12,'#55636F');
+    }
+    s+=rect(40,148,540,30,'#FBEDE4',3,'stroke="#EBC6AE"');
+    s+=txt(310,168,'安装前花两分钟看一下 SKILL.md 和 scripts/ 的内容',12,'#8A3208','middle','600');
+    setSvg(host,s);
+  }
+  draw();
+  $$('#risk-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#risk-btns .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); SEL=+b.getAttribute('data-r'); draw();
+    });
+  });
+})();
+
+/* ====== Card 8: Qoder tabs ====== */
+(function(){
+  var tabs=$('#qoder-tabs'); if(!tabs) return;
+  $$('#qoder-tabs .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#qoder-tabs .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel');
+      var k=b.getAttribute('data-q');
+      $$('#c8 .pane').forEach(function(p){ p.classList.toggle('on',p.getAttribute('data-pane')===k); });
+    });
+  });
+})();
+
+/* ====== Card 12: 三视角 tabs ====== */
+(function(){
+  var tabs=$('#tabs'); if(!tabs) return;
+  $$('#tabs .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('#tabs .btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel');
+      var k=b.getAttribute('data-p');
+      $$('#c12 .pane').forEach(function(p){ p.classList.toggle('on',p.getAttribute('data-pane')===k); });
+    });
+  });
+})();
+
+/* ====== Card 10: 盖章动画 ====== */
+(function(){
+  var host=$('#stamps'); if(!host) return;
+  if(RM){ $$('.stamp',host).forEach(function(s){ s.style.opacity=1; s.style.transform='none'; }); return; }
+  $$('.stamp',host).forEach(function(s){ s.style.opacity=0; s.style.transform='translateY(14px)'; s.style.transition='opacity .45s ease, transform .5s cubic-bezier(.22,.61,.36,1)'; });
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return; io.disconnect();
+      $$('.stamp',host).forEach(function(s,i){
+        setTimeout(function(){ s.style.opacity=1; s.style.transform='none'; },i*230);
+      });
+    });
+  },{threshold:0.2});
+  io.observe(host);
+})();
+})();
+</script>
+</body>
+</html>
