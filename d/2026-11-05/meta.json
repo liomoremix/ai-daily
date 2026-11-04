@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-05",
+  "id": "what-is-a-skill",
+  "category": "工具",
+  "series": "名词解释",
+  "subject": "Skill（技能）",
+  "title": "Skill 不是让 AI 变聪明，是给它一本岗位说明书",
+  "hook": "你在 WorkBuddy、Qoder 里看到的「安装 Skill」，听着像给 AI 升级大脑，其实是塞给它一本写得清清楚楚的岗位说明书。AI 没变聪明，但办事开始有章法。",
+  "read_minutes": 13,
+  "sources": [
+    {
+      "title": "Anthropic：Introducing Agent Skills（官方发布，2025-10-16）",
+      "url": "https://claude.com/blog/skills"
+    },
+    {
+      "title": "Anthropic Engineering：Equipping agents for the real world with Agent Skills",
+      "url": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills"
+    },
+    {
+      "title": "Agent Skills 开放规范：SKILL.md 结构与字段要求",
+      "url": "https://agentskills.io/specification"
+    },
+    {
+      "title": "WorkBuddy 官方文档：技能市场（安装、关闭、卸载与安全提示）",
+      "url": "https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market"
+    },
+    {
+      "title": "QoderWork 官方文档：Skills",
+      "url": "https://docs.qoder.com/zh/qoderwork/skills"
+    },
+    {
+      "title": "Qoder CLI 官方文档：Skills（用户级与项目级目录）",
+      "url": "https://docs.qoder.com/zh/cli/Skills"
+    },
+    {
+      "title": "Qoder 官方文档：从 WorkBuddy 导入数据",
+      "url": "https://docs.qoder.com/zh/qoder/data-import"
+    }
+  ],
+  "cards": 12
+}
