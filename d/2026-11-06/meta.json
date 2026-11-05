@@ -6,7 +6,7 @@
   "subject": "AI / Bot / Agent 的区别",
   "title": "AI、Bot、Agent 不是三种东西，是三个不同的问题",
   "hook": "这三个词几乎总是一起出现，好像可以互换。其实它们各自在回答一个完全不同的问题：AI 问「它会不会学」，Bot 问「它是不是一个自动跑的程序」，Agent 问「下一步由谁决定」。把三个问题分开，你就不会再被产品宣传页绕晕。",
-  "read_minutes": 20,
+  "read_minutes": 21,
   "sources": [
     {
       "title": "Anthropic Engineering — Building effective agents（2024-12-19）",
@@ -63,7 +63,19 @@
     {
       "title": "IBM — What is robotic process automation (RPA)?",
       "url": "https://www.ibm.com/think/topics/rpa"
+    },
+    {
+      "title": "百度百科 — Grok（美国 xAI 公司发布的 AI 模型）",
+      "url": "https://baike.baidu.com/item/Grok/63677835"
+    },
+    {
+      "title": "凤凰网科技 — xAI 发布 Grok-3 智能搜索引擎 DeepSearch（2025-02-18）",
+      "url": "https://ishare.ifeng.com/c/s/v0023DSmNWk-_O2--cs7p8IeBvH7xOB18uhaV7pIMUuvGjf64__"
+    },
+    {
+      "title": "搜狐科技 — 马斯克的 xAI 发布 Grok 3：这些是你需要了解的要点（2025-02-24）",
+      "url": "https://m.sohu.com/a/863215956_114765/"
     }
   ],
-  "cards": 14
+  "cards": 15
 }
