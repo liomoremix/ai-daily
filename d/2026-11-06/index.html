@@ -186,7 +186,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     <div class="stat"><span class="v" data-count="1" data-suffix=" 条">0</span><span class="k">真正的分水岭：下一步由剧本定，还是由模型定</span></div>
     <div class="stat"><span class="v" data-count="4" data-suffix=" 个零件">0</span><span class="k">一个 Agent 至少要有：模型、指令、工具、记忆</span></div>
   </div>
-  <p class="scrollhint">↓ 14 张卡，约 20 分钟。大部分卡都能点，专业词第一次出现都会当场解释。</p>
+  <p class="scrollhint">↓ 15 张卡，约 21 分钟。大部分卡都能点，专业词第一次出现都会当场解释。</p>
 </header>
 
 <!-- ============ 1 ============ -->
@@ -520,10 +520,32 @@ footer li{margin-bottom:5px;word-break:break-all}
 
 <!-- ============ 14 ============ -->
 <section class="card" id="c14">
-  <div class="no-head"><span class="no">14</span><h2>名词速查：本页出现过的每个术语</h2></div>
+  <div class="no-head"><span class="no">14</span><h2>拿一个热门产品练一遍：Grok</h2></div>
+  <p class="rv">理论讲完了，拿一个你真可能见过的产品练一遍手：<span class="term" title="xAI 公司训练的大模型系列，也是它在 X 上和 grok.com 上的聊天产品名">Grok</span>。你大概在 X（原 Twitter）上见过它：有人在帖子里 @ 它一下，它自己跑出来回话；也有人打开 grok.com 跟它一问一答。</p>
+  <p class="rv">先说名字。<b>grok 这个词不是技术术语，它来自 1961 年的科幻小说《异乡异客》</b>，意思是「把一样东西喝下去、彻底懂透」。xAI 拿它当产品名，想传达的就是「我这模型是真懂，不是背答案」。但名字起得好不等于真懂——所以下面还是用第 13 张卡那三问来拆它。</p>
+  <p class="rv"><b>第一问，它会学吗？会。</b>Grok 是 xAI 从 2023 年 11 月起一代代训练出来的大模型系列（Grok 1 到 Grok 4），靠海量文本学出来。所以它是 AI，这一问没有争议。</p>
+  <p class="rv"><b>第二问，它是自动跑的程序吗？也是。</b>在 X 上它可以被 @、可以被设置成自己接话：没人点「发送」，条件一到它就动。这一条满足的是 bot 的定义——跟聪不聪明无关。</p>
+  <p class="rv"><b>第三问，下一步谁定？答案是：看你用哪种用法。</b>同一个 Grok、同一个名字，三种用法落在三个完全不同的位置上。点下面三个按钮看差别：</p>
+  <figure class="rv">
+    <svg class="stage" id="grok-svg" viewBox="0 0 620 250" role="img" aria-label="同一个 Grok 的三种用法：一问一答、被@自动回话、DeepSearch 汇总来源，三者「下一步由谁决定」不同"></svg>
+    <div class="btnrow" id="grok-btns">
+      <button class="btn sel" data-k="0">在 grok.com 一问一答</button>
+      <button class="btn" data-k="1">在 X 上被 @ 自动回话</button>
+      <button class="btn" data-k="2">开 DeepSearch 汇总来源</button>
+    </div>
+    <figcaption>示意。模型是同一个，但「下一步由谁决定」在三种用法里完全不同。</figcaption>
+  </figure>
+  <p class="rv">第三种用法值得多说一句：<span class="term" title="Grok 的检索模式：自己去翻网页和 X 的帖子，边查边决定下一步，最后把来源汇总成一篇带出处的回答">DeepSearch</span> 会自己去翻网页和 X 上的帖子，边查边决定「还缺什么、要不要再查一轮」，最后把几十条来源汇总成一篇带出处的回答。2025 年 2 月的发布演示里，它回答一个问题引用了 15 条 X 帖子和 32 个网页，并把中间的推理步骤摊开给你看。xAI 自己把它叫作「第一代 Grok 代理工具」——用本页的话说，就是站到了 agent 那一侧。</p>
+  <div class="callout warn">热门不等于更可靠。Grok 的回答风格被刻意设计得「敢说话、带幽默」，这和第 12 张卡第一条是同一枚硬币的两面：<b>语气越笃定，你越要自己核一遍。</b>它在 X 上自动回话时尤其如此——那一句回复没有人点发送，也没有人审过。</div>
+  <p class="rv">所以下次再看到「Grok bot」「Grok AI」这类词，别被名字带跑。<b>名字里带 bot，不代表里面有 agent；名字里带 AI，不代表它会替你动手。</b>三问一问，它落在哪一格，你自己就知道。</p>
+</section>
+
+<!-- ============ 15 ============ -->
+<section class="card" id="c15">
+  <div class="no-head"><span class="no">15</span><h2>名词速查：本页出现过的每个术语</h2></div>
   <p class="rv">按类别排好了，忘了哪个回来查一句就行。每条都是一句人话，不含二次术语。</p>
   <div class="btnrow rv" id="gloss-btns" style="margin-top:0;margin-bottom:14px">
-    <button class="btn sel" data-c="all">全部 25 条</button>
+    <button class="btn sel" data-c="all">全部 27 条</button>
     <button class="btn" data-c="ai">AI 基础</button>
     <button class="btn" data-c="llm">大模型</button>
     <button class="btn" data-c="bot">Bot</button>
@@ -541,6 +563,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     <div class="gl" data-cat="llm"><b>词元（token）</b><span>模型处理文字的最小单位，大约是一个词或半个词。计费通常按它算。</span></div>
     <div class="gl" data-cat="llm"><b>提示词（prompt）</b><span>你输入给模型的那段文字。它决定了模型接下来往哪个方向接。</span></div>
     <div class="gl" data-cat="llm"><b>幻觉（hallucination）</b><span>模型编出听起来合理、但实际上不存在的内容。原因是它在猜，不是在查。</span></div>
+    <div class="gl" data-cat="llm"><b>Grok</b><span>xAI 训练的大模型系列，也是它在 X 上和 grok.com 上的聊天产品名。名字取自科幻小说里「彻底懂透」一词。</span></div>
     <div class="gl" data-cat="bot"><b>Bot（机器人程序）</b><span>自动运行、代替人做重复动作的程序。这个词不涉及聪不聪明。</span></div>
     <div class="gl" data-cat="bot"><b>规则匹配</b><span>找关键词、套事先写好的模板。剧本式 bot 的做法。</span></div>
     <div class="gl" data-cat="bot"><b>爬虫</b><span>自动浏览网页并把内容抄下来的程序，搜索引擎靠它建索引。</span></div>
@@ -555,8 +578,9 @@ footer li{margin-bottom:5px;word-break:break-all}
     <div class="gl" data-cat="agent"><b>上下文 / 记忆</b><span>上下文是这次对话里的内容，窗口一关就没；长期记忆是存在外面的笔记，下次还能翻。</span></div>
     <div class="gl" data-cat="agent"><b>护栏（guardrails）</b><span>一套不由模型决定的硬规定：什么不能做、什么时候必须停下来等人确认。</span></div>
     <div class="gl" data-cat="agent"><b>提示词注入</b><span>把指令藏在 AI 会读到的网页或邮件里，让它误当成你的命令去执行。</span></div>
+    <div class="gl" data-cat="agent"><b>DeepSearch</b><span>Grok 的检索模式：自己去翻网页和 X 的帖子，边查边决定下一步，最后汇总成带出处的回答。</span></div>
   </div>
-  <div class="callout fact">如果只记三条：<b>AI 是能力，Bot 是形态，Agent 是授权。</b>剩下二十二条都是这三条的注脚。</div>
+  <div class="callout fact">如果只记三条：<b>AI 是能力，Bot 是形态，Agent 是授权。</b>剩下二十四条都是这三条的注脚。</div>
 </section>
 
 <!-- ============ 结尾提问 ============ -->
@@ -582,7 +606,7 @@ footer li{margin-bottom:5px;word-break:break-all}
 </section>
 
 <footer>
-  <p><b>口径与出处</b>：本页所有定义与机制描述均取自下列公开资料，核查于 2026 年 11 月；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图，不含真实数据、真实账本或真实评测结果；第 2、4、10 张卡中的数字（错误率、概率、位置）为演示用虚构值，仅用于说明趋势。本页零外部依赖，可离线打开。</p>
+  <p><b>口径与出处</b>：本页所有定义与机制描述均取自下列公开资料，核查于 2026 年 11 月；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图，不含真实数据、真实账本或真实评测结果；第 2、4、10 张卡中的数字（错误率、概率、位置）为演示用虚构值，仅用于说明趋势；第 14 张卡引用的「15 条 X 帖子、32 个网页」是 2025 年 2 月发布演示的公开报道数字，非本页实测。本页零外部依赖，可离线打开。</p>
   <ul>
     <li>工作流与智能体的界线、「增强型大模型」、「拿延迟和成本换任务表现」：<a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener">Anthropic Engineering — Building effective agents（2024-12-19）</a></li>
     <li>Agent 的定义（模型 + 工具 + 指令，独立执行工作流）与护栏分层：<a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" rel="noopener">OpenAI — A practical guide to building agents</a></li>
@@ -598,6 +622,9 @@ footer li{margin-bottom:5px;word-break:break-all}
     <li>幻觉的学术综述：<a href="https://doi.org/10.1145/3571730" rel="noopener">Ji et al. (2023). Survey of Hallucination in Natural Language Generation. ACM Computing Surveys 55(12)</a></li>
     <li>提示词注入的定义与风险排序（大模型风险榜第 1 位）：<a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" rel="noopener">OWASP GenAI Security Project — LLM01:2025 Prompt Injection</a></li>
     <li>RPA 是流程驱动、AI 是数据驱动：<a href="https://www.ibm.com/think/topics/rpa" rel="noopener">IBM — What is robotic process automation (RPA)?</a></li>
+    <li>Grok 是 xAI 的大模型系列、2023 年 11 月首发、内置于 X 平台；名字取自科幻小说《异乡异客》中「彻底懂透」一词：<a href="https://baike.baidu.com/item/Grok/63677835" rel="noopener">百度百科 — Grok（美国 xAI 公司发布的 AI 模型）</a></li>
+    <li>DeepSearch 搜索互联网与 X 平台、分析后给出摘要，xAI 称其为「第一代 Grok 代理工具」：<a href="https://ishare.ifeng.com/c/s/v0023DSmNWk-_O2--cs7p8IeBvH7xOB18uhaV7pIMUuvGjf64__" rel="noopener">凤凰网科技 — xAI 发布 Grok-3 智能搜索引擎 DeepSearch（2025-02-18）</a></li>
+    <li>发布演示中 DeepSearch 引用 15 条 X 帖子与 32 个网页、并展示推理步骤：<a href="https://m.sohu.com/a/863215956_114765/" rel="noopener">搜狐科技 — 马斯克的 xAI 发布 Grok 3：这些是你需要了解的要点（2025-02-24）</a></li>
   </ul>
 </footer>
 
@@ -1770,7 +1797,115 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   });
 })();
 
-/* ====== 14 · 名词速查过滤 ====== */
+/* ====== 14 · Grok 三种用法 ====== */
+(function(){
+  var host=$('#grok-svg'); if(!host) return;
+  var SEL=0;
+  var CAP=[
+    '用法一：chatbot。它只会说，说完就停——错了代价最低，重问一遍就行。',
+    '用法二：bot。触发条件一到自己动；这句回复没人点发送，也没人审过。',
+    '用法三：靠近 agent。查什么、够不够、要不要再查，由它临场决定。'
+  ];
+  function arrow(x1,y1,x2,y2,col){
+    col=col||'#8A97A3';
+    var s=line(x1,y1,x2,y2,col,1.4);
+    var a=Math.atan2(y2-y1,x2-x1),h=6;
+    s+=pth('M'+x2+' '+y2+' L'+(x2-h*Math.cos(a-0.42)).toFixed(1)+' '+(y2-h*Math.sin(a-0.42)).toFixed(1)+
+           ' M'+x2+' '+y2+' L'+(x2-h*Math.cos(a+0.42)).toFixed(1)+' '+(y2-h*Math.sin(a+0.42)).toFixed(1),col,1.4);
+    return s;
+  }
+  function core(x,y,w,h,sub){
+    var s=rect(x,y,w,h,'#E8F0FA',4,'stroke="#C9DCF2"');
+    s+=txt(x+w/2,y+h/2-6,'Grok',13,'#123A70','middle','700');
+    s+=txt(x+w/2,y+h/2+12,sub,9.5,'#55636F','middle');
+    return s;
+  }
+  function p0(){
+    var s='';
+    s+=rect(20,96,84,48,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(62,116,'你',12.5,'#16202B','middle','600');
+    s+=txt(62,132,'点发送才动',9.5,'#8A97A3','middle');
+    s+=arrow(104,120,146,120);
+    s+=core(146,92,120,56,'xAI 的大模型');
+    s+=arrow(266,120,318,120);
+    s+=rect(318,88,180,64,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(330,108,'一段回答',11.5,'#16202B','start','600');
+    s+=txt(330,126,'说完就停，不去查东西',10,'#55636F','start');
+    s+=txt(330,142,'也不碰你的任何账号',10,'#55636F','start');
+    s+=txt(600,60,'只会说',12,'#1B4B8F','end','700');
+    return s;
+  }
+  function p1(){
+    var s='';
+    s+=rect(20,32,168,52,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(32,52,'X 上的一条帖子',11,'#16202B','start','600');
+    s+=txt(32,70,'「@grok 这判罚对吗？」',10,'#55636F','start');
+    s+=arrow(120,84,196,100);
+    s+=core(196,96,120,56,'被触发，自己动');
+    s+=arrow(316,124,352,124);
+    s+=rect(352,92,168,64,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(364,112,'自动回一条',11.5,'#16202B','start','600');
+    s+=txt(364,130,'没人点发送',10,'#55636F','start');
+    s+=txt(364,146,'也没人审过这句',10,'#C2410C','start');
+    s+=rect(20,120,132,26,'#F4F6F8',3,'stroke="#E2E7EB"');
+    s+=txt(86,137,'条件一到就动',10,'#55636F','middle','500');
+    s+=txt(600,60,'bot 的本义',12,'#1B4B8F','end','700');
+    return s;
+  }
+  function p2(){
+    var s='';
+    s+=rect(20,96,96,48,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(68,124,'你的问题',11.5,'#16202B','middle','600');
+    s+=arrow(116,120,150,120);
+    s+=core(150,92,104,56,'边查边决定');
+    s+=rect(300,24,120,38,'#fff',4,'stroke="#C9DCF2"');
+    s+=txt(360,40,'① 翻网页',11,'#123A70','middle','600');
+    s+=txt(360,54,'看还缺什么',9,'#8A97A3','middle');
+    s+=rect(300,80,120,38,'#fff',4,'stroke="#C9DCF2"');
+    s+=txt(360,96,'② 翻 X 的帖子',11,'#123A70','middle','600');
+    s+=txt(360,110,'15 条 + 32 个网页',9,'#8A97A3','middle');
+    s+=rect(300,136,120,38,'#fff',4,'stroke="#C9DCF2"');
+    s+=txt(360,152,'③ 不够？再查一轮',11,'#123A70','middle','600');
+    s+=txt(360,166,'下一步它自己定',9,'#8A97A3','middle');
+    s+=arrow(254,104,300,43);
+    s+=arrow(360,62,360,80);
+    s+=arrow(360,118,360,136);
+    s+=pth('M300 155 L282 155 L282 43 L300 43','#8A97A3',1.4,' stroke-dasharray="4 3"');
+    s+=pth('M300 43 L294 39.5 M300 43 L294 46.5','#8A97A3',1.4);
+    s+=arrow(420,155,462,124);
+    s+=rect(462,88,140,72,'#E5F2EF',4,'stroke="#BBD9D1"');
+    s+=txt(474,108,'一篇汇总',11.5,'#1D5247','start','700');
+    s+=txt(474,126,'带出处列表',10,'#1D5247','start');
+    s+=txt(474,142,'推理步骤摊开',10,'#1D5247','start');
+    s+=txt(600,190,'agent 那一侧',12,'#15695A','end','700');
+    return s;
+  }
+  function draw(fad){
+    var s='';
+    if(SEL===0) s+=p0(); else if(SEL===1) s+=p1(); else s+=p2();
+    s+=rect(16,204,588,34,'#F4F6F8',3,'stroke="#E2E7EB"');
+    var ls=wrap(CAP[SEL],46),y0=221-(ls.length-1)*8;
+    for(var i=0;i<ls.length;i++) s+=txt(310,y0+i*16,ls[i],10.5,'#55636F','middle','500');
+    setSvg(host,s);
+    var g=host.querySelector('g.fit');
+    if(g&&fad!=null) g.setAttribute('opacity',fad.toFixed(2));
+  }
+  function fade(){
+    if(RM){ draw(1); return; }
+    draw(0);
+    tween(240,function(p){ var g=host.querySelector('g.fit'); if(g) g.setAttribute('opacity',p.toFixed(2)); });
+  }
+  draw(1);
+  $$('#grok-btns .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      var k=+b.getAttribute('data-k');
+      if(k===SEL) return;
+      selIn('grok-btns',b); SEL=k; fade();
+    });
+  });
+})();
+
+/* ====== 15 · 名词速查过滤 ====== */
 (function(){
   if(!$('#gloss')) return;
   var items=[].slice.call(document.querySelectorAll('#gloss .gl'));
