@@ -524,20 +524,23 @@ footer li{margin-bottom:5px;word-break:break-all}
   <p class="rv">理论讲完了，拿一个你真可能见过的产品练一遍手：<span class="term" title="xAI 公司训练的大模型系列，也是它在 X 上和 grok.com 上的聊天产品名">Grok</span>。你大概在 X（原 Twitter）上见过它：有人在帖子里 @ 它一下，它自己跑出来回话；也有人打开 grok.com 跟它一问一答。</p>
   <p class="rv">先说名字。<b>grok 这个词不是技术术语，它来自 1961 年的科幻小说《异乡异客》</b>，意思是「把一样东西喝下去、彻底懂透」。xAI 拿它当产品名，想传达的就是「我这模型是真懂，不是背答案」。但名字起得好不等于真懂——所以下面还是用第 13 张卡那三问来拆它。</p>
   <p class="rv"><b>第一问，它会学吗？会。</b>Grok 是 xAI 从 2023 年 11 月起一代代训练出来的大模型系列（Grok 1 到 Grok 4），靠海量文本学出来。所以它是 AI，这一问没有争议。</p>
-  <p class="rv"><b>第二问，它是自动跑的程序吗？也是。</b>在 X 上它可以被 @、可以被设置成自己接话：没人点「发送」，条件一到它就动。这一条满足的是 bot 的定义——跟聪不聪明无关。</p>
-  <p class="rv"><b>第三问，下一步谁定？答案是：看你用哪种用法。</b>同一个 Grok、同一个名字，三种用法落在三个完全不同的位置上。点下面三个按钮看差别：</p>
+  <p class="rv"><b>第二问，它是自动跑的程序吗？也是，而且「自动」不止一层。</b>在 X 上它可以被 @、可以被设置成自己接话：没人点「发送」，条件一到它就动——这是 bot 最原始的那一层。但<b>最近刷屏的「Grok Bot」不是这个</b>：那是另一个只有付费订阅才能开通的产品，第三问之后细讲。</p>
+  <p class="rv"><b>第三问，下一步谁定？答案是：看你用哪种用法。</b>同一个名字「Grok」，四种用法落在四个完全不同的位置上。点下面四个按钮看差别：</p>
   <figure class="rv">
-    <svg class="stage" id="grok-svg" viewBox="0 0 620 250" role="img" aria-label="同一个 Grok 的三种用法：一问一答、被@自动回话、DeepSearch 汇总来源，三者「下一步由谁决定」不同"></svg>
+    <svg class="stage" id="grok-svg" viewBox="0 0 620 250" role="img" aria-label="同一个名字 Grok 下的四种用法：免费一问一答、被@自动回话、DeepSearch 汇总、付费 Grok Bot 智能体团队，四者「下一步由谁决定」都不同"></svg>
     <div class="btnrow" id="grok-btns">
-      <button class="btn sel" data-k="0">在 grok.com 一问一答</button>
+      <button class="btn sel" data-k="0">免费 Grok 一问一答</button>
       <button class="btn" data-k="1">在 X 上被 @ 自动回话</button>
-      <button class="btn" data-k="2">开 DeepSearch 汇总来源</button>
+      <button class="btn" data-k="2">DeepSearch 自己查自己汇总</button>
+      <button class="btn" data-k="3">付费 Grok Bot 智能体团队</button>
     </div>
-    <figcaption>示意。模型是同一个，但「下一步由谁决定」在三种用法里完全不同。</figcaption>
+    <figcaption>示意。同一个名字「Grok」下的四种用法。从「说完就停」到「自己干很久」，分界线始终是那两句：下一步谁定、哪一步要你点头。</figcaption>
   </figure>
   <p class="rv">第三种用法值得多说一句：<span class="term" title="Grok 的检索模式：自己去翻网页和 X 的帖子，边查边决定下一步，最后把来源汇总成一篇带出处的回答">DeepSearch</span> 会自己去翻网页和 X 上的帖子，边查边决定「还缺什么、要不要再查一轮」，最后把几十条来源汇总成一篇带出处的回答。2025 年 2 月的发布演示里，它回答一个问题引用了 15 条 X 帖子和 32 个网页，并把中间的推理步骤摊开给你看。xAI 自己把它叫作「第一代 Grok 代理工具」——用本页的话说，就是站到了 agent 那一侧。</p>
-  <div class="callout warn">热门不等于更可靠。Grok 的回答风格被刻意设计得「敢说话、带幽默」，这和第 12 张卡第一条是同一枚硬币的两面：<b>语气越笃定，你越要自己核一遍。</b>它在 X 上自动回话时尤其如此——那一句回复没有人点发送，也没有人审过。</div>
-  <p class="rv">所以下次再看到「Grok bot」「Grok AI」这类词，别被名字带跑。<b>名字里带 bot，不代表里面有 agent；名字里带 AI，不代表它会替你动手。</b>三问一问，它落在哪一格，你自己就知道。</p>
+  <p class="rv"><b>第四种用法，才是你最近总听到的「Grok Bot」。</b>它 2026 年下半年开测，姿态和前三种完全不同：<span class="term" title="xAI 2026 年下半年开测的常驻云端电脑 AI 智能体团队：每个 Bot 一台云端电脑，能登录真实工具、无人监督地长时间干活">Grok Bot</span> 给每个 Bot 配<b>一台常驻的云端电脑</b>，它会像人一样登录你正在用的邮件、Slack、Notion 等真实工具，跨应用、跨网页自己推进任务，你合上笔记本它也在云端继续干。它不单独卖：要先订符合资格的套餐——开测时捆绑 SuperGrok Heavy、Cursor Ultra 这类高阶订阅，2026 年 10 月订阅改版后，从每月 30 美元的 Premium 档起包含，8 美元的入门 Plus 档没有。</p>
+  <p class="rv">它最值得写的设计是<b>审批边界</b>：发邮件、联系客户这类对外动作，Bot 会先写好草稿挂起，等你确认后才真发——「未经许可不擅自发出」。这正好接住第 12 张卡那四种错：agent 的自主权给到哪一步，不是技术说了算，是产品默认和你设置说了算。同一账户能并行跑约 50 个 Bot，还有主管 Bot 统一分工，所以它才叫「团队」。</p>
+  <div class="callout warn">热门不等于更可靠。Grok 的回答风格被刻意设计得「敢说话、带幽默」，这和第 12 张卡第一条是同一枚硬币的两面：<b>语气越笃定，你越要自己核一遍。</b>它在 X 上自动回话时尤其如此——那一句回复没有人点发送，也没有人审过。而付费套餐卖的多半是用量额度与优先级，不是一颗更聪明的脑袋：档位更高，不代表它说的话更可信。</div>
+  <p class="rv">所以下次再看到「Grok bot」「Grok AI」这类词，别被名字带跑。<b>名字里带 bot，不代表里面有 agent；名字里带 AI，不代表它会替你动手；真是 agent，也还要看哪一步轮到你点头。</b>三问一问，它落在哪一格，你自己就知道。</p>
 </section>
 
 <!-- ============ 15 ============ -->
@@ -545,7 +548,7 @@ footer li{margin-bottom:5px;word-break:break-all}
   <div class="no-head"><span class="no">15</span><h2>名词速查：本页出现过的每个术语</h2></div>
   <p class="rv">按类别排好了，忘了哪个回来查一句就行。每条都是一句人话，不含二次术语。</p>
   <div class="btnrow rv" id="gloss-btns" style="margin-top:0;margin-bottom:14px">
-    <button class="btn sel" data-c="all">全部 27 条</button>
+    <button class="btn sel" data-c="all">全部 28 条</button>
     <button class="btn" data-c="ai">AI 基础</button>
     <button class="btn" data-c="llm">大模型</button>
     <button class="btn" data-c="bot">Bot</button>
@@ -579,8 +582,9 @@ footer li{margin-bottom:5px;word-break:break-all}
     <div class="gl" data-cat="agent"><b>护栏（guardrails）</b><span>一套不由模型决定的硬规定：什么不能做、什么时候必须停下来等人确认。</span></div>
     <div class="gl" data-cat="agent"><b>提示词注入</b><span>把指令藏在 AI 会读到的网页或邮件里，让它误当成你的命令去执行。</span></div>
     <div class="gl" data-cat="agent"><b>DeepSearch</b><span>Grok 的检索模式：自己去翻网页和 X 的帖子，边查边决定下一步，最后汇总成带出处的回答。</span></div>
+    <div class="gl" data-cat="agent"><b>Grok Bot</b><span>xAI 2026 年下半年开测、付费订阅才有的 AI 智能体团队：每个 Bot 一台常驻云端电脑，能登录真实工具、无人监督地长时间干活；发邮件这类对外动作先挂起等你审批。</span></div>
   </div>
-  <div class="callout fact">如果只记三条：<b>AI 是能力，Bot 是形态，Agent 是授权。</b>剩下二十四条都是这三条的注脚。</div>
+  <div class="callout fact">如果只记三条：<b>AI 是能力，Bot 是形态，Agent 是授权。</b>剩下二十五条都是这三条的注脚。</div>
 </section>
 
 <!-- ============ 结尾提问 ============ -->
@@ -606,7 +610,7 @@ footer li{margin-bottom:5px;word-break:break-all}
 </section>
 
 <footer>
-  <p><b>口径与出处</b>：本页所有定义与机制描述均取自下列公开资料，核查于 2026 年 11 月；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图，不含真实数据、真实账本或真实评测结果；第 2、4、10 张卡中的数字（错误率、概率、位置）为演示用虚构值，仅用于说明趋势；第 14 张卡引用的「15 条 X 帖子、32 个网页」是 2025 年 2 月发布演示的公开报道数字，非本页实测。本页零外部依赖，可离线打开。</p>
+  <p><b>口径与出处</b>：本页所有定义与机制描述均取自下列公开资料，核查于 2026 年 11 月；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图，不含真实数据、真实账本或真实评测结果；第 2、4、10 张卡中的数字（错误率、概率、位置）为演示用虚构值，仅用于说明趋势；第 14 张卡引用的「15 条 X 帖子、32 个网页」是 2025 年 2 月发布演示的公开报道数字，「2026 年下半年开测」「每月 30 美元 Premium 档起含 Grok Bot、Plus 档不含」「同账户约 50 个 Bot 并行」均转引自页末公开报道，皆非本页实测。本页零外部依赖，可离线打开。</p>
   <ul>
     <li>工作流与智能体的界线、「增强型大模型」、「拿延迟和成本换任务表现」：<a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener">Anthropic Engineering — Building effective agents（2024-12-19）</a></li>
     <li>Agent 的定义（模型 + 工具 + 指令，独立执行工作流）与护栏分层：<a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" rel="noopener">OpenAI — A practical guide to building agents</a></li>
@@ -625,6 +629,8 @@ footer li{margin-bottom:5px;word-break:break-all}
     <li>Grok 是 xAI 的大模型系列、2023 年 11 月首发、内置于 X 平台；名字取自科幻小说《异乡异客》中「彻底懂透」一词：<a href="https://baike.baidu.com/item/Grok/63677835" rel="noopener">百度百科 — Grok（美国 xAI 公司发布的 AI 模型）</a></li>
     <li>DeepSearch 搜索互联网与 X 平台、分析后给出摘要，xAI 称其为「第一代 Grok 代理工具」：<a href="https://ishare.ifeng.com/c/s/v0023DSmNWk-_O2--cs7p8IeBvH7xOB18uhaV7pIMUuvGjf64__" rel="noopener">凤凰网科技 — xAI 发布 Grok-3 智能搜索引擎 DeepSearch（2025-02-18）</a></li>
     <li>发布演示中 DeepSearch 引用 15 条 X 帖子与 32 个网页、并展示推理步骤：<a href="https://m.sohu.com/a/863215956_114765/" rel="noopener">搜狐科技 — 马斯克的 xAI 发布 Grok 3：这些是你需要了解的要点（2025-02-24）</a></li>
+    <li>Grok Bot 是常驻云端电脑的 AI 自主智能体：登录真实工具、无人监督推进任务、对外动作仅在审批后执行，测试版向 SuperGrok 与 Cursor 订阅用户开放，同账户约 50 个 Bot 并行：<a href="https://web-note.cn/article/Agent/2217.html" rel="noopener">web-note.cn — Grok Bot：常驻云端电脑的 AI 自主智能体</a></li>
+    <li>2026-10-12 xAI 将 X 会员、Grok、Cursor 合并为「The X Subscription」四档（Plus / Premium / Super / Ultra），Grok Bot 自 Premium 档起包含、Plus 档不含，旧 SuperGrok 不再对新用户开放：<a href="https://www.czgptai.com/blog/grok-chongzhi-x-huiyuan-cursor-xinban-taocan-2026" rel="noopener">CZGPT 博客 — X 会员、Grok、Cursor 全都有：2026 新版套餐详解（2026-10-18）</a></li>
   </ul>
 </footer>
 
@@ -1797,14 +1803,15 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   });
 })();
 
-/* ====== 14 · Grok 三种用法 ====== */
+/* ====== 14 · Grok 四种用法 ====== */
 (function(){
   var host=$('#grok-svg'); if(!host) return;
   var SEL=0;
   var CAP=[
     '用法一：chatbot。它只会说，说完就停——错了代价最低，重问一遍就行。',
-    '用法二：bot。触发条件一到自己动；这句回复没人点发送，也没人审过。',
-    '用法三：靠近 agent。查什么、够不够、要不要再查，由它临场决定。'
+    '用法二：bot 的本义。触发条件一到自己动；常说的 @ 自动回话是它，不是最近热门的 Grok Bot。',
+    '用法三：靠近 agent 半步。查什么、够不够、要不要再查，由它临场决定，但只查和汇总，不碰你的工具。',
+    '用法四：付费 Grok Bot。云端电脑上自己干很久；发邮件这类对外动作会停下，先出草稿等你点。'
   ];
   function arrow(x1,y1,x2,y2,col){
     col=col||'#8A97A3';
@@ -1880,9 +1887,37 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     s+=txt(600,190,'agent 那一侧',12,'#15695A','end','700');
     return s;
   }
+  function p3(){
+    var s='';
+    s+=rect(20,96,96,48,'#fff',4,'stroke="#CFD7DE"');
+    s+=txt(68,116,'你的一句话任务',11,'#16202B','middle','600');
+    s+=txt(68,132,'「跟进这批客户」',9,'#8A97A3','middle');
+    s+=arrow(116,120,146,120);
+    s+=rect(146,72,128,96,'#E8F0FA',4,'stroke="#C9DCF2"');
+    s+=txt(210,96,'Grok Bot 团队',13,'#123A70','middle','700');
+    s+=txt(210,114,'主管 Bot 分工',9.5,'#55636F','middle');
+    s+=txt(210,130,'每个一台云端电脑',9.5,'#55636F','middle');
+    s+=txt(210,146,'合上笔记本也在干',9.5,'#55636F','middle');
+    s+=arrow(274,100,304,60);
+    s+=arrow(274,140,304,116);
+    s+=rect(304,40,120,40,'#fff',4,'stroke="#C9DCF2"');
+    s+=txt(364,56,'Bot 1 起草邮件',10.5,'#123A70','middle','600');
+    s+=txt(364,70,'批量写完挂起',9,'#8A97A3','middle');
+    s+=rect(304,96,120,40,'#fff',4,'stroke="#C9DCF2"');
+    s+=txt(364,112,'Bot 2 整理表格',10.5,'#123A70','middle','600');
+    s+=txt(364,126,'云端继续跑',9,'#8A97A3','middle');
+    s+=arrow(424,60,452,76);
+    s+=rect(452,52,150,64,'#FBF0EE',4,'stroke="#E3C2BB"');
+    s+=txt(527,72,'对外动作：发邮件',11,'#16202B','middle','600');
+    s+=txt(527,90,'停在这一步',10,'#55636F','middle');
+    s+=txt(527,106,'等你点了才发',10,'#C2410C','middle','600');
+    s+=pth('M364 80 L364 96','#8A97A3',1.2,' stroke-dasharray="4 3"');
+    s+=txt(600,190,'常驻 agent 团队',12,'#15695A','end','700');
+    return s;
+  }
   function draw(fad){
     var s='';
-    if(SEL===0) s+=p0(); else if(SEL===1) s+=p1(); else s+=p2();
+    if(SEL===0) s+=p0(); else if(SEL===1) s+=p1(); else if(SEL===2) s+=p2(); else s+=p3();
     s+=rect(16,204,588,34,'#F4F6F8',3,'stroke="#E2E7EB"');
     var ls=wrap(CAP[SEL],46),y0=221-(ls.length-1)*8;
     for(var i=0;i<ls.length;i++) s+=txt(310,y0+i*16,ls[i],10.5,'#55636F','middle','500');
