@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-06",
+  "id": "ai-vs-bot-vs-agent",
+  "category": "概念",
+  "series": "名词解释",
+  "subject": "AI / Bot / Agent 的区别",
+  "title": "AI、Bot、Agent 不是三种东西，是三个不同的问题",
+  "hook": "这三个词几乎总是一起出现，好像可以互换。其实它们各自在回答一个完全不同的问题：AI 问「它会不会学」，Bot 问「它是不是一个自动跑的程序」，Agent 问「下一步由谁决定」。把三个问题分开，你就不会再被产品宣传页绕晕。",
+  "read_minutes": 20,
+  "sources": [
+    {
+      "title": "Anthropic Engineering — Building effective agents（2024-12-19）",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents"
+    },
+    {
+      "title": "OpenAI — A practical guide to building agents",
+      "url": "https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/"
+    },
+    {
+      "title": "IBM — What Is Artificial Intelligence (AI)?",
+      "url": "https://www.ibm.com/think/topics/artificial-intelligence"
+    },
+    {
+      "title": "IBM — What Are Large Language Models (LLMs)?",
+      "url": "https://www.ibm.com/think/topics/large-language-models"
+    },
+    {
+      "title": "IBM — What are AI agents?",
+      "url": "https://www.ibm.com/think/topics/ai-agents"
+    },
+    {
+      "title": "IBM — What Is a Chatbot?",
+      "url": "https://www.ibm.com/think/topics/chatbots"
+    },
+    {
+      "title": "Cloudflare — 什么是机器人（bot）？",
+      "url": "https://www.cloudflare.com/zh-cn/learning/bots/what-is-a-bot/"
+    },
+    {
+      "title": "Weizenbaum, J. (1966). ELIZA. Communications of the ACM 9(1), 36–45",
+      "url": "https://doi.org/10.1145/365153.365168"
+    },
+    {
+      "title": "Turing, A. (1950). Computing Machinery and Intelligence. Mind LIX(236), 433–460",
+      "url": "https://doi.org/10.1093/mind/LIX.236.433"
+    },
+    {
+      "title": "AWS 官方文档 — Use a tool to complete a model response",
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html"
+    },
+    {
+      "title": "IBM — What Are AI Hallucinations?",
+      "url": "https://www.ibm.com/think/topics/ai-hallucinations"
+    },
+    {
+      "title": "Ji et al. (2023). Survey of Hallucination in Natural Language Generation. ACM Computing Surveys 55(12)",
+      "url": "https://doi.org/10.1145/3571730"
+    },
+    {
+      "title": "OWASP GenAI Security Project — LLM01:2025 Prompt Injection",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    {
+      "title": "IBM — What is robotic process automation (RPA)?",
+      "url": "https://www.ibm.com/think/topics/rpa"
+    }
+  ],
+  "cards": 14
+}
