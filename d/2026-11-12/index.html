@@ -1,0 +1,1513 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B4B8F">
+<link rel="icon" href="data:,">
+<title>Tool、MCP、Skill、插件有什么区别？四层不同的东西 · 图解</title>
+<meta name="description" content="面向完全不懂技术的人：用「给一个聪明但两手空空的新人配齐干活的家当」作类比，讲清 Tool 是能力、MCP 是连接标准、Skill 是章法、插件是打包分发，以及为什么把它们混为一谈会装错东西。">
+<script>document.documentElement.className += ' js'</script>
+<style>
+:root{
+  --bg:#F4F6F8; --panel:#fff; --ink:#16202B; --ink-2:#55636F; --ink-3:#8A97A3;
+  --line:#E2E7EB; --line-2:#CFD7DE;
+  --accent:#1B4B8F; --accent-ink:#123A70; --accent-soft:#E8F0FA; --accent-line:#C9DCF2;
+  --hot:#C2410C; --hot-ink:#8A3208; --hot-soft:#FBEDE4; --hot-line:#EBC6AE;
+  --good:#15695A; --good-ink:#1D5247; --good-soft:#E5F2EF; --good-line:#BBD9D1;
+  --radius:6px; --shadow:0 1px 2px rgba(22,32,43,.05);
+  --sans:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.78 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 96px}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--line);z-index:40}
+.topbar i{display:block;height:100%;width:0;background:var(--accent)}
+
+.rail{display:none}
+@media (min-width:1080px){
+  .rail{display:block;position:fixed;left:calc(50% - 480px);top:120px;width:120px;z-index:30;border-left:1px solid var(--line);padding-left:12px}
+  .rail a{display:flex;gap:8px;align-items:baseline;text-decoration:none;color:var(--ink-3);font:12px/1.5 var(--sans);padding:4px 0;transition:color .2s}
+  .rail a em{font:600 10px/1.5 var(--mono);font-style:normal;letter-spacing:.04em}
+  .rail a:hover{color:var(--ink-2)}
+  .rail a.on{color:var(--accent);font-weight:600}
+}
+
+.hero{padding:52px 0 26px;border-bottom:1px solid var(--line)}
+.kicker{display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);padding:6px 9px;border-radius:3px;margin-bottom:16px}
+h1{margin:0 0 14px;font-size:31px;line-height:1.26;letter-spacing:-.015em;font-weight:700}
+h1 .u{background:linear-gradient(var(--accent-soft),var(--accent-soft)) no-repeat;background-size:0 62%;background-position:0 88%;transition:background-size 1.1s cubic-bezier(.22,.61,.36,1) .35s}
+.js .hero.in h1 .u{background-size:100% 62%}
+.lede{margin:0 0 22px;font-size:17px;color:var(--ink-2);line-height:1.8}
+.lede b{color:var(--ink);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.stat{background:var(--panel);padding:13px 11px}
+.stat .v{display:block;font:700 25px/1.1 var(--mono);letter-spacing:-.02em;color:var(--accent);white-space:nowrap}
+@media (max-width:520px){.stat .v{font-size:19px}.stat .k{font-size:10.5px}}
+.stat .k{display:block;margin-top:5px;font-size:11.5px;line-height:1.5;color:var(--ink-3)}
+.scrollhint{margin:20px 0 0;font:12px/1 var(--mono);color:var(--ink-3)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px 24px;margin:18px 0;scroll-margin-top:16px}
+.card h2{margin:0 0 4px;font-size:20px;line-height:1.4;font-weight:680;letter-spacing:-.01em}
+.card h3{margin:24px 0 8px;font-size:15.5px;font-weight:650;color:var(--ink)}
+.card p{margin:0 0 14px;color:var(--ink-2);font-size:15.5px;line-height:1.82}
+.card p:last-child{margin-bottom:0}
+.card b,.card strong{color:var(--ink);font-weight:600}
+.no-head{display:flex;gap:10px;align-items:baseline;margin-bottom:14px}
+.no{font:600 11px/1 var(--mono);color:var(--accent);background:var(--accent-soft);padding:5px 6px;border-radius:3px;flex:none}
+.card ul{margin:0 0 14px;padding-left:20px;color:var(--ink-2);font-size:15.5px;line-height:1.85}
+.card li{margin-bottom:7px}
+.card li b{color:var(--ink)}
+.term{color:var(--accent-ink);border-bottom:1px dashed #9DB8DC;cursor:help}
+.note{font-size:13px;color:var(--ink-3);line-height:1.7}
+.callout{margin:16px 0 0;padding:12px 14px;border-left:2px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--radius) var(--radius) 0;font-size:14px;color:var(--accent-ink);line-height:1.75}
+.callout.warn{border-left-color:var(--hot);background:var(--hot-soft);color:var(--hot-ink)}
+.callout.fact{border-left-color:var(--line-2);background:var(--bg);color:var(--ink-2)}
+figure{margin:18px 0 0}
+figcaption{margin-top:9px;font-size:12.5px;color:var(--ink-3);line-height:1.65}
+.stage{width:100%;display:block;overflow:visible;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius)}
+.stage text{font-family:var(--sans)}
+.stage text.mono{font-family:var(--mono)}
+.btnrow + .stage,.btnrow + .panx .stage{margin-top:14px}
+.panx{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+@media (max-width:680px){.panx .stage{min-width:600px}}
+.btn{font:600 13px/1 var(--sans);padding:10px 13px;border-radius:4px;cursor:pointer;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:.16s border-color,.16s background}
+.btn:hover{border-color:var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.off{opacity:.42;cursor:default}
+.btn.off:hover{border-color:var(--line-2)}
+.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+
+html.js .rv{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,.61,.36,1)}
+html.js .card.in .rv{opacity:1;transform:none}
+.card.in .rv:nth-child(2){transition-delay:.05s}
+.card.in .rv:nth-child(3){transition-delay:.1s}
+
+.dial{margin-top:6px}
+.dial input{width:100%;accent-color:var(--accent);margin:6px 0 0}
+.dial .lab{display:flex;justify-content:space-between;font:12px/1 var(--mono);color:var(--ink-3)}
+
+.tw{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin-top:6px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
+.tw table{border-collapse:collapse;width:100%;font-size:13.2px;line-height:1.68}
+@media (max-width:700px){.tw table{min-width:680px}}
+.tw th,.tw td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+.tw th:last-child,.tw td:last-child{border-right:0}
+.tw tbody tr:last-child th,.tw tbody tr:last-child td{border-bottom:0}
+.tw thead th{background:var(--bg);font:600 12.5px/1.5 var(--sans);color:var(--accent-ink);border-bottom:1px solid var(--line-2)}
+.tw thead th:first-child{color:var(--ink-3)}
+.tw tbody th{background:var(--bg);font:600 12.5px/1.6 var(--sans);color:var(--ink-3);width:92px}
+.tw tbody td{color:var(--ink-2);cursor:pointer}
+.tw tbody td b{color:var(--ink)}
+.tw tbody tr.hit th{background:var(--accent-soft);color:var(--accent-ink)}
+.tw tbody tr.hit td{background:var(--accent-soft);color:var(--accent-ink)}
+.tw-hint{margin:8px 0 0;font:11.5px/1 var(--mono);color:var(--ink-3)}
+@media (min-width:701px){.tw-hint{display:none}}
+
+.cmp{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:6px}
+.cmp-h{display:grid;grid-template-columns:1.05fr 1fr 1fr;background:var(--bg);border-bottom:1px solid var(--line)}
+.cmp-h span{padding:9px 11px;font:600 12px/1.4 var(--sans);border-right:1px solid var(--line)}
+.cmp-h span:last-child{border-right:0}
+.cmp-h span:first-child{color:var(--ink-3)}
+.cmp-h span:nth-child(2){color:var(--ink-2)}
+.cmp-h span:last-child{color:var(--accent)}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px}
+.pane{display:none}
+.pane.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.stamps{display:grid;gap:9px;margin-top:6px}
+.stamp{border:1px solid var(--hot-line);border-radius:4px;background:var(--hot-soft);padding:13px 14px;display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start}
+.stamp .mk{font:700 11px/1 var(--mono);color:var(--hot);border:1.5px solid var(--hot);border-radius:50%;width:26px;height:26px;display:grid;place-items:center}
+.stamp h4{margin:0 0 4px;font-size:14.5px;font-weight:650;color:var(--hot-ink)}
+.stamp p{margin:0;font-size:13.5px;line-height:1.72;color:var(--hot-ink)}
+
+.gloss{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:6px}
+@media (max-width:560px){.gloss{grid-template-columns:1fr}}
+.gl{border:1px solid var(--line);border-radius:4px;background:var(--bg);padding:11px 12px;transition:.2s opacity,.2s border-color}
+.gl b{display:block;font-size:13.5px;color:var(--accent-ink);margin-bottom:4px;line-height:1.5}
+.gl span{display:block;font-size:12.8px;line-height:1.7;color:var(--ink-2)}
+.gl.dim{opacity:.28}
+.gl.hit{border-color:var(--accent-line);background:var(--accent-soft)}
+
+code{font:12.5px/1.6 var(--mono);background:var(--bg);border:1px solid var(--line);padding:1px 4px;border-radius:3px;color:var(--accent-ink);word-break:break-word}
+.code-block{background:#1A2332;border-radius:var(--radius);padding:16px 18px;margin:14px 0 0;overflow-x:auto;font:13px/1.7 var(--mono);color:#C8D6E5;white-space:pre}
+.code-block .cm{color:#6B8299}
+.code-block .kw{color:#7EC8E3}
+.code-block .st{color:#A8D8A8}
+
+.ask{margin:18px 0 0;padding:22px 20px 20px;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:var(--radius)}
+.ask .eyebrow{margin:0 0 16px;font:600 11px/1 var(--mono);letter-spacing:.12em;color:var(--accent)}
+.ask ol{list-style:none;margin:0;padding:0}
+.ask li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:15px 0 0;border-top:1px solid var(--accent-line)}
+.ask li + li{margin-top:15px}
+.ask .qn{font:700 12px/1.9 var(--mono);color:var(--accent)}
+.ask .qt{margin:0;font-size:17px;line-height:1.65;font-weight:600;color:var(--accent-ink);letter-spacing:-.005em}
+.ask .qs{margin:7px 0 0;font-size:13.5px;line-height:1.75;color:#4A6B95}
+.ask .tail{margin:16px 0 0;padding-top:13px;border-top:1px dashed var(--accent-line);font-size:13px;line-height:1.7;color:#4A6B95}
+@media (max-width:520px){.ask{padding:18px 15px 16px}.ask .qt{font-size:16px}}
+
+footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3);line-height:1.75}
+footer a{color:var(--accent);text-decoration:none;border-bottom:1px solid #BBD3EE}
+footer ul{margin:8px 0 0;padding-left:18px}
+footer li{margin-bottom:5px;word-break:break-all}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html.js .rv{opacity:1!important;transform:none!important}
+  .js .hero h1 .u{background-size:100% 62%!important}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><i id="prog"></i></div>
+<nav class="rail" id="rail" aria-label="目录"></nav>
+
+<div class="wrap">
+
+<header class="hero" id="hero">
+  <span class="kicker">AI 名词 · Tool / MCP / Skill / 插件</span>
+  <h1><span class="u">Tool、MCP、Skill、插件不是四个同类，是四层不同的东西</span></h1>
+  <p class="lede">这四个词几乎总是混在一起说，好像装哪个都差不多。其实它们在回答<b>四个完全不同的问题</b>：Tool 问「AI 能不能做这个动作」，MCP 问「这些动作怎么接进来」，Skill 问「什么时候、按什么章法做」，插件问「怎么打包、怎么安装、怎么更新」。分清这四层，你就不会再被「装个插件让 AI 变强」这种话绕晕。</p>
+  <div class="stats">
+    <div class="stat"><span class="v" data-count="4" data-suffix=" 层">0</span><span class="k">能力 / 连接 / 章法 / 打包，各回答一个不同的问题</span></div>
+    <div class="stat"><span class="v" data-count="58" data-suffix=" 个工具">0</span><span class="k">5 个 MCP 服务器带来的工具数，光清单就吃掉约 55,000 词元</span></div>
+    <div class="stat"><span class="v" data-count="1" data-suffix=" 条命令">0</span><span class="k">一个插件把 Skill、MCP 服务器、命令一起装好</span></div>
+  </div>
+  <p class="scrollhint">↓ 16 张卡，约 24 分钟。大部分卡都能点，专业词第一次出现都会当场解释。</p>
+</header>
+
+<!-- ============ 1 ============ -->
+<section class="card" id="c1">
+  <div class="no-head"><span class="no">01</span><h2>这四个词，其实在回答四个问题</h2></div>
+  <p class="rv">先别看定义。想象你招了一个新人：<b>脑子非常好使，但今天是他第一天上班，两手空空</b>。要让他真能干活，你会依次撞上四个完全不同的问题：</p>
+  <ul class="rv">
+    <li>他能不能真的动手做事，而不只是嘴上说说？——这是在配<b>能力</b>。</li>
+    <li>公司要用的系统有几十个，每家接口都不一样，怎么统一接进来？——这是在定<b>连接方式</b>。</li>
+    <li>他知不知道我们公司办事的章法？——这是在给<b>知识</b>。</li>
+    <li>下个月又来五个新人，难道一样一样重配？——这是在做<b>打包分发</b>。</li>
+  </ul>
+  <p class="rv">Tool、MCP、Skill、插件恰好就是这四件事。<b>它们不是四个可以互相替代的同类产品，而是四层叠在一起的东西</b>——少哪一层都会出一种特定的毛病。</p>
+  <figure class="rv">
+    <svg class="stage" id="layer-svg" viewBox="0 0 620 300" role="img" aria-label="四层结构图：最外层虚线框是插件，里面是 Skill 文档、MCP 总线，总线上插着三个工具"></svg>
+    <div class="btnrow" id="layer-btns">
+      <button class="btn sel" data-l="0">Tool · 能力层</button>
+      <button class="btn" data-l="1">MCP · 连接层</button>
+      <button class="btn" data-l="2">Skill · 章法层</button>
+      <button class="btn" data-l="3">插件 · 打包层</button>
+    </div>
+    <figcaption>点上面的按钮，看每一层长在哪、回答什么问题、少了它会出什么毛病。</figcaption>
+  </figure>
+  <div class="callout">这一页后面会把四层一层层拆开。如果你只想记一句话：<b>Tool 让 AI 能动手，MCP 让工具好接，Skill 让它按章法办事，插件让这一整套一次装好。</b></div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="card" id="c2">
+  <div class="no-head"><span class="no">02</span><h2>起点：模型只会吐字，它没有手</h2></div>
+  <p class="rv">要理解 Tool 为什么存在，得先接受一件反直觉的事：<b>大语言模型唯一在做的事，是猜下一个字</b>。它没有眼睛，没有手，也没有网线。它能给你的，永远只是一段文字。</p>
+  <p class="rv">所以你问它「上海现在多少度」，它并不会去查。它只能根据训练时见过的海量文本，<b>猜一个看起来最像答案的数字</b>。猜对了是运气，猜错了有个专门的名字，叫<span class="term" title="模型编出听起来合理、但实际上不存在或不对的内容。根本原因是它在猜，不是在查">幻觉</span>。</p>
+  <p class="rv">麻烦的地方在于：它猜错的时候，和猜对的时候一样有底气。你从语气上分不出来。</p>
+  <p class="rv">要让它真去查，就得给它一样东西：<b>一个可以被调用的动作</b>。这个东西叫 <span class="term" title="Tool，工具。一个模型可以申请调用的具体动作，比如查天气、发邮件、读表格。模型自己不执行它，只申请">Tool（工具）</span>。</p>
+  <figure class="rv">
+    <svg class="stage" id="hand-svg" viewBox="0 0 620 292" role="img" aria-label="同一个问题，没有工具时模型凭记忆编出一个温度并被标记为幻觉，接上工具后它改为提交申请单、由外部程序取回真实数据"></svg>
+    <div class="btnrow" id="hand-btns">
+      <button class="btn sel" data-h="0">没有工具：它只能猜</button>
+      <button class="btn" data-h="1">接上工具：它能查</button>
+    </div>
+    <figcaption>点两个按钮看差别。注意右边那条链路多出来的一圈——模型并没有自己去查，它只是提交了一张申请单。</figcaption>
+  </figure>
+  <div class="callout warn">「接上工具」不等于「答案一定对」。工具返回的数据是真的，但<b>模型怎么理解、怎么转述这份数据，仍然是猜出来的</b>。它可能把 26℃ 说成 62℉，也可能把两个城市的数据搞混。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="card" id="c3">
+  <div class="no-head"><span class="no">03</span><h2>Tool 的真面目：一张格式固定的申请单</h2></div>
+  <p class="rv">这是全页最需要说清楚的一件事：<b>模型从来不执行工具。</b></p>
+  <p class="rv">它做的事只有一件——输出一段格式极其严格的文字，内容是「我要调用某某工具，参数是这些」。这段文字叫<span class="term" title="一种用大括号和引号组织数据的文本格式，程序之间传数据几乎都用它。人也能读，但主要是给机器读的">JSON</span>，你可以把它理解成一张<b>填好的申请单</b>。真正跑去查天气的，是外面那段由工程师写的程序。查完了，再把结果按同样严格的格式塞回给模型。</p>
+  <p class="rv">拖动滑杆，走完这一整个来回：</p>
+  <figure class="rv">
+    <svg class="stage" id="call-svg" viewBox="0 0 620 344" role="img" aria-label="工具调用六步：提问、模型看工具清单、模型吐出申请单、外部程序执行、结果回传、模型用人话转述"></svg>
+    <div class="dial">
+      <div class="lab"><span>① 你提问</span><span>⑥ 它用人话回答 →</span></div>
+      <input type="range" id="call-dial" min="0" max="5" step="1" value="0" aria-label="工具调用的六个步骤">
+    </div>
+    <figcaption>六步里只有第 4 步真的发生了「查询」这件事，而做这件事的不是模型。第 3 步和第 5 步那两张单子，就是所谓「工具调用」的全部秘密。</figcaption>
+  </figure>
+  <p class="rv">这个「申请—执行—回传」的来回，专业上有两个名字，指的是<b>同一件事</b>：<span class="term" title="tool use。模型输出调用申请、外部程序执行、结果回传给模型的完整机制">工具调用（tool use）</span>，也叫<span class="term" title="function calling。和 tool use 是同一个机制的不同叫法，OpenAI 最早用这个词">函数调用（function calling）</span>。OpenAI 在 2023 年 6 月把这个能力放进 API，Anthropic、AWS 后来都做了同一套。</p>
+  <p class="rv">它的学术源头更早：2022 年 10 月的一篇论文 <b>ReAct</b>，标题直译是「让语言模型把推理和行动协同起来」。核心想法就一句话——<b>让模型想一步、动一步、看到结果再想下一步</b>，而不是先一口气想完再动手。今天所有的 AI agent，骨架都还是这个。</p>
+  <div class="callout">记住第 4 步那个停顿：模型提交申请单之后，<b>它是停在那里等的</b>。它不能自己去点鼠标、不能自己发请求。所以「AI 会不会乱来」这件事，决定权始终握在外面那段程序手里——那段程序才是真正能拦住它的地方。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="card" id="c4">
+  <div class="no-head"><span class="no">04</span><h2>模型怎么挑工具？它只看那一句描述</h2></div>
+  <p class="rv">一个工具交给模型的时候，附带三样东西：</p>
+  <ul class="rv">
+    <li><b>名字</b>，比如 <code>get_weather</code>；</li>
+    <li><b>一句描述</b>，说明这个工具干什么、什么时候该用；</li>
+    <li><b>参数格式</b>，说明要填哪几栏、每栏是什么类型——这份格式约定叫 <span class="term" title="schema。一份写明「数据必须长什么样」的约定：有哪几个字段、每个字段是文字还是数字、哪些必填">schema</span>。</li>
+  </ul>
+  <p class="rv">关键在于：<b>模型看不到工具背后的代码，它只能读到那句描述。</b>它就是靠这一句话来决定「这个活该派给谁」的。描述写得含糊，它就挑错。</p>
+  <figure class="rv">
+    <svg class="stage" id="desc-svg" viewBox="0 0 620 300" role="img" aria-label="同一个提问，工具描述写清楚时模型准确选中查天气工具，描述含糊时它在三个工具之间乱猜并选错"></svg>
+    <div class="btnrow" id="desc-btns">
+      <button class="btn sel" data-d="0">描述写清楚了</button>
+      <button class="btn" data-d="1">描述含糊</button>
+    </div>
+    <figcaption>两种情况下模型的能力、提示词、问题都完全一样，唯一变的是那句描述。结果一个选对、一个选错。</figcaption>
+  </figure>
+  <p class="rv">这不是我在编道理。Anthropic 2025 年 9 月专门写过一篇工程文章，标题就叫《给 agent 写真正好用的工具》，里面反复强调的正是这件事：工具不是越多越好，<b>名字要有命名空间、描述要写清什么时候用、返回值要带上够用的上下文</b>。写得不好的工具，会让 agent 反复试错、绕远路。</p>
+  <div class="callout">这件事有个很实际的后果：<b>很多「AI 不行」的问题，其实是文案问题。</b>把工具描述从「获取数据」改成「查询指定城市当前实时天气，返回温度、湿度、风力」，成功率可能立刻上一个台阶——而模型一个字都没变。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="card" id="c5">
+  <div class="no-head"><span class="no">05</span><h2>工具多了，第一个被吃掉的是「对话空间」</h2></div>
+  <p class="rv">模型一次能看到的文字总量是有上限的，这个上限叫<span class="term" title="context window。模型一次能读进去的文字总量，包括你的提问、它的回答、系统指令，以及那份工具清单。超出的部分它根本看不见">上下文窗口</span>。里面装的东西按<span class="term" title="token。模型处理文字的最小单位，大约是一个词或半个词。计费和长度限制都按它算">词元（token）</span>计算，一个词元大约是一个英文单词的一半到四分之三个汉字。</p>
+  <p class="rv">现在注意一件很多人没意识到的事：<b>那份工具清单，本身就要占掉上下文，而且是一开场就占住，一个字都不用说就先扣掉。</b></p>
+  <p class="rv">下面是 Anthropic 在 2025 年 11 月 24 日官方发布里给出的真实数字。点按钮，一个个把 MCP 服务器接上去：</p>
+  <figure class="rv">
+    <svg class="stage" id="cost-svg" viewBox="0 0 620 336" role="img" aria-label="条形图：逐个接入 GitHub、Slack、Sentry、Grafana、Splunk、Jira 六个 MCP 服务器，工具清单占用的词元从 26000 累加到超过 72000，可用对话空间同步被压缩"></svg>
+    <div class="btnrow" id="cost-btns">
+      <button class="btn sel" data-c="0">只接 GitHub</button>
+      <button class="btn" data-c="1">+ Slack</button>
+      <button class="btn" data-c="2">+ Sentry / Grafana / Splunk</button>
+      <button class="btn" data-c="3">+ Jira</button>
+    </div>
+    <figcaption>数字取自 Anthropic 官方发布：GitHub 35 个工具约 26,000 词元、Slack 11 个约 21,000、Sentry 5 个约 3,000、Grafana 5 个约 3,000、Splunk 2 个约 2,000、Jira 单个约 17,000。灰色的「还能对话的空间」是本页按 200,000 词元窗口画的示意，用来显示挤压效果。</figcaption>
+  </figure>
+  <p class="rv">前五个加起来，<b>58 个工具、约 55,000 词元，你还没敲第一个字</b>。再加一个 Jira，很快就突破 100,000。Anthropic 在同一篇文章里还举了另一个例子：让 agent 从 Google Drive 找数据写进 Salesforce，如果把所有相关工具定义一次性全塞进去，光这一步就要 150,000 词元；改成让 agent 自己去翻、只加载用得上的那部分，降到 2,000 词元——省下 98.7%。</p>
+  <p class="rv">所以他们做了一个很直白的缓解方案，叫 <b>Tool Search Tool</b>：工具定义默认<b>不</b>加载，模型需要时先搜一下，找到了才读进来。同样那 58 个工具的场景，开销从 55,000 降到约 8,700 词元，少了 85%，而工具一个都没少。</p>
+  <div class="callout fact">把这张图记在心里。<b>第 10 张卡</b>会看到，Skill 从设计之初就没有这个毛病——而原因恰恰是它换了一种加载方式。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="card" id="c6">
+  <div class="no-head"><span class="no">06</span><h2>MCP：它不是工具，是插座标准</h2></div>
+  <p class="rv">现在说最容易搞错的一个。<b>MCP 不是一种工具，也不是「更高级的工具」。它是一份协议。</b></p>
+  <p class="rv"><span class="term" title="protocol。一套写下来的约定，规定两边怎么对接：消息长什么样、按什么顺序发、出错了怎么办。协议本身不干活，它只规定怎么对话">协议（protocol）</span>这个词听着抽象，换个说法就懂了：它是<b>关于「怎么对接」的书面约定</b>。约定本身不干任何活，它只保证两边能对上话。</p>
+  <p class="rv">最好的类比是 <b>USB-C</b>。USB-C 不是鼠标，也不是移动硬盘，它是「插头长什么形状、里面几根针脚各管什么」的统一约定。有了它，任何牌子的设备都能插到任何电脑上，不用再为每一种组合单独做一根线。</p>
+  <p class="rv">MCP 的全称是 <b>Model Context Protocol</b>，模型上下文协议，由 Anthropic 在 <b>2024 年 11 月 25 日</b>作为<span class="term" title="开放标准：规范公开发布、任何人都可以实现，不由某一家公司单独控制。MCP 后来被交给独立的基金会托管">开放标准</span>发布。它要解决的是一个乘法问题：</p>
+  <figure class="rv">
+    <svg class="stage" id="nxm-svg" viewBox="0 0 620 330" role="img" aria-label="左边四个 AI 应用连右边四个服务，没有 MCP 时需要 16 套专用对接、连线互相缠绕；有 MCP 时中间多一条总线，每边各接一次，总共 8 套"></svg>
+    <div class="btnrow" id="nxm-btns">
+      <button class="btn sel" data-n="0">没有 MCP：M × N 套对接</button>
+      <button class="btn" data-n="1">有 MCP：M + N 套</button>
+    </div>
+    <figcaption>左边是 4 个 AI 应用，右边是 4 个要接的系统。上面那种情况每多一家，两边都要各自再写一轮；下面那种情况，两边各自只做一次。</figcaption>
+  </figure>
+  <p class="rv">这就是所谓的 <b>N×M 问题</b>：M 个应用要接 N 个系统，没有统一约定就得写 M×N 套专用对接代码；有了统一约定，变成 M+N。4 乘 4 只是 16 和 8 的差别，看着不惊人。但真实世界里两边都是几十上百——<b>数字会差出一个量级</b>。</p>
+  <p class="rv">它确实成了行业标准。OpenAI 在 2025 年 5 月的 API 更新里加入了远程 MCP 服务器支持；Google Cloud 在 2025 年 12 月宣布旗下服务官方支持 MCP，博客里用的比喻正是「常被比作 AI 的 USB-C」；Microsoft 同月在 Windows 文档里给出了系统级的 MCP 支持。开发者 Simon Willison 在 2025 年的年度总结里记了一笔：<b>2025 年 5 月，OpenAI、Anthropic、Mistral 在八天之内先后加上了 MCP 支持</b>。截至 2026 年 11 月，MCP 官方注册表里列出的服务器<b>超过 40,000 个</b>。</p>
+  <div class="callout warn">Willison 在同一篇文章里点了这个混淆的名：<b>「很多人以为模型必须支持 MCP 才能用工具。」</b>不是的。工具调用是模型自带的能力（第 3 张卡），MCP 只是把这些工具<b>接进来</b>的一种方式。没有 MCP，工具照样能用，只是每一家都得单独对接。</div>
+</section>
+<!-- ============ 7 ============ -->
+<section class="card" id="c7">
+  <div class="no-head"><span class="no">07</span><h2>MCP 接过来的东西，不止是工具</h2></div>
+  <p class="rv">很多人以为「MCP 服务器 = 一堆工具」。其实规范里定义了<b>三类</b>东西，而它们最漂亮的差别，恰好是上一页讲过的那个问题：<b>由谁决定用它</b>。</p>
+  <figure class="rv">
+    <svg class="stage" id="prim-svg" viewBox="0 0 620 280" role="img" aria-label="三类 MCP 原语：Tools 由模型自己决定调用，Resources 由应用决定喂什么，Prompts 由用户主动从菜单里挑"></svg>
+    <div class="btnrow" id="prim-btns">
+      <button class="btn sel" data-p="0">Tools · 模型决定</button>
+      <button class="btn" data-p="1">Resources · 应用决定</button>
+      <button class="btn" data-p="2">Prompts · 用户决定</button>
+    </div>
+    <figcaption>注意每一栏里「谁按下按钮」的位置不一样——发起方不同，这三类东西的权限边界就完全不同。</figcaption>
+  </figure>
+  <ul class="rv">
+    <li><b>Tools（工具）</b>：<span class="term" title="model-controlled。模型自己判断什么时候该调，人不一定每次都点头。所以危险性也最高">模型自己决定</span>什么时候调。例子：GitHub 服务器上的 <code>create_issue</code>——模型觉得该开个 issue，它就申请开。</li>
+    <li><b>Resources（资源）</b>：<span class="term" title="application-controlled。由外层应用决定把哪些数据读进来喂给模型，模型没有主动去抓的权力">由应用决定</span>读什么喂给模型。例子：一份项目文件、一张数据库表的结构说明。模型只能读到被递到手上的那部分。</li>
+    <li><b>Prompts（提示模板）</b>：<span class="term" title="user-controlled。必须由人主动挑，模型不能自己触发。像餐厅菜单，你不点它不会自己上菜">由用户主动挑</span>。例子：服务器事先准备好一个「帮我审一遍这段代码」的模板，你在菜单里点它才会跑。</li>
+  </ul>
+  <div class="callout">这个三分法很值钱：<b>同样是通过 MCP 接进来的东西，「谁能触发它」差别巨大。</b>Tools 是模型自己伸手，Prompts 是人点菜，Resources 是应用递资料。下次看到「我们接了某某 MCP」，值得追问一句：接进来的是哪一类？</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="card" id="c8">
+  <div class="no-head"><span class="no">08</span><h2>一次真实的 MCP 连接长什么样</h2></div>
+  <p class="rv">MCP 规范里规定了三个角色。名字起得很技术，其实分工特别朴素：</p>
+  <ul class="rv">
+    <li><b>Host（宿主）</b>：你打开的那个 AI 应用本身。Claude、Qoder、Cursor 都是宿主。</li>
+    <li><b>Client（客户端）</b>：宿主<b>内部</b>为每一个服务器单独开的一个「接线员」。一个服务器配一个，一对一，互不干扰。</li>
+    <li><b>Server（服务器）</b>：真正握着工具和数据的那一端。它可能就在你这台电脑上（一个本地小程序），也可能在云上（一个网址）。</li>
+  </ul>
+  <figure class="rv">
+    <svg class="stage" id="topo-svg" viewBox="0 0 620 310" role="img" aria-label="拓扑图：宿主应用内部为三个 MCP 服务器各开一个客户端，一对一连线；点某个服务器可以看它跑在哪、用什么传输方式"></svg>
+    <div class="btnrow" id="topo-btns">
+      <button class="btn sel" data-t="0">本机文件系统</button>
+      <button class="btn" data-t="1">本机 Git</button>
+      <button class="btn" data-t="2">云上 GitHub</button>
+    </div>
+    <figcaption>点按钮看每条链路：这个服务器跑在哪台机器上、用什么方式传话、它能碰到你什么东西。</figcaption>
+  </figure>
+  <p class="rv">「用什么方式传话」这一层，术语叫<span class="term" title="transport。协议规定的实际传话通道。MCP 主要支持两种：本机的 stdio 和走网络的 Streamable HTTP">传输（transport）</span>，规范里主要给了两种：</p>
+  <ul class="rv">
+    <li><b>stdio</b>：服务器就是你电脑上的一个进程，宿主直接跟它对话，不出这台机器。本机文件、本机 Git 通常走这条。</li>
+    <li><b>Streamable HTTP</b>：走网络，服务器在远端。GitHub、Slack 这类云服务通常走这条。</li>
+  </ul>
+  <p class="rv">MCP 底层用的消息格式叫 <span class="term" title="JSON-RPC 2.0。一种用 JSON 表达的「远程调用」约定：一条消息说明我要调哪个方法、带什么参数，另一条消息回结果或报错">JSON-RPC 2.0</span>——说白了就是「用 JSON 写的一问一答标准格式」。规范本身还明确说过，它的设计灵感来自 <b>LSP</b>（语言服务器协议），那是编辑器行业十年前就验证过的同一套路子：一次统一接口，换来整个生态。</p>
+  <div class="callout warn">装一个 MCP 服务器，等于<b>授权它在你允许的范围内读真实数据、做真实动作</b>。第三方服务器和第三方 Skill 一样要看清来源——它拿到的不是「读一读」的权限，而是「代表你动手」的权限。</div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="card" id="c9">
+  <div class="no-head"><span class="no">09</span><h2>Skill：它不给你新能力，只给你章法</h2></div>
+  <p class="rv">Skill 我们单独讲过一整页，这里只说它和 Tool 的<b>根本差别</b>——这一条最容易被忽略：</p>
+  <p class="rv"><b>Tool 新增一个能做的动作。Skill 一个新动作都不新增。</b></p>
+  <p class="rv">一个 Skill 就是一个文件夹，核心是一份叫 <code>SKILL.md</code> 的文本文件，可能再带上一些脚本、模板和参考资料。它是 Anthropic 在 <b>2025 年 10 月 16 日</b>发布的格式，官方定义是「一种轻量、开放的格式，用专门的知识和工作流扩展 AI agent 的能力」。</p>
+  <p class="rv">打个比方最清楚：<b>Tool 是给厨师一把新刀，Skill 是给他一张菜谱。</b>菜谱自己不会切菜——它只是让已经会切菜的人，按这家店的标准来切。所以完全存在「一个工具都不调用」的 Skill，比如「写周报要分三段、口径按这张表、超过 800 字要拆附录」。</p>
+  <figure class="rv">
+    <svg class="stage" id="skill-svg" viewBox="0 0 620 320" role="img" aria-label="同一个做 PPT 的任务：没有 Skill 时模型摸索五步、换了三种模板、字号忽大忽小、忘了标数据来源；有 Skill 时照着三步走，一次符合规范"></svg>
+    <div class="btnrow" id="skill-btns">
+      <button class="btn sel" data-s="0">没有 Skill：它自己摸索</button>
+      <button class="btn" data-s="1">有 Skill：照章法办</button>
+    </div>
+    <figcaption>同一个模型、同一批工具、同一个任务。差别只在它手上有没有那份写好的章法。注意两边的步数和最后盖的章。</figcaption>
+  </figure>
+  <p class="rv">这个格式后来没有留在一家手里。<b>2026 年 10 月 22 日</b>，Anthropic 把它——连同名字、logo、GitHub 组织和 agentskills.io 域名一起——捐给了 Linux 基金会旗下的 <b>Agentic AI Foundation</b>，交给社区中立维护；此前 MCP 也是这么处理的。当时公布的数字是：已有<b>超过 70 个 agent 平台</b>集成了这套格式，名单里包括 ChatGPT、Cursor、GitHub Copilot 和 VS Code；公开的技能约 <b>100 万个</b>，累计安装接近 <b>2.8 亿次</b>。</p>
+  <p class="rv">这意味着一份写好的 Skill，不是只能在一个产品里用——它可以跟着你换工具。</p>
+  <div class="callout">所以「装了 Skill，AI 就变强了」这句话不太准。更准的说法是：<b>它还是那个它，只是终于知道你们这儿办事的规矩了。</b>能力来自模型和工具，一致性来自 Skill。</div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="card" id="c10">
+  <div class="no-head"><span class="no">10</span><h2>为什么 Skill 装一百个也不挤：渐进式披露</h2></div>
+  <p class="rv">还记得第 5 张卡吗——58 个工具的定义，一开场就吃掉 55,000 词元。那 Skill 呢？一个团队装上几十上百个 Skill，为什么没把上下文撑爆？</p>
+  <p class="rv">因为它的加载方式<b>从设计上就是分层的</b>。这套机制叫<span class="term" title="progressive disclosure。渐进式披露：信息按需一层层展开，一次只把当前用得上的那部分放进上下文">渐进式披露</span>，官方规范里写明了三层：</p>
+  <ul class="rv">
+    <li><b>第一层 · 发现</b>：启动的时候，只读每个 Skill 的<b>名字和一句话描述</b>。就这两行，别的都不读。</li>
+    <li><b>第二层 · 激活</b>：当前任务和某个描述对上了，才把那份 <code>SKILL.md</code> 的<b>全文</b>读进来。</li>
+    <li><b>第三层 · 执行</b>：真要用到，才去翻它带的参考文件、跑它带的脚本。</li>
+  </ul>
+  <p class="rv">规范里的原话是：完整的指令只在任务需要时才加载，所以 agent 可以<b>手边放很多技能，只占很小的上下文</b>。</p>
+  <figure class="rv">
+    <svg class="stage" id="pd-svg" viewBox="0 0 620 310" role="img" aria-label="三层加载：40 个 Skill 在第一层只占约 2000 词元，命中一个后进到第二层加约 3000，用到附件才进第三层；右侧红色参照线是 58 个工具定义的 55000 词元"></svg>
+    <div class="btnrow" id="pd-btns">
+      <button class="btn sel" data-g="0">第一层 · 只读名字和描述</button>
+      <button class="btn" data-g="1">第二层 · 命中了，读全文</button>
+      <button class="btn" data-g="2">第三层 · 用到才翻附件</button>
+    </div>
+    <figcaption>点三层看计数器。左边那 40 个文件夹一直都在，但绝大多数从来没被读进来过。右边那条红线是第 5 张卡里 58 个工具定义的开销，做个参照。</figcaption>
+  </figure>
+  <p class="rv">把两件事并排放着看，差别就出来了：</p>
+  <ul class="rv">
+    <li><b>工具清单</b>是「一开场全部塞进去」——不管这次用不用得上，58 个定义都得占着位置。</li>
+    <li><b>Skill</b> 是「用到才翻」——没被点中的那些，只留着一行名字。</li>
+  </ul>
+  <p class="rv">这也正是 Anthropic 后来给工具打补丁的思路：那个 <b>Tool Search Tool</b>（第 5 张卡，把 55,000 降到约 8,700）本质上就是<b>让工具也开始「用到才加载」</b>——往 Skill 已经走通的路上靠。而《用 MCP 做代码执行》那篇给的另一条路更彻底：让 agent 自己去翻服务器目录、按需读定义，同一个任务从 150,000 词元降到 2,000。</p>
+  <div class="callout">一句能带走的话：<b>在 AI 的世界里，「能不能装很多」不取决于你装了多少，取决于加载方式。</b>预先全量加载的东西，装几十个就开始拖累；按需展开的东西，装几百个也只是目录长一点。</div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="card" id="c11">
+  <div class="no-head"><span class="no">11</span><h2>插件：把上面几样打成一个能安装的包</h2></div>
+  <p class="rv">终于到最外面这一层。关于插件，官方文档里有一段话说得特别干脆，值得整段引下来：</p>
+  <div class="code-block rv"><span class="cm">// Claude Code 官方文档 · Plugins</span>
+<span class="st">"Skills, subagents, hooks, and MCP servers all work
+ on their own, without a plugin."</span>
+
+<span class="st">"Use a plugin when you want several skills, subagents,
+ hooks, or MCP servers packaged as one unit."</span>
+
+<span class="cm">译：Skill、子 agent、钩子、MCP 服务器，每一个都能
+单独用，不需要插件。当你想把几个 Skill、子 agent、
+钩子或 MCP 服务器打包成一个单元时，才用插件。</span></div>
+  <p class="rv">所以插件<b>不是一种新能力</b>。它是一个<span class="term" title="分发单位：不是功能上的分类，而是「怎么打包、怎么安装、怎么更新」这一层的单位。像一箱牛奶和一瓶牛奶的区别，不在牛奶本身">分发单位</span>——解决的问题是「一次装齐、统一更新」。</p>
+  <p class="rv">里面可能同时装着：几个 Skill、几个 MCP 服务器、几条<span class="term" title="command。一条可以自己定义、输入后直接触发一整套动作的短命令，比如 /周报">快捷命令</span>、几个 <span class="term" title="hook，钩子。在某个特定事件发生时自动触发的一段动作，比如「每次提交代码前自动跑一遍检查」。它不由模型决定，是硬规则">hook</span>、几个<span class="term" title="subagent，子 agent。主 agent 可以派活给一个有专门职责的下级 agent，让它在自己独立的上下文里干完再汇报">子 agent</span>。</p>
+  <figure class="rv">
+    <svg class="stage" id="plug-svg" viewBox="0 0 620 320" role="img" aria-label="装配动画：散落的两个 Skill、一个 MCP 服务器、一条命令和一个 hook 被装进礼盒，盖上后成为一个可安装的插件，再一条命令装到新员工手上"></svg>
+    <div class="btnrow" id="plug-btns">
+      <button class="btn sel" data-g="0">① 散着的零件</button>
+      <button class="btn" data-g="1">② 装进盒子</button>
+      <button class="btn" data-g="2">③ 一条命令装好</button>
+    </div>
+    <figcaption>三个阶段。注意第 ③ 步：盒子本身没有给新人增加任何新本事，它只是让「配齐」这件事从五次操作变成一次。</figcaption>
+  </figure>
+  <div class="callout">这也解释了为什么各家「插件」装的东西不完全一样：有的只装 Skill，有的能连 MCP 服务器一起装，有的还带命令和 hook。<b>内涵会随产品变，但它在四层里站的位置不变——永远是最外面那个「打包 + 一键安装 + 统一更新」。</b></div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section class="card" id="c12">
+  <div class="no-head"><span class="no">12</span><h2>「插件」这个词，内涵换过一轮</h2></div>
+  <p class="rv">四个词里，「插件」是最老的一个，也是最容易被误读的一个——因为它在 AI 圈里已经换过一次意思了。</p>
+  <p class="rv">在软件世界里它是个几十年的老词。维基百科的定义是：<b>插件是一段软件组件，它扩展一个已有系统的功能，而不需要把那个系统重新构建一遍。</b>浏览器插件、VS Code 扩展、Photoshop 滤镜，全是这个意思——<b>宿主程序留好一个口子，第三方往里塞东西</b>。</p>
+  <p class="rv">然后 AI 圈用了一次这个词，而且翻车了：</p>
+  <figure class="rv">
+    <svg class="stage" id="tl-svg" viewBox="0 0 620 250" role="img" aria-label="时间轴四个节点：传统软件插件、2023 年 3 月的 ChatGPT Plugins、2024 年退役被 GPTs 与 Actions 取代、2025 到 2026 年今天作为打包单位的插件"></svg>
+    <div class="btnrow" id="tl-btns">
+      <button class="btn sel" data-t="0">传统软件插件</button>
+      <button class="btn" data-t="1">2023 ChatGPT Plugins</button>
+      <button class="btn" data-t="2">2024 退役</button>
+      <button class="btn" data-t="3">今天的插件</button>
+    </div>
+    <figcaption>点四个节点，看同一个词在不同时候指的是什么。注意 2023 年那次和今天这次，装的东西根本不是一类。</figcaption>
+  </figure>
+  <p class="rv">2023 年 3 月 23 日，OpenAI 发布 <b>ChatGPT Plugins</b>，让第三方给 ChatGPT 接上实时能力——查航班、订餐厅、读网页。干的事，正是今天 MCP 干的事。一年多以后，它被 GPTs 和 Actions 取代，2024 年陆续退役。</p>
+  <p class="rv">而今天各家产品里的「插件」，回到了软件世界那个老含义：<b>一个打包分发的单位</b>，里面装的是 Skill、MCP 服务器、命令、hook。</p>
+  <div class="callout warn">所以听到「装个插件」这四个字，最好追一句：<b>装的是能力（工具 / MCP）、章法（Skill），还是一个打包好的套装？</b>同样四个字，2023 年指的是第一类，今天多半指第三类。</div>
+</section>
+<!-- ============ 13 ============ -->
+<section class="card" id="c13">
+  <div class="no-head"><span class="no">13</span><h2>四层放一张图上</h2></div>
+  <p class="rv">把前面十二张卡收拢成一张图。中间那个只会吐字的模型没变过，变的是它周围一圈圈配上去的东西。</p>
+  <figure class="rv">
+    <svg class="stage" id="map-svg" viewBox="0 0 620 390" role="img" aria-label="全景图：中心是模型，向外依次是工具、MCP 总线、Skill 文档，最外面一圈虚线是插件；点任一层看它是什么、谁写、装在哪、少了它会怎样"></svg>
+    <div class="btnrow" id="map-btns">
+      <button class="btn sel" data-m="0">Tool</button>
+      <button class="btn" data-m="1">MCP</button>
+      <button class="btn" data-m="2">Skill</button>
+      <button class="btn" data-m="3">插件</button>
+      <button class="btn" data-m="4">四层一起看</button>
+    </div>
+    <figcaption>点每一层，右边给出四行：它是什么、谁来写、装在哪、少了它会怎样。最后一个按钮把四层同时点亮。</figcaption>
+  </figure>
+  <p class="rv">还有一件事得说清楚：<b>这四层不互斥，而是互相套着的。</b></p>
+  <ul class="rv">
+    <li>一个<b>插件</b>里可以同时装着 Skill 和 MCP 服务器；</li>
+    <li>一个 <b>MCP 服务器</b>里装着许多个 Tool（第 5 张卡的 GitHub 服务器就有 35 个）；</li>
+    <li>一份 <b>Skill</b> 可以指挥模型去调用某几个 Tool。</li>
+  </ul>
+  <div class="callout">所以「我们该上 Tool 还是 MCP 还是 Skill」这个问题本身问错了——就像问「我该买刀还是买插座还是买菜谱」。它们不在一个层面上，答案通常是<b>都要，但顺序不一样</b>。</div>
+</section>
+
+<!-- ============ 14 ============ -->
+<section class="card" id="c14">
+  <div class="no-head"><span class="no">14</span><h2>一张表：四层各管什么</h2></div>
+  <p class="rv">按行点一下可以高亮整行，方便左右对着看。</p>
+  <div class="tw rv" id="mtx">
+    <table>
+      <thead>
+        <tr><th scope="col">维度</th><th scope="col">Tool 工具</th><th scope="col">MCP 协议</th><th scope="col">Skill 技能</th><th scope="col">插件 Plugin</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">它本质上是什么</th><td>一个能被调用的<b>动作</b></td><td>一份关于「怎么对接」的<b>书面约定</b></td><td>一个装着说明的<b>文件夹</b></td><td>一个<b>安装包</b></td></tr>
+        <tr><th scope="row">它回答什么问题</th><td>AI 能不能做这个动作</td><td>这些动作怎么接进来</td><td>什么时候、按什么章法做</td><td>怎么打包、怎么装、怎么更新</td></tr>
+        <tr><th scope="row">谁来写它</th><td>工程师，要写代码</td><td>协议由社区维护；服务器由工程师实现</td><td>会这门活的人，<b>可以完全不写代码</b></td><td>把上面几样凑齐的人</td></tr>
+        <tr><th scope="row">里面装的是什么</th><td>名字 + 描述 + 参数格式 + 实现代码</td><td>消息格式 + 传输方式 + 三类原语</td><td>SKILL.md + 可选的脚本、模板、参考资料</td><td>Skill、MCP 服务器、命令、hook 的任意组合</td></tr>
+        <tr><th scope="row">AI 少了它会怎样</th><td>只会说，不会动手</td><td>每个工具都得单独对接一遍</td><td>能动手但没章法，每次做法都不一样</td><td>每样都要单独装、单独更新</td></tr>
+        <tr><th scope="row">能不能单独存在</th><td>能</td><td>能，但没东西可接就没意义</td><td>能</td><td>它就是「把别的东西打在一起」，本身不新增能力</td></tr>
+        <tr><th scope="row">占不占上下文</th><td>占，而且<b>一开场全量占住</b></td><td>不直接占，占的是它接进来的那些工具定义</td><td>只占一行名字和描述，用到才展开全文</td><td>取决于里面装了什么</td></tr>
+        <tr><th scope="row">真实例子</th><td><code>get_weather</code>、<code>create_issue</code>、<code>search_web</code></td><td>GitHub MCP Server、filesystem MCP Server</td><td><code>pptx</code>、<code>docx</code>、代码审查类 Skill</td><td>一整套按岗位配好的能力包</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tw-hint rv">← 表格可以左右拖动 →</p>
+  <div class="callout fact">如果只留一行，留这行：<b>Tool 是能力，MCP 是接口，Skill 是知识，插件是包装。</b>能力和接口是给机器看的，知识是给人写的，包装是给分发用的。</div>
+</section>
+
+<!-- ============ 15 ============ -->
+<section class="card" id="c15">
+  <div class="no-head"><span class="no">15</span><h2>拿到一个东西，怎么给它归类</h2></div>
+  <p class="rv">三个是非题，按顺序问下去就够了：</p>
+  <figure class="rv">
+    <svg class="stage" id="judge-svg" viewBox="0 0 620 348" role="img" aria-label="判断树：三个是非题依次筛出 Tool、MCP、Skill，都不是则归为插件；点下面的真实例子看它走哪条路"></svg>
+    <div class="btnrow" id="judge-ex">
+      <button class="btn sel" data-e="0">get_weather</button>
+      <button class="btn" data-e="1">GitHub MCP Server</button>
+      <button class="btn" data-e="2">read_file（在 filesystem MCP 里）</button>
+      <button class="btn" data-e="3">pptx（SKILL.md + 脚本）</button>
+      <button class="btn" data-e="4">sales-kit（3 个 Skill + 1 个 MCP + 2 条命令）</button>
+    </div>
+    <figcaption>点下面五个真实例子，看它顺着哪条路走到底。第 2 个和第 3 个是一组——一个是插座，一个是插在插座上的那件工具。</figcaption>
+  </figure>
+  <p class="rv">第 2 和第 3 个例子值得多说一句，因为它是最常踩的坑：<b>「GitHub MCP Server」是一个 MCP 服务器，而它里面的 <code>create_issue</code> 是一个 Tool。</b>前者是那台插座，后者是插在上面的电器。同一个东西的两种身份，不是两个东西。</p>
+  <div class="callout">归类时最好用的一句话：<b>它是「一个动作」、「一份对接约定」、「一份文字说明」，还是「一个装着上面几样的包」？</b>四个答案互斥，问完就有结论。</div>
+</section>
+
+<!-- ============ 16 ============ -->
+<section class="card" id="c16">
+  <div class="no-head"><span class="no">16</span><h2>名词速查：本页出现过的每个术语</h2></div>
+  <p class="rv">按四层分好了类，忘了哪个回来查一句就行。每条都是一句人话，不含二次术语。</p>
+  <div class="btnrow rv" id="gloss-btns" style="margin-top:0;margin-bottom:14px">
+    <button class="btn sel" data-c="all">全部 30 条</button>
+    <button class="btn" data-c="tool">Tool 与调用</button>
+    <button class="btn" data-c="mcp">MCP 与协议</button>
+    <button class="btn" data-c="skill">Skill</button>
+    <button class="btn" data-c="plug">插件与周边</button>
+  </div>
+  <div class="gloss rv" id="gloss">
+    <div class="gl" data-cat="tool"><b>Tool（工具）</b><span>一个模型可以申请调用的具体动作。模型自己不执行它，只提交申请。</span></div>
+    <div class="gl" data-cat="tool"><b>工具调用 / 函数调用</b><span>模型输出申请单、外部程序执行、结果回传的完整来回。两个词是同一件事。</span></div>
+    <div class="gl" data-cat="tool"><b>ReAct</b><span>2022 年那篇奠基论文：让模型想一步、动一步、看到结果再想下一步。</span></div>
+    <div class="gl" data-cat="tool"><b>JSON</b><span>一种用大括号和引号组织数据的文本格式。申请单就是用它写的。</span></div>
+    <div class="gl" data-cat="tool"><b>参数（parameter）</b><span>调用工具时要填的那几栏，比如城市名、日期、条数。</span></div>
+    <div class="gl" data-cat="tool"><b>Schema</b><span>写明「数据必须长什么样」的约定：有哪几栏、每栏是文字还是数字、哪些必填。</span></div>
+    <div class="gl" data-cat="tool"><b>API</b><span>两个程序之间事先约定好的对话窗口。一方按格式问，另一方按格式答。</span></div>
+    <div class="gl" data-cat="tool"><b>幻觉（hallucination）</b><span>模型编出听起来合理、但实际上不对的内容。原因是它在猜，不是在查。</span></div>
+    <div class="gl" data-cat="mcp"><b>MCP（模型上下文协议）</b><span>让 AI 应用和外部工具、数据统一对接的开放约定。它不是工具，是插座标准。</span></div>
+    <div class="gl" data-cat="mcp"><b>协议（protocol）</b><span>一套写下来的对接约定：消息长什么样、按什么顺序发、出错怎么办。协议本身不干活。</span></div>
+    <div class="gl" data-cat="mcp"><b>开放标准</b><span>规范公开发布、谁都能实现、不由某一家单独控制。MCP 后来交给了独立基金会托管。</span></div>
+    <div class="gl" data-cat="mcp"><b>JSON-RPC 2.0</b><span>MCP 底层用的消息格式：用 JSON 写的一问一答标准套路。</span></div>
+    <div class="gl" data-cat="mcp"><b>MCP 服务器</b><span>真正握着工具和数据的那一端。可以跑在你本机，也可以在云上。</span></div>
+    <div class="gl" data-cat="mcp"><b>Host / Client / Server</b><span>宿主是你打开的那个 AI 应用；客户端是宿主内部为每个服务器配的专属接线员，一对一；服务器是提供能力的那端。</span></div>
+    <div class="gl" data-cat="mcp"><b>传输（transport）</b><span>实际的传话通道。stdio 是本机进程直接对话，Streamable HTTP 是走网络。</span></div>
+    <div class="gl" data-cat="mcp"><b>LSP（语言服务器协议）</b><span>编辑器行业早十年的同一套路子，MCP 明确说自己的设计灵感来自它。</span></div>
+    <div class="gl" data-cat="mcp"><b>N×M 问题</b><span>M 个应用接 N 个系统，没统一约定要写 M×N 套对接；有了就变成 M+N。</span></div>
+    <div class="gl" data-cat="mcp"><b>Resources（资源）</b><span>MCP 三类原语之一：由应用决定读什么喂给模型，模型不能主动去抓。</span></div>
+    <div class="gl" data-cat="mcp"><b>Prompts（提示模板）</b><span>MCP 三类原语之一：现成的模板，必须由人主动挑，像菜单点菜。</span></div>
+    <div class="gl" data-cat="skill"><b>Skill（技能）</b><span>一个文件夹，核心是一份 SKILL.md。它不新增能力，只提供章法。</span></div>
+    <div class="gl" data-cat="skill"><b>SKILL.md</b><span>Skill 的正文文件：什么时候翻开我、按哪几步做、哪些事不能做。</span></div>
+    <div class="gl" data-cat="skill"><b>Frontmatter</b><span>SKILL.md 开头那段登记信息，至少要有名字和一句话描述。第一层加载只读它。</span></div>
+    <div class="gl" data-cat="skill"><b>渐进式披露</b><span>信息按需一层层展开，一次只把当前用得上的那部分放进上下文。</span></div>
+    <div class="gl" data-cat="skill"><b>上下文窗口</b><span>模型一次能读进去的文字总量，包括你的话、它的回答和那份工具清单。</span></div>
+    <div class="gl" data-cat="skill"><b>词元（token）</b><span>模型处理文字的最小单位，大约是一个英文单词的一半到四分之三个汉字。计费和长度限制都按它算。</span></div>
+    <div class="gl" data-cat="plug"><b>插件（plugin）</b><span>一个安装包：把若干 Skill、MCP 服务器、命令、hook 打成一个单元，一次装齐、统一更新。</span></div>
+    <div class="gl" data-cat="plug"><b>分发单位</b><span>不是功能上的分类，而是「怎么打包、怎么装、怎么更新」这一层的单位。</span></div>
+    <div class="gl" data-cat="plug"><b>Hook（钩子）</b><span>在某个特定事件发生时自动触发的一段动作。它不由模型决定，是硬规则。</span></div>
+    <div class="gl" data-cat="plug"><b>子 agent（subagent）</b><span>主 agent 派活给一个有专门职责的下级，让它在独立的上下文里干完再汇报。</span></div>
+    <div class="gl" data-cat="plug"><b>Tool Search Tool</b><span>Anthropic 的缓解方案：工具定义默认不加载，模型需要时先搜再读。58 个工具的开销从 55,000 降到约 8,700 词元。</span></div>
+  </div>
+  <div class="callout fact">如果只记四条：<b>Tool 是能力，MCP 是接口，Skill 是知识，插件是包装。</b>剩下二十六条都是这四条的注脚。</div>
+</section>
+
+<!-- ============ 结尾提问 ============ -->
+<section class="ask" id="ask" aria-labelledby="ask-h">
+  <h2 class="eyebrow" id="ask-h">最后，两个问题</h2>
+  <ol role="list">
+    <li>
+      <span class="qn" aria-hidden="true">Q1</span>
+      <div>
+        <p class="qt">你现在用的那个 AI，说「装了很多插件」——装的到底是能力、章法，还是一个套装？</p>
+        <p class="qs">这三种东西带来的结果完全不同：装的是能力，它能做的事变多了；装的是章法，它做事的方式变稳定了；装的只是套装，那可能只是省了你几次点击。下次看到「一键增强 AI」，试着把它拆到第 13 张卡那张图上——你会发现很多宣传里说的「能力」，其实只是包装。</p>
+      </div>
+    </li>
+    <li>
+      <span class="qn" aria-hidden="true">Q2</span>
+      <div>
+        <p class="qt">如果只允许你先配一样，你会先给 AI 接工具，还是先写 Skill？</p>
+        <p class="qs">大多数团队的第一反应是「先接工具，让它能动手」。但真正让人抓狂的，往往不是它做不到，而是它<b>做到了、每次的做法却都不一样</b>——这周的报告和下周的报告长得像两个部门出的。工具决定它的上限，Skill 决定它的下限。你觉得你现在缺的是哪一个？</p>
+      </div>
+    </li>
+  </ol>
+  <p class="tail">没有标准答案。但如果你能说出「这件事我们缺的是能力，那件事缺的是章法」，你已经比大多数人更清楚该怎么给 AI 配家当了。</p>
+</section>
+
+<footer>
+  <p><b>口径与出处</b>：本页所有定义、机制描述与数字均取自下列公开资料，核查于 2026 年 11 月 12 日；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图。<b>真实数字</b>：第 5、10 张卡的词元开销（GitHub 35 个工具约 26,000、Slack 11 个约 21,000、Sentry 与 Grafana 各 5 个约 3,000、Splunk 2 个约 2,000、五者合计 58 个工具约 55,000、Jira 单个约 17,000、Tool Search Tool 降到约 8,700 即减少 85%、Google Drive 到 Salesforce 场景从 150,000 降到 2,000 即省 98.7%）均直接引自 Anthropic 2025 年 11 月 24 日与 11 月 4 日两篇官方发布；MCP 发布日 2024-11-25、Agent Skills 发布日 2025-10-16、ChatGPT Plugins 发布日 2023-03-23、OpenAI 函数调用发布 2023 年 6 月、ReAct 论文提交 2022 年 10 月、MCP 官方注册表服务器数「超过 40,000」（2026 年 11 月查询，为下限值，注册表未提供精确总数接口）。<b>示意值（非实测）</b>：第 5 张卡灰色「还能对话的空间」按 200,000 词元窗口绘制，仅用于显示挤压效果；第 10 张卡「40 个 Skill、第一层约 2,000 词元、第二层加约 3,000 词元、第三层加约 1,500 词元」为演示渐进式披露而设的假想数字，不是任何厂商的实测统计；第 2、4、9、13、15 张卡里的天气、PPT、sales-kit 等场景均为教学虚构。本页零外部依赖，可离线打开。</p>
+  <ul>
+    <li>函数调用（又称工具调用）机制：你描述函数，模型输出符合 JSON Schema 的结构化调用，由你的代码执行后回传结果：<a href="https://developers.openai.com/api/docs/guides/function-calling" rel="noopener">OpenAI 官方文档 — Function calling</a></li>
+    <li>OpenAI 于 2023 年 6 月发布函数调用能力：<a href="https://openai.com/index/function-calling-and-other-api-updates/" rel="noopener">OpenAI — Function calling and other API updates（2023-06-13）</a></li>
+    <li>Anthropic 的同一机制，称 tool use / function calling，模型返回 tool_use 块、由外部执行后回传 tool_result：<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" rel="noopener">Anthropic — Tool use (function calling) Overview</a></li>
+    <li>模型不直接执行工具，由应用代码执行并回传结果：<a href="https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html" rel="noopener">AWS 官方文档 — Use a tool to complete a model response</a></li>
+    <li>「想一步、动一步、看结果再想下一步」的学术源头：<a href="https://arxiv.org/abs/2210.03629" rel="noopener">Yao et al. — ReAct: Synergizing Reasoning and Acting in Language Models（arXiv 提交 2022-10-06，ICLR 2023）</a></li>
+    <li>MCP 的发布日、开放标准定位：<a href="https://www.anthropic.com/news/model-context-protocol" rel="noopener">Anthropic — Introducing the Model Context Protocol（2024-11-25）</a></li>
+    <li>三类服务器原语（Tools 模型控制 / Resources 应用控制 / Prompts 用户控制）、host-client-server 架构、stdio 与 Streamable HTTP 两种传输、JSON-RPC 2.0、灵感来自 LSP、N×M 问题：<a href="https://modelcontextprotocol.io/specification/2025-11-25" rel="noopener">Model Context Protocol 官方规范（2025-11-25 修订版）</a></li>
+    <li>OpenAI 于 2025 年 5 月 20 日在 Responses API 中加入远程 MCP 服务器支持：<a href="https://developers.openai.com/api/docs/changelog" rel="noopener">OpenAI API Changelog（2025-05-20 条目）</a>，另见<a href="https://developers.openai.com/api/docs/guides/tools-connectors-mcp" rel="noopener"> OpenAI — MCP 使用指南</a></li>
+    <li>Google 官方支持 MCP，并把 MCP 比作「AI 的 USB-C」：<a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-official-mcp-support-for-google-services" rel="noopener">Google Cloud Blog — Announcing Model Context Protocol (MCP) support for Google services（2025-12-11）</a></li>
+    <li>Windows 系统级 MCP 支持与本机 agent 注册表：<a href="https://learn.microsoft.com/en-us/windows/ai/mcp/overview" rel="noopener">Microsoft Learn — Model Context Protocol (MCP) on Windows overview</a></li>
+    <li>「2025 年 5 月 OpenAI、Anthropic、Mistral 在八天内先后加入 MCP 支持」，以及「很多人误以为模型必须支持 MCP 才能用工具」：<a href="https://simonwillison.net/2025/Dec/31/the-year-in-llms/" rel="noopener">Simon Willison — 2025: The year in LLMs（2025-12-31）</a></li>
+    <li>MCP 官方注册表服务器数量（2026 年 11 月查询，超过 40,000 为下限值）：<a href="https://registry.modelcontextprotocol.io/v0/servers" rel="noopener">Official MCP Registry — servers</a></li>
+    <li>Agent Skills 发布日、「一个装着 SKILL.md 的文件夹、可按需加载」：<a href="https://www.anthropic.com/news/skills" rel="noopener">Anthropic — Introducing Agent Skills（2025-10-16）</a>，另见<a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" rel="noopener"> Anthropic Engineering — Equipping agents for the real world with Agent Skills</a></li>
+    <li>「轻量、开放的格式」「核心是一个含 SKILL.md 的文件夹，可带 scripts / references / assets」「渐进式披露三层：发现、激活、执行」「完整指令只在任务需要时才加载，因此可以手边放很多技能而只占很小上下文」「由 Anthropic 制定并作为开放标准发布」：<a href="https://agentskills.io/home.md" rel="noopener">Agent Skills 开放规范 — Overview</a></li>
+    <li>2026-10-22 Anthropic 将 Agent Skills 的名称、logo、GitHub 组织与 agentskills.io 域名捐赠给 Linux 基金会旗下 Agentic AI Foundation；ChatGPT、Cursor、GitHub Copilot、VS Code 等 70 多个平台已集成，公开技能约 100 万个、安装近 2.8 亿次：<a href="https://www.ithome.com/html/digi/1016811.htm" rel="noopener">IT之家 — AI 智能体的「说明书」转为社区共治：Anthropic 捐赠 Agent Skills 开放标准（2026-10-23）</a></li>
+    <li>58 个工具约 55,000 词元的逐项拆分、Jira 约 17,000、Tool Search Tool 降到约 8,700（减少 85%）：<a href="https://www.anthropic.com/news/advanced-tool-use" rel="noopener">Anthropic — Introducing advanced tool use on the Claude Developer Platform（2025-11-24）</a></li>
+    <li>150,000 降到 2,000 词元、省 98.7%，以及「社区已建起数千个 MCP 服务器」「行业已把 MCP 当作事实标准」：<a href="https://www.anthropic.com/engineering/code-execution-with-mcp" rel="noopener">Anthropic Engineering — Code execution with MCP: Building more efficient agents（2025-11-04）</a></li>
+    <li>工具描述与命名直接决定 agent 选得对不对：<a href="https://www.anthropic.com/research/writing-tools-for-agents" rel="noopener">Anthropic — Writing effective tools for agents（2025-09-11）</a></li>
+    <li>「Skill、子 agent、hook、MCP 服务器都能单独用，不需要插件；想把几样打包成一个单元时才用插件」：<a href="https://code.claude.com/docs/en/plugins.md" rel="noopener">Claude Code 官方文档 — Plugins</a>，另见<a href="https://code.claude.com/docs/en/skills" rel="noopener"> Claude Code — Skills</a></li>
+    <li>插件的经典定义「扩展一个已有系统的功能，而不需要把该系统重新构建一遍」：<a href="https://en.wikipedia.org/wiki/Plug-in_(computing)" rel="noopener">Wikipedia — Plug-in (computing)</a></li>
+    <li>ChatGPT Plugins 发布日与第三方实时能力接入：<a href="https://openai.com/index/chatgpt-plugins/" rel="noopener">OpenAI — ChatGPT plugins（2023-03-23）</a>；其退役与被 GPTs / Actions 取代，见 OpenAI 帮助中心 2024 年 3 月存档（Wayback Machine）</li>
+    <li>编辑器扩展如何注册激活事件与命令（传统软件插件的具体例子）：<a href="https://code.visualstudio.com/api/get-started/extension-anatomy" rel="noopener">Microsoft — VS Code Extension Anatomy</a></li>
+    <li>Skill 的中文长讲解见本系列前作：<a href="https://liomoremix.github.io/ai-daily/d/2026-11-05/index.html" rel="noopener">AI 每日一识 2026-11-05 — Skill 不是让 AI 变聪明，是给它一本岗位说明书</a></li>
+  </ul>
+</footer>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(s){ return document.querySelector(s); }
+function $$(s){ return [].slice.call(document.querySelectorAll(s)); }
+function clamp(v,a,b){ return v<=a?0:v>=b?1:(v-a)/(b-a); }
+function ease(p){ return p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2; }
+function lerp(a,b,t){ return a+(b-a)*t; }
+var C={ink2:'#55636F',ink3:'#8A97A3',line:'#E2E7EB',line2:'#CFD7DE',accent:'#1B4B8F',accentInk:'#123A70',accentSoft:'#E8F0FA',accentLine:'#C9DCF2',hot:'#C2410C',hotInk:'#8A3208',hotSoft:'#FBEDE4',hotLine:'#EBC6AE',good:'#15695A',goodInk:'#1D5247',goodSoft:'#E5F2EF',goodLine:'#BBD9D1'};
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function txt(x,y,s,size,color,anchor,weight,fam){
+  return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-size="'+(size||12)+'" fill="'+(color||'#8A97A3')+'" text-anchor="'+(anchor||'start')+'" font-weight="'+(weight||'400')+'" class="'+(fam&&String(fam).indexOf('mono')>-1?'mono':'sans')+'">'+esc(s)+'</text>';
+}
+function rect(x,y,w,h,fill,rx,extra){
+  return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(0,w).toFixed(1)+'" height="'+Math.max(0,h).toFixed(1)+'" fill="'+fill+'" rx="'+(rx||0)+'"'+(extra||'')+'/>';
+}
+function line(x1,y1,x2,y2,stroke,w,extra){
+  return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+stroke+'" stroke-width="'+(w||1)+'"'+(extra||'')+'/>';
+}
+function circ(cx,cy,r,fill,extra){ return '<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+r.toFixed(1)+'" fill="'+fill+'"'+(extra||'')+'/>'; }
+function pth(d,stroke,w,extra){ return '<path d="'+d+'" fill="none" stroke="'+stroke+'" stroke-width="'+(w||1.5)+'" stroke-linecap="round" stroke-linejoin="round"'+(extra||'')+'/>'; }
+function wrap(s,max){
+  var toks=[],cur='';
+  for(var i=0;i<s.length;i++){
+    var ch=s[i];
+    if(/[A-Za-z0-9_.@\/-]/.test(ch)){ cur+=ch; continue; }
+    if(cur){ toks.push(cur); cur=''; }
+    toks.push(ch);
+  }
+  if(cur) toks.push(cur);
+  var PUNCT='。，、；！？）》」』%,.;:!?)';
+  var out=[],line='';
+  for(var t=0;t<toks.length;t++){
+    var tk=toks[t];
+    if(!line&&tk===' ') continue;
+    if(line&&line.length+tk.length>max&&PUNCT.indexOf(tk.charAt(0))<0){ out.push(line); line=''; if(tk===' ') continue; }
+    line+=tk;
+  }
+  if(line) out.push(line);
+  return out;
+}
+function wlines(x,y,s,size,color,max,lh,weight,limit){
+  return wrap(s,max).slice(0,limit||4).map(function(ln,i){ return txt(x,y+i*(lh||17),ln,size,color,'start',weight); }).join('');
+}
+function fitSvg(sv){
+  try{
+    var g=sv.querySelector('g.fit'); if(!g) return;
+    var vb=sv.viewBox&&sv.viewBox.baseVal; if(!vb||!vb.width||!vb.height) return;
+    g.removeAttribute('transform');
+    var b=g.getBBox(); if(!b||!isFinite(b.x)||!isFinite(b.y)||b.width<=0||b.height<=0) return;
+    var pad=4;
+    var out=b.x<vb.x+pad||b.y<vb.y+pad||b.x+b.width>vb.x+vb.width-pad||b.y+b.height>vb.y+vb.height-pad;
+    if(!out) return;
+    var sc=Math.min(1,(vb.width-2*pad)/b.width,(vb.height-2*pad)/b.height);
+    var tx=vb.x+pad+(vb.width-2*pad-b.width*sc)/2-b.x*sc;
+    var ty=vb.y+pad+(vb.height-2*pad-b.height*sc)/2-b.y*sc;
+    g.setAttribute('transform','translate('+tx.toFixed(2)+','+ty.toFixed(2)+') scale('+sc.toFixed(4)+')');
+  }catch(e){}
+}
+function setSvg(host,s){
+  if(typeof host==='string') host=document.getElementById(host);
+  if(!host) return;
+  host.innerHTML='<g class="fit">'+s+'</g>';
+  fitSvg(host);
+}
+function play(id,dur,fn){
+  var host=document.getElementById(id); if(!host) return;
+  function run(p){ fn(p,host); }
+  if(RM){ run(1); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return; io.disconnect();
+      var t0=0;
+      requestAnimationFrame(function step(now){
+        t0=t0||now; var p=Math.min(1,(now-t0)/dur);
+        run(ease(p)); if(p<1) requestAnimationFrame(step);
+      });
+    });
+  },{threshold:0.2,rootMargin:'0px 0px -10% 0px'});
+  io.observe(host);
+}
+function tween(dur,fn){
+  if(RM){ fn(1); return function(){}; }
+  var t0=0,raf=0;
+  function step(now){ t0=t0||now; var p=Math.min(1,(now-t0)/dur); fn(ease(p)); if(p<1) raf=requestAnimationFrame(step); }
+  raf=requestAnimationFrame(step);
+  return function(){ if(raf) cancelAnimationFrame(raf); };
+}
+function markSel(row,idx){
+  $$('#'+row+' .btn').forEach(function(x,i){ x.classList.toggle('sel',i===idx); });
+}
+function bind(rowId,attr,fn){
+  var row=document.getElementById(rowId); if(!row) return;
+  $$('#'+rowId+' .btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=+b.getAttribute(attr);
+      markSel(rowId,v); fn(v);
+    });
+  });
+}
+function stamp(cx,cy,r,label,color){
+  return '<g transform="translate('+cx+','+cy+') rotate(-11)">'+
+    '<circle r="'+r+'" fill="#fff" stroke="'+color+'" stroke-width="2"/>'+
+    '<circle r="'+(r-4)+'" fill="none" stroke="'+color+'" stroke-width="0.8" opacity=".5"/>'+
+    txt(0,4.5,label,label.length>2?8.5:11.5,color,'middle','700')+'</g>';
+}
+
+$$('svg.stage').forEach(function(sv){
+  var box=document.createElement('div'); box.className='panx';
+  sv.parentNode.insertBefore(box,sv); box.appendChild(sv);
+});
+$$('.card').forEach(function(c){
+  if(RM){ c.classList.add('in'); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.disconnect(); } });
+  },{threshold:0.08});
+  io.observe(c);
+});
+if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(){ $('#hero').classList.add('in'); }); }
+
+(function(){
+  var nodes=$$('.stat .v');
+  function go(n){
+    var target=+n.getAttribute('data-count'),suf=n.getAttribute('data-suffix')||'';
+    if(RM){ n.textContent=target+suf; return; }
+    var t0=0;
+    requestAnimationFrame(function step(now){
+      t0=t0||now; var p=Math.min(1,(now-t0)/1300),v=Math.round(target*ease(p));
+      n.textContent=v.toLocaleString('en-US')+suf; if(p<1) requestAnimationFrame(step);
+    });
+  }
+  setTimeout(function(){ nodes.forEach(go); },RM?0:250);
+})();
+
+(function(){
+  var bar=$('#prog'),rail=$('#rail'),cards=$$('.card');
+  cards.forEach(function(c,i){
+    var h=c.querySelector('h2'); if(!h) return;
+    var a=document.createElement('a');
+    var t=h.textContent.trim(); a.href='#'+c.id;
+    a.innerHTML='<em>'+String(i+1).padStart(2,'0')+'</em><span>'+(t.length>5?t.slice(0,5)+'…':t)+'</span>';
+    rail.appendChild(a);
+  });
+  var links=$$('#rail a');
+  function on(){
+    var max=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(max>0?scrollY/max*100:0).toFixed(1)+'%';
+    var cur=0;
+    cards.forEach(function(c,i){ if(c.getBoundingClientRect().top<innerHeight*0.42) cur=i; });
+    links.forEach(function(a,i){ a.classList.toggle('on',i===cur); });
+  }
+  addEventListener('scroll',on,{passive:true}); on();
+})();
+
+/* ====== 1 · 四层结构 ====== */
+(function(){
+  var L=[
+    {n:'Tool · 能力层',q:'它回答：AI 能不能真的做这个动作。',e:'例子：get_weather、create_issue',m:'少了它：模型只会说话，不会动手。',ly:210},
+    {n:'MCP · 连接层',q:'它回答：这些动作按什么统一方式接进来。',e:'例子：GitHub MCP Server',m:'少了它：每个工具都得单独对接一遍。',ly:153},
+    {n:'Skill · 章法层',q:'它回答：什么时候用、按什么步骤用、哪些事不能做。',e:'例子：pptx、docx、代码审查类',m:'少了它：能动手，但每次做法都不一样。',ly:83},
+    {n:'插件 · 打包层',q:'它回答：怎么打包、怎么安装、怎么统一更新。',e:'例子：3 个 Skill + 1 个 MCP 的安装包',m:'少了它：每样都要单独装、单独更新。',ly:143}
+  ];
+  var TOOLS=['查天气','发邮件','读表格'];
+  var sel=0;
+  function draw(a){
+    var o=[0,1,2,3].map(function(k){ return k===sel?1:0.22; });
+    var s='';
+    s+='<g opacity="'+o[3].toFixed(2)+'">';
+    s+=rect(24,14,344,258,sel===3?C.accentSoft:'#FCFDFE',6,' stroke="'+(sel===3?C.accent:'#9DB8DC')+'" stroke-width="'+(sel===3?2:1.2)+'" stroke-dasharray="7 5"');
+    s+=txt(34,33,'插件 · 打包层',11,sel===3?C.accent:C.ink3,'start','600','mono');
+    s+='</g>';
+    s+='<g opacity="'+o[2].toFixed(2)+'">';
+    s+=rect(42,46,136,74,sel===2?C.accentSoft:'#fff',4,' stroke="'+(sel===2?C.accent:C.line2)+'" stroke-width="'+(sel===2?2:1)+'"');
+    s+=txt(52,67,'Skill',12.5,sel===2?C.accentInk:C.ink2,'start','650');
+    s+=txt(52,83,'章法层',10.5,C.ink3,'start','400','mono');
+    [[94,86],[103,68],[112,78]].forEach(function(d){ s+=line(52,d[0],52+d[1],d[0],sel===2?C.accentLine:C.line2,1.5); });
+    s+='</g>';
+    s+='<g opacity="'+o[1].toFixed(2)+'">';
+    s+=txt(42,136,'MCP · 连接层',10.5,sel===1?C.accent:C.ink3,'start','600','mono');
+    s+=rect(42,142,304,22,sel===1?C.accent:'#DDE3E9',3);
+    s+=txt(194,157,'统一插口 · 每边只接一次',10.5,sel===1?'#fff':C.ink3,'middle','600');
+    [88,194,300].forEach(function(x){ s+=line(x,164,x,182,sel===1?C.accent:C.line2,1.5); });
+    s+='</g>';
+    s+='<g opacity="'+o[0].toFixed(2)+'">';
+    TOOLS.forEach(function(t,i){
+      var x=42+i*106;
+      s+=rect(x,182,92,56,sel===0?C.accentSoft:'#fff',4,' stroke="'+(sel===0?C.accent:C.line2)+'" stroke-width="'+(sel===0?2:1)+'"');
+      s+=txt(x+46,207,t,12.5,sel===0?C.accentInk:C.ink2,'middle','600');
+      s+=txt(x+46,225,'Tool',10,C.ink3,'middle','400','mono');
+    });
+    s+=txt(42,258,'Tool · 能力层',10.5,sel===0?C.accent:C.ink3,'start','600','mono');
+    s+='</g>';
+    s+=pth('M368 '+L[sel].ly+' H388',C.accentLine,1.5,' stroke-dasharray="3 3" opacity="'+a.toFixed(2)+'"');
+    var px=392+(1-a)*10, d=L[sel];
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    s+=txt(px,40,d.n,14,C.accentInk,'start','700');
+    s+=line(px,50,604,50,C.accentLine,1);
+    var y=74;
+    [['它回答的问题',d.q,C.ink2],['真实例子',d.e,C.ink2],['少了它会怎样',d.m,C.hotInk]].forEach(function(b){
+      s+=txt(px,y,b[0],10.5,C.ink3,'start','600','mono');
+      s+=wlines(px,y+18,b[1],12,b[2],17,17,'400',3);
+      y+=76;
+    });
+    s+='</g>';
+    setSvg('layer-svg',s);
+  }
+  play('layer-svg',700,function(p){ draw(p); });
+  bind('layer-btns','data-l',function(v){ sel=v; tween(320,function(p){ draw(p); }); });
+})();
+
+/* ====== 2 · 没有手 vs 有手 ====== */
+(function(){
+  var sel=0;
+  function bub(x,y,w,h,s){
+    return rect(x,y,w,h,C.accent,10)+txt(x+14,y+h/2+4.5,s,12.5,'#fff','start','600');
+  }
+  function arrow(x1,y1,x2,y2,col){
+    return pth('M'+x1+' '+y1+' L'+x2+' '+y2,col,1.5)+pth('M'+(x2-8)+' '+(y2-5)+' L'+x2+' '+y2+' L'+(x2-8)+' '+(y2+5),col,1.5);
+  }
+  function draw(a){
+    var s='';
+    s+=bub(16,18,130,44,'上海现在多少度？');
+    s+=arrow(150,40,184,40,C.line2);
+    s+=rect(186,14,144,54,'#fff',4,' stroke="'+C.line2+'" stroke-width="1"');
+    s+=txt(258,36,'模型',13,C.ink2,'middle','650');
+    s+=txt(258,54,'手里只有文字',10.5,C.ink3,'middle','400');
+    if(sel===0){
+      s+='<g opacity="'+a.toFixed(2)+'">';
+      s+=arrow(330,40,368,40,C.hotLine);
+      s+=rect(370,14,190,54,C.hotSoft,4,' stroke="'+C.hotLine+'" stroke-width="1.5"');
+      s+=txt(386,36,'22℃，晴',13.5,C.hotInk,'start','650');
+      s+=txt(386,54,'凭训练时见过的文字猜的',10.5,C.hotInk,'start','400');
+      s+=stamp(584,41,20,'编的',C.hot);
+      s+=rect(16,96,588,80,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+      s+=txt(32,120,'整条链路里，没有一步离开过模型。',12.5,C.ink2,'start','600');
+      s+=wlines(32,142,'它没有联网、没有查数据库、没有调用任何程序，只是根据训练时见过的海量文本，挑了一个看起来最像答案的数字。',11.5,C.ink3,44,17,'400',2);
+      ['没有联网','没有查数据库','没有调用任何程序'].forEach(function(t,i){
+        var x=16+i*200;
+        s+=rect(x,196,188,40,C.hotSoft,4,' stroke="'+C.hotLine+'" stroke-width="1"');
+        s+=txt(x+16,221,'✗  '+t,12,C.hotInk,'start','600');
+      });
+      s+=txt(310,264,'少的那一整圈，就是「工具」要补上的东西。',11.5,C.ink3,'middle','400');
+      s+='</g>';
+    }else{
+      s+='<g opacity="'+a.toFixed(2)+'">';
+      s+=pth('M258 68 V92',C.accent,1.5)+pth('M253 86 L258 94 L263 86',C.accent,1.5);
+      s+=rect(16,96,176,64,'#fff',4,' stroke="'+C.accentLine+'" stroke-width="1.5"');
+      s+=txt(28,114,'① 申请单（JSON）',10.5,C.accent,'start','600','mono');
+      s+=txt(28,133,'{"tool":"get_weather",',10.5,C.accentInk,'start','400','mono');
+      s+=txt(28,149,' "city":"上海"}',10.5,C.accentInk,'start','400','mono');
+      s+=arrow(192,128,224,128,C.accent);
+      s+=rect(226,96,120,64,C.goodSoft,4,' stroke="'+C.goodLine+'" stroke-width="1.5"');
+      s+=txt(286,120,'外部程序',12,C.goodInk,'middle','650');
+      s+=txt(286,138,'这一步真的',10.5,C.goodInk,'middle','400');
+      s+=txt(286,153,'去查了',10.5,C.goodInk,'middle','400');
+      s+=arrow(346,128,378,128,C.good);
+      s+=rect(380,96,110,64,'#fff',4,' stroke="'+C.line2+'" stroke-width="1"');
+      s+=txt(435,116,'真实数据',10.5,C.ink3,'middle','600');
+      s+=txt(435,136,'26℃',15,C.good,'middle','700','mono');
+      s+=txt(435,152,'湿度 61%',10,C.ink2,'middle','400');
+      s+=pth('M490 128 H524 V188 H186 V200',C.accent,1.5,' stroke-dasharray="4 3"')+pth('M181 194 L186 202 L191 194',C.accent,1.5);
+      s+=txt(532,150,'② 结果回传',9.5,C.ink3,'start','400','mono');
+      s+=rect(16,204,330,48,C.goodSoft,4,' stroke="'+C.goodLine+'" stroke-width="1.5"');
+      s+=txt(32,225,'上海现在 26℃，湿度 61%',13,C.goodInk,'start','650');
+      s+=txt(32,243,'③ 模型把查到的结果翻译成人话',10.5,C.goodInk,'start','400');
+      s+=stamp(382,228,20,'查来的',C.good);
+      s+=rect(418,204,186,48,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+      s+=txt(430,224,'模型只写了申请单，',11.5,C.ink2,'start','600');
+      s+=txt(430,241,'真正动手的是外面那段程序。',11,C.ink3,'start','400');
+      s+=txt(310,278,'多出来的这一整圈，就叫工具调用。',11.5,C.ink3,'middle','400');
+      s+='</g>';
+    }
+    setSvg('hand-svg',s);
+  }
+  play('hand-svg',700,function(p){ draw(p); });
+  bind('hand-btns','data-h',function(v){ sel=v; tween(340,function(p){ draw(p); }); });
+})();
+
+/* ====== 3 · 工具调用六步 ====== */
+(function(){
+  var ST=[
+    {a:'你',ac:C.ink3,l:['上海现在多少度？']},
+    {a:'模型',ac:C.accent,l:['读到一份工具清单：','名字 + 一句描述 + 参数格式']},
+    {a:'模型',ac:C.accent,l:['输出一张申请单（JSON）：','{"tool":"get_weather","city":"上海"}'],m:1},
+    {a:'外部程序',ac:C.good,l:['真正发起查询 —— 模型在这里等着，','它不能自己点鼠标，也不能自己发请求']},
+    {a:'外部程序',ac:C.good,l:['按同样严格的格式把结果回传：','{"temp":26,"humidity":61}'],m:1},
+    {a:'模型',ac:C.accent,l:['把结果翻译成人话：','「上海现在 26℃，湿度 61%。」']}
+  ];
+  var step=0, dial=document.getElementById('call-dial');
+  function draw(){
+    var s='';
+    s+=line(30,14,30,12+5*54+24,step>=5?C.accent:C.line,2);
+    ST.forEach(function(d,i){
+      var y=12+i*54, act=i<=step, col=act?d.ac:C.line2;
+      s+='<g opacity="'+(act?1:0.3).toFixed(2)+'">';
+      s+=circ(30,y+24,13,act?col:'#EDF0F3');
+      s+=txt(30,y+28.5,String(i+1),11.5,act?'#fff':C.ink3,'middle','700','mono');
+      s+=rect(52,y,124,48,act?'#fff':'#FAFBFC',4,' stroke="'+col+'" stroke-width="'+(act?1.5:1)+'"');
+      s+=txt(114,y+29,d.a,12.5,act?col:C.ink3,'middle','650');
+      s+=pth('M176 '+(y+24)+' H194',act?col:C.line2,1.5)+pth('M188 '+(y+19)+' L196 '+(y+24)+' L188 '+(y+29),act?col:C.line2,1.5);
+      s+=rect(198,y,406,48,act?(d.ac===C.good?C.goodSoft:C.accentSoft):'#FAFBFC',4,' stroke="'+(act?col:C.line)+'" stroke-width="1"');
+      if(d.l.length===1){
+        s+=txt(212,y+29,d.l[0],12.5,act?C.ink2:C.ink3,'start','400');
+      }else{
+        s+=txt(212,y+20,d.l[0],11.5,act?C.ink2:C.ink3,'start','400');
+        s+=txt(212,y+37,d.l[1],11,act?C.accentInk:C.ink3,'start','400',d.m?'mono':'');
+      }
+      s+='</g>';
+    });
+    setSvg('call-svg',s);
+  }
+  play('call-svg',900,function(p){ step=Math.round(p*5); if(dial) dial.value=String(step); draw(); });
+  if(dial) dial.addEventListener('input',function(){ step=+dial.value; draw(); });
+})();
+
+/* ====== 4 · 描述决定选得对不对 ====== */
+(function(){
+  var GOOD=[
+    {n:'get_weather',d:'查询指定城市当前实时天气，返回温度、湿度、风力',c:0.96},
+    {n:'search_web',d:'在互联网上搜索网页，返回标题和摘要',c:0.06},
+    {n:'read_file',d:'读取本机指定路径的文件内容',c:0.03}
+  ];
+  var BAD=[
+    {n:'get_data',d:'获取数据',c:0.38},
+    {n:'search_web',d:'处理请求',c:0.44},
+    {n:'read_file',d:'读取',c:0.31}
+  ];
+  var sel=0;
+  function draw(a){
+    var T=sel===0?GOOD:BAD, pick=sel===0?0:1, ok=sel===0, s='';
+    s+=txt(16,26,'模型能看到的工具清单（它读不到背后的代码）',10.5,C.ink3,'start','600','mono');
+    T.forEach(function(d,i){
+      var y=38+i*56, hit=i===pick;
+      s+='<g opacity="'+(hit?1:0.5).toFixed(2)+'">';
+      s+=rect(16,y,588,48,hit?(ok?C.goodSoft:C.hotSoft):'#fff',4,' stroke="'+(hit?(ok?C.good:C.hot):C.line)+'" stroke-width="'+(hit?1.8:1)+'"');
+      s+=txt(28,y+20,d.n,12.5,hit?(ok?C.goodInk:C.hotInk):C.ink2,'start','600','mono');
+      s+=txt(28,y+38,'— '+d.d,11.5,hit?C.ink2:C.ink3,'start','400');
+      s+=txt(380,y+15,'把握度',9.5,C.ink3,'start','400','mono');
+      s+=rect(380,y+22,160,8,'#EDF0F3',4);
+      if(160*d.c*a>0.5) s+=rect(380,y+22,160*d.c*a,8,hit?(ok?C.good:C.hot):C.line2,4);
+      s+=txt(548,y+31,Math.round(d.c*a*100)+'%',10.5,hit?(ok?C.goodInk:C.hotInk):C.ink3,'start','600','mono');
+      s+=circ(582,y+24,10,hit?(ok?C.good:C.hot):'#EDF0F3');
+      if(hit&&a>0.6) s+=txt(582,y+28.5,ok?'✓':'✗',11,'#fff','middle','700');
+      s+='</g>';
+    });
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    s+=rect(16,214,588,66,ok?C.goodSoft:C.hotSoft,4,' stroke="'+(ok?C.goodLine:C.hotLine)+'" stroke-width="1.5"');
+    s+=stamp(52,247,18,ok?'选对':'选错',ok?C.good:C.hot);
+    if(ok){
+      s+=txt(84,236,'选中 get_weather(city="上海")',12,C.goodInk,'start','650','mono');
+      s+=txt(84,255,'→ 26℃，湿度 61%，东南风 3 级。「现在不算冷，薄外套就够。」',11.5,C.goodInk,'start','400');
+      s+=txt(84,272,'描述写清了「什么时候该用我」，模型一步就挑对。',10.5,C.ink3,'start','400');
+    }else{
+      s+=txt(84,236,'选中 search_web(query="上海 冷不冷")',12,C.hotInk,'start','650','mono');
+      s+=txt(84,255,'→ 返回十几条网页摘要，没有一条给出实时温度。',11.5,C.hotInk,'start','400');
+      s+=txt(84,272,'三个描述一样含糊，把握度几乎打平 —— 它只能瞎挑一个。',10.5,C.ink3,'start','400');
+    }
+    s+='</g>';
+    setSvg('desc-svg',s);
+  }
+  play('desc-svg',750,function(p){ draw(p); });
+  bind('desc-btns','data-d',function(v){ sel=v; tween(340,function(p){ draw(p); }); });
+})();
+
+/* ====== 5 · 工具清单吃掉上下文 ====== */
+(function(){
+  var SV=[
+    {n:'GitHub',t:35,v:26000},
+    {n:'Slack',t:11,v:21000},
+    {n:'Sentry',t:5,v:3000},
+    {n:'Grafana',t:5,v:3000},
+    {n:'Splunk',t:2,v:2000},
+    {n:'Jira',t:null,v:17000}
+  ];
+  var GROUPS=[[0],[0,1],[0,1,2,3,4],[0,1,2,3,4,5]];
+  var sel=3, X0=140, XW=380, MAX=26000, WIN=200000, FW=588;
+  function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function draw(p){
+    var act=GROUPS[sel], s='';
+    var tot=act.reduce(function(x,i){ return x+SV[i].v; },0)*p;
+    var cnt=act.reduce(function(x,i){ return x+(SV[i].t||0); },0);
+    s+=txt(16,26,'已接入的 MCP 服务器 · 光工具清单就占掉的词元',10.5,C.ink3,'start','600','mono');
+    SV.forEach(function(d,i){
+      var y=46+i*28, on=act.indexOf(i)>-1, w=on?(d.v/MAX)*XW*p:0;
+      s+='<g opacity="'+(on?1:0.24).toFixed(2)+'">';
+      s+=txt(92,y+13,d.n,11.5,on?C.ink2:C.ink3,'end','600');
+      s+=txt(100,y+13,d.t===null?'—':d.t+' 个',10,on?C.ink3:'#C6CDD4','start','400','mono');
+      s+=rect(X0,y,XW,16,'#EDF0F3',2);
+      if(w>0.5) s+=rect(X0,y,w,16,C.accent,2);
+      if(on&&p>0.8) s+=txt(X0+w+8,y+13,fmt(d.v),10.5,C.accentInk,'start','600','mono');
+      s+='</g>';
+    });
+    s+=line(16,218,604,218,C.line,1);
+    s+=txt(92,240,'合计',11.5,C.ink3,'end','600');
+    s+=txt(100,240,cnt+' 个工具',12,C.ink2,'start','650');
+    s+=txt(604,244,fmt(tot)+' 词元',19,C.accent,'end','700','mono');
+    var fy=264, fw=FW*(tot/WIN);
+    s+=txt(16,fy-6,'模型一次能看到的总量（上下文窗口，示意 200,000 词元）',10,C.ink3,'start','400','mono');
+    s+=rect(16,fy,FW,26,'#EDF0F3',3);
+    if(fw>0.5) s+=rect(16,fy,fw,26,C.accent,3);
+    if(fw>150) s+=txt(24,fy+17,'工具清单 '+fmt(tot),10.5,'#fff','start','600');
+    if(FW-fw>170) s+=txt(16+Math.max(fw,150)+10,fy+17,'还能对话的空间 '+fmt(WIN-tot),10.5,C.ink2,'start','400');
+    [0,50000,100000,150000,200000].forEach(function(v){
+      var x=16+FW*(v/WIN);
+      s+=line(x,fy+26,x,fy+31,C.line2,1);
+      s+=txt(x,fy+43,v===0?'0':(v/1000)+'K',9.5,C.ink3,'middle','400','mono');
+    });
+    s+=txt(310,fy+62,sel===3?'加上 Jira 就到 72,000 —— Anthropic 说这时候「很快就逼近 100,000 以上」':'点上面的按钮，一个个把服务器接上去',10.5,sel===3?C.hotInk:C.ink3,'middle','400');
+    setSvg('cost-svg',s);
+  }
+  play('cost-svg',1100,function(p){ draw(p); });
+  bind('cost-btns','data-c',function(v){ sel=v; tween(620,function(p){ draw(p); }); });
+})();
+/* ====== 6 · N×M 变 N+M ====== */
+(function(){
+  var sel=0;
+  var APPS=['Claude','Qoder','Cursor','你写的程序'];
+  var SVCS=['GitHub','Slack','数据库','内部系统'];
+  var Y=[64,114,164,214];
+  function draw(a){
+    var s='',k=0;
+    s+=txt(310,26,sel===0?'4 × 4 = 16 套专用对接':'4 + 4 = 8 套，每边各做一次',13.5,sel===0?C.hotInk:C.accentInk,'middle','700');
+    APPS.forEach(function(t,i){
+      s+=rect(16,Y[i],134,38,'#fff',4,' stroke="'+C.line2+'" stroke-width="1"');
+      s+=txt(83,Y[i]+24,t,12,C.ink2,'middle','600');
+    });
+    SVCS.forEach(function(t,i){
+      s+=rect(470,Y[i],134,38,'#fff',4,' stroke="'+C.line2+'" stroke-width="1"');
+      s+=txt(537,Y[i]+24,t,12,C.ink2,'middle','600');
+    });
+    if(sel===0){
+      for(var i=0;i<4;i++)for(var j=0;j<4;j++){
+        var y1=Y[i]+19,y2=Y[j]+19,cy=(y1+y2)/2+(i-j)*9;
+        var op=clamp(a*20-k*0.85,0,1); k++;
+        s+=pth('M150 '+y1+' Q310 '+cy.toFixed(1)+' 470 '+y2,C.hot,1.2,' opacity="'+(op*0.5).toFixed(2)+'"');
+      }
+    }else{      for(var i2=0;i2<4;i2++){
+        var yy=Y[i2]+19,op2=clamp(a*4-i2*0.5,0,1);
+        s+=line(150,yy,296,yy,C.accent,1.6,' opacity="'+op2.toFixed(2)+'"');
+        s+=line(324,yy,470,yy,C.accent,1.6,' opacity="'+op2.toFixed(2)+'"');
+      }
+      s+=rect(296,56,28,204,C.accent,3,' opacity="'+a.toFixed(2)+'"');
+      s+=txt(310,162,'MCP',10.5,'#fff','middle','700','mono');
+    }
+    var note=sel===0
+      ?['每加一个新系统，左边四个应用都得再各写一遍对接代码。','两边都涨到 50 个时，是 2500 套。']
+      :['每边各自只做一次对接，中间靠同一条约定对上话。','两边都涨到 50 个时，是 100 套。'];
+    s+=rect(16,288,588,42,sel===0?C.hotSoft:'#fff',4,' stroke="'+(sel===0?C.hotLine:C.line)+'" stroke-width="1"');
+    s+=txt(32,306,note[0],11.5,sel===0?C.hotInk:C.ink2,'start','600');
+    s+=txt(32,323,note[1],11.5,sel===0?C.hotInk:C.ink3,'start','400');
+    setSvg('nxm-svg',s);
+  }
+  play('nxm-svg',820,function(p){ draw(p); });
+  bind('nxm-btns','data-n',function(v){ sel=v; tween(420,function(p){ draw(p); }); });
+})();
+
+/* ====== 7 · 三类原语：谁按下按钮 ====== */
+(function(){
+  var sel=0;
+  var ACT=[{n:'模型',e:'model',x:40},{n:'应用（宿主）',e:'host',x:230},{n:'用户',e:'user',x:420}];
+  var P=[
+    {chip:'模型控制 · model-controlled',prim:'Tools',
+     l1:'模型自己判断该不该调，人不一定每次都点头。',
+     l2:'例子：GitHub 服务器上的 create_issue。'},
+    {chip:'应用控制 · application-controlled',prim:'Resources',
+     l1:'外层应用决定把哪些数据读进来喂给模型。',
+     l2:'例子：一份项目文件、一张表的结构说明。'},
+    {chip:'用户控制 · user-controlled',prim:'Prompts',
+     l1:'必须由人主动从菜单里挑，模型不能自己触发。',
+     l2:'例子：事先备好的「帮我审一遍这段代码」。'}
+  ];
+  function draw(a){
+    var s='',d=P[sel],xc=ACT[sel].x+80;
+    ACT.forEach(function(t,i){
+      var on=i===sel;
+      s+=rect(t.x,16,160,48,on?C.accentSoft:'#fff',4,' stroke="'+(on?C.accent:C.line)+'" stroke-width="'+(on?2:1)+'" opacity="'+(on?1:0.55).toFixed(2)+'"');
+      s+=txt(t.x+80,38,t.n,13,on?C.accentInk:C.ink3,'middle','650');
+      s+=txt(t.x+80,55,on?t.e:'✗ 不是它发起',10,on?C.ink3:C.ink3,'middle','400',on?'mono':'sans');
+    });
+    s+=pth('M'+xc+' 64 V88 H310 V106',C.accent,1.8,' opacity="'+a.toFixed(2)+'"');
+    s+=pth('M304 100 L310 109 L316 100',C.accent,1.8,' opacity="'+a.toFixed(2)+'"');
+    s+=rect(200,112,220,60,'#fff',4,' stroke="'+C.accent+'" stroke-width="2"');
+    s+=txt(310,138,'MCP 服务器',13,C.accentInk,'middle','650');
+    s+=txt(310,158,d.prim,11.5,C.accent,'middle','600','mono');
+    s+=pth('M310 172 V188',C.line2,1.8);
+    s+=pth('M305 183 L310 191 L315 183',C.line2,1.8);
+    s+=rect(16,196,588,72,'#FCFDFE',4,' stroke="'+C.line+'" stroke-width="1"');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    var cw=d.chip.length*7.4+24;
+    s+=rect(32,206,cw,20,C.accentSoft,3,' stroke="'+C.accentLine+'" stroke-width="1"');
+    s+=txt(44,220,d.chip,10.5,C.accentInk,'start','600');
+    s+=txt(32,246,d.l1,12,C.ink2,'start','400');
+    s+=txt(32,263,d.l2,11.5,C.ink3,'start','400');
+    s+='</g>';
+    setSvg('prim-svg',s);
+  }
+  play('prim-svg',680,function(p){ draw(p); });
+  bind('prim-btns','data-p',function(v){ sel=v; tween(340,function(p){ draw(p); }); });
+})();
+
+/* ====== 8 · Host / Client / Server 拓扑 ====== */
+(function(){
+  var sel=0;
+  var SV=[
+    {n:'filesystem',sub:'本机文件'},
+    {n:'git',sub:'本机仓库'},
+    {n:'GitHub',sub:'云端'}
+  ];
+  var INFO=[
+    [['跑在哪','你这台电脑上的一个进程'],['传输方式','stdio（不出这台机器）'],['它能碰到什么','你允许的那些文件夹里的文件']],
+    [['跑在哪','你这台电脑上的一个进程'],['传输方式','stdio（不出这台机器）'],['它能碰到什么','本机 Git 仓库的提交历史和分支']],
+    [['跑在哪','GitHub 的服务器上，在远端'],['传输方式','Streamable HTTP（走网络）'],['它能碰到什么','你授权给它的那些仓库、issue、PR']]
+  ];
+  var Y=[64,116,168];
+  function draw(a){
+    var s='';
+    s+=rect(16,16,274,206,'#FCFDFE',6,' stroke="'+C.line2+'" stroke-width="1.2"');
+    s+=txt(28,38,'Host · 宿主',11.5,C.accent,'start','700','mono');
+    s+=txt(28,54,'你打开的那个 AI 应用',10.5,C.ink3,'start','400');
+    SV.forEach(function(t,i){
+      var on=i===sel;
+      s+=rect(36,Y[i],234,40,on?C.accentSoft:'#fff',4,' stroke="'+(on?C.accent:C.line)+'" stroke-width="'+(on?1.8:1)+'"');
+      s+=txt(48,Y[i]+18,'Client '+(i+1),11,on?C.accentInk:C.ink3,'start','600','mono');
+      s+=txt(48,Y[i]+32,on?'一对一，只连它自己':'待命',9.5,C.ink3,'start','400');
+      s+=line(270,Y[i]+20,380,Y[i]+20,on?C.accent:C.line2,on?2.5:1.2);
+      s+=rect(380,Y[i],224,40,on?'#fff':'#FCFDFE',4,' stroke="'+(on?C.accent:C.line)+'" stroke-width="'+(on?2:1)+'"');
+      s+=txt(392,Y[i]+18,t.n,11.5,on?C.accentInk:C.ink3,'start','650','mono');
+      s+=txt(392,Y[i]+32,t.sub+(on?'':' · Server'),9.5,on?C.ink3:C.ink3,'start','400');
+    });
+    s+=rect(16,234,588,68,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    INFO[sel].forEach(function(r,i){
+      var y=254+i*20;
+      s+=txt(32,y,r[0],10.5,C.ink3,'start','600','mono');
+      s+=txt(132,y,r[1],11.5,C.ink2,'start','400');
+    });
+    s+='</g>';
+    setSvg('topo-svg',s);
+  }
+  play('topo-svg',700,function(p){ draw(p); });
+  bind('topo-btns','data-t',function(v){ sel=v; tween(320,function(p){ draw(p); }); });
+})();
+
+/* ====== 9 · 同一个任务，有没有章法 ====== */
+(function(){
+  var sel=0;
+  var S0=[
+    ['猜了一个模板，做出来才发现不是公司那套','⚠'],
+    ['换模板重做一遍','⚠'],
+    ['标题字号用了 28，公司规范是 24','✗'],
+    ['数据来源没标，被打回来补','✗'],
+    ['第三版才交出去','⚠']
+  ];
+  var S1=[
+    ['打开 pptx Skill，读到公司模板和字号规范','✓'],
+    ['按规范里的表格填数据，标好来源','✓'],
+    ['一次交出去','✓']
+  ];
+  function draw(a){
+    var s='',rows=sel===0?S0:S1,col=sel===0?C.hot:C.good;
+    s+=rect(16,12,588,40,C.accentSoft,4,' stroke="'+C.accentLine+'" stroke-width="1"');
+    s+=txt(32,37,'任务：把这份季度数据做成 PPT',13,C.accentInk,'start','650');
+    s+=rect(520,20,72,24,'#fff',4,' stroke="'+col+'" stroke-width="1.5"');
+    s+=txt(556,36,rows.length+' 步',12,col,'middle','700');
+    rows.forEach(function(r,i){
+      var y=64+i*35,op=clamp(a*(rows.length+2)-i*0.7,0,1);
+      s+='<g opacity="'+op.toFixed(2)+'">';
+      s+=rect(16,y,540,28,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+      s+=txt(30,y+18,(i+1)+'. '+r[0],11.5,C.ink2,'start','400');
+      s+=circ(580,y+14,12,r[1]==='✓'?C.goodSoft:C.hotSoft,' stroke="'+(r[1]==='✓'?C.goodLine:C.hotLine)+'" stroke-width="1"');
+      s+=txt(580,y+18,r[1],11.5,r[1]==='✓'?C.goodInk:C.hotInk,'middle','700');
+      s+='</g>';
+    });
+    if(sel===1){
+      s+='<g opacity="'+a.toFixed(2)+'">';
+      s+=rect(16,176,588,56,'#FCFDFE',4,' stroke="'+C.line2+'" stroke-width="1.2" stroke-dasharray="6 4"');
+      s+=txt(310,200,'省下的两步',12,C.goodInk,'middle','650');
+      s+=txt(310,219,'不用试模板，不用返工',11.5,C.ink3,'middle','400');
+      s+='</g>';
+    }
+    s+=rect(16,248,588,48,sel===0?C.hotSoft:C.goodSoft,4,' stroke="'+(sel===0?C.hotLine:C.goodLine)+'" stroke-width="1" opacity="'+a.toFixed(2)+'"');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    s+=stamp(52,272,20,sel===0?'返工':'一次过',col);
+    if(sel===0){
+      s+=txt(86,267,'它能做出来，但每一步都是现场猜的。',12,C.hotInk,'start','600');
+      s+=txt(86,286,'模板、字号、来源标注——三处都不合规范。',11.5,C.hotInk,'start','400');
+    }else{
+      s+=txt(86,267,'章法把「怎么做」提前写死了。',12,C.goodInk,'start','600');
+      s+=txt(86,286,'同一个模型、同一批工具，它只是终于知道了你们的规矩。',11.5,C.goodInk,'start','400');
+    }
+    s+='</g>';
+    setSvg('skill-svg',s);
+  }
+  play('skill-svg',780,function(p){ draw(p); });
+  bind('skill-btns','data-s',function(v){ sel=v; tween(400,function(p){ draw(p); }); });
+})();
+
+/* ====== 10 · 渐进式披露：三层计数器 ====== */
+(function(){
+  var sel=0,prev=0,HIT=13;
+  var VAL=[2000,5000,6500],DELTA=['+0','+3,000','+1,500'];
+  var DL=['还没命中任何任务','读进了那一个 SKILL.md 全文','又翻到它带的模板文件'];
+  var TT=['第一层 · 发现','第二层 · 激活','第三层 · 执行'];
+  var EX=['启动时只读了 40 个 Skill 的名字和一句话描述，全文一个字都没进来。',
+          '这次任务和「做 PPT」那条描述对上了，只把那一个的全文读进来。另外 39 个还是只有一行名字。',
+          '真要用到，才去翻它带的模板文件和脚本。没被点中的部分，始终没进过上下文。'];
+  var NOTE=['40 个 Skill 全在这里，每个只占一行名字。','命中了 1 个：pptx。它的全文刚被读进来。','又翻了它带的 2 个附件。其余 39 个从头到尾没动过。'];
+  var FULL=55000,BW=308;
+  function draw(a){
+    var s='',v=Math.round(lerp(VAL[prev],VAL[sel],a));
+    s+=txt(16,30,'手边的 40 个 Skill',11,C.ink3,'start','600','mono');
+    for(var r=0;r<8;r++)for(var c=0;c<5;c++){
+      var i=r*5+c,x=16+c*46,y=42+r*18,hit=(i===HIT&&sel>=1);
+      var op=hit?a:0;
+      s+=rect(x,y,40,14,hit?C.accent:'#EEF2F5',2,' stroke="'+(hit?C.accentInk:'#E2E7EB')+'" stroke-width="0.8"'+(hit?' opacity="'+op.toFixed(2)+'"':''));
+    }
+    s+=rect(16,198,224,90,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+    s+=txt(30,220,TT[sel],11,C.accent,'start','700','mono');
+    s+=wlines(30,242,NOTE[sel],11.5,C.ink2,15,17,'400',3);
+    s+=txt(296,34,'当前占用上下文',11,C.ink3,'start','600','mono');
+    s+=txt(296,78,v.toLocaleString('en-US'),34,C.accent,'start','700','mono');
+    s+=txt(296,100,DELTA[sel]+' · '+DL[sel],11,sel===0?C.ink3:C.hotInk,'start','400');
+    var w1=Math.max(3,VAL[sel]/FULL*BW),w0=Math.max(3,VAL[prev]/FULL*BW),wb=lerp(w0,w1,a);
+    s+=txt(280,122,'Skill 的占用',10,C.ink3,'start','600','mono');
+    s+=rect(280,128,BW,16,'#F1F4F7',2);
+    s+=rect(280,128,wb,16,C.accent,2);
+    s+=txt(280,162,'58 个工具定义 = 55,000',10,C.hotInk,'start','600','mono');
+    s+=rect(280,168,BW,16,C.hot,2,' fill-opacity=".38" stroke="'+C.hotLine+'" stroke-width="1"');
+    s+=txt(280,198,'条形按 55,000 = 满格 画',10,C.ink3,'start','400');
+    s+=rect(280,206,324,84,'#FCFDFE',4,' stroke="'+C.line+'" stroke-width="1"');
+    s+=txt(296,228,'这一层发生了什么',10.5,C.ink3,'start','600','mono');
+    s+=wlines(296,248,EX[sel],11.5,C.ink2,22,17,'400',3);
+    setSvg('pd-svg',s);
+  }
+  play('pd-svg',760,function(p){ draw(p); });
+  bind('pd-btns','data-g',function(v){ prev=sel; sel=v; tween(460,function(p){ draw(p); }); });
+})();
+
+/* ====== 11 · 插件装配 ====== */
+(function(){
+  var sel=0,prev=0;
+  var PARTS=[
+    ['Skill','周报规范'],['Skill','PPT 模板'],['MCP','内部数据'],['命令','/周报'],['hook','提交前检查']
+  ];
+  var CAP=['五个零件散着，各自都能单独用——不需要插件。',
+           '装进一个盒子，起了个名字：sales-kit。',
+           '一条命令，五样一起到位。盒子没给新人增加任何新本事。'];
+  function draw(a){
+    var s='',st=lerp(prev,sel,a),inBox=clamp(st,0,1),inst=clamp(st-1,0,1);
+    s+=rect(240,32,174,228,'#FCFDFE',6,' stroke="'+C.line2+'" stroke-width="1.4" stroke-dasharray="7 5" opacity="'+(1-inBox).toFixed(2)+'"');
+    s+=rect(240,32,174,228,'#FCFDFE',6,' stroke="'+C.accent+'" stroke-width="1.6" opacity="'+inBox.toFixed(2)+'"');
+    s+=rect(240,32,174,16,C.accent,0,' opacity="'+inBox.toFixed(2)+'"');
+    s+='<g opacity="'+inBox.toFixed(2)+'">'+txt(327,44,'PLUGIN',9,'#fff','middle','700','mono')+'</g>';
+    PARTS.forEach(function(p,i){
+      var x=lerp(16,252,inBox),y=lerp(40+i*44,56+i*34,inBox);
+      var w=lerp(174,150,inBox),h=lerp(36,28,inBox),fs=lerp(11.5,10,inBox);
+      var op=i===0?1:clamp(a*(PARTS.length+2)-i*0.6,0,1);
+      s+='<g opacity="'+op.toFixed(2)+'">';
+      s+=rect(x,y,w,h,'#fff',4,' stroke="'+C.line2+'" stroke-width="1"');
+      s+=circ(x+13,y+h/2,4,C.accentSoft,' stroke="'+C.accentLine+'" stroke-width="1"');
+      s+=txt(x+24,y+h/2+fs*0.36,p[0]+' · '+p[1],fs,C.ink2,'start','500');
+      s+='</g>';
+    });
+    s+='<g opacity="'+inBox.toFixed(2)+'">'+txt(327,244,'sales-kit',13,C.accentInk,'middle','700','mono')+'</g>';
+    s+=pth('M194 146 H232',C.accentLine,1.6,' stroke-dasharray="4 3" opacity="'+inBox.toFixed(2)+'"');
+    s+=pth('M227 141 L235 146 L227 151',C.accentLine,1.6,' opacity="'+inBox.toFixed(2)+'"');
+    s+='<g opacity="'+(0.45+0.55*inst).toFixed(2)+'">';
+    s+='<path d="M508 140 Q508 106 534 106 Q560 106 560 140 Z" fill="'+C.accentSoft+'" stroke="'+C.accentLine+'" stroke-width="1"/>';
+    s+=circ(534,86,15,C.accentSoft,' stroke="'+C.accentLine+'" stroke-width="1"');
+    s+=txt(534,188,'新同事',11,C.ink2,'middle','600');
+    s+='</g>';
+    for(var i2=0;i2<5;i2++){
+      s+=circ(502+i2*16,162,5,i2/5<inst?C.accent:'#EEF2F5',' stroke="'+(i2/5<inst?C.accentInk:C.line)+'" stroke-width="0.8"');
+    }
+    s+=pth('M418 110 H492',C.accent,1.8,' stroke-dasharray="5 4" opacity="'+inst.toFixed(2)+'"');
+    s+=pth('M486 104 L496 110 L486 116',C.accent,1.8,' opacity="'+inst.toFixed(2)+'"');
+    var ci=Math.round(st);
+    s+=rect(16,276,588,36,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    s+=txt(32,298,CAP[ci],11.5,C.ink2,'start','400');
+    if(inst>0.02) s+=txt(588,298,'$ 安装 sales-kit',11,C.accent,'end','600','mono');
+    s+='</g>';
+    setSvg('plug-svg',s);
+  }
+  play('plug-svg',820,function(p){ draw(p); });
+  bind('plug-btns','data-g',function(v){ prev=sel; sel=v; tween(560,function(p){ draw(p); }); });
+})();
+
+/* ====== 12 · 「插件」这个词的时间轴 ====== */
+(function(){
+  var sel=0;
+  var N=[
+    {t:'传统软件插件',y:'1990s–2020s',x:70},
+    {t:'ChatGPT Plugins',y:'2023-03',x:230},
+    {t:'退役',y:'2024',x:390},
+    {t:'今天的插件',y:'2025–2026',x:550}
+  ];
+  var D=[
+    {h:'宿主程序留好口子，第三方往里塞东西',
+     l:['装的是：功能。浏览器插件、VS Code 扩展、Photoshop 滤镜。',
+        '特点：必须按宿主定的接口写，宿主一升级就可能把你搞坏。',
+        '和 AI 的关系：没关系。这是几十年的老词，含义一直没变。']},
+    {h:'AI 圈第一次用这个词，指的是「给模型接上外部能力」',
+     l:['装的是：实时能力。查航班、订餐厅、读网页。',
+        '干的事：正是今天 MCP 干的事——只是当时每家自己定格式。',
+        '结局：一年多以后被 GPTs 和 Actions 取代。']},
+    {h:'一个词的第一次 AI 用法，没能留下来',
+     l:['原因之一：它把「接能力」和「配人设」混在一个包里，边界不清。',
+        '后来的分工：接能力交给工具调用和 MCP，配人设交给 GPTs。',
+        '留下的教训：分层比打包更重要。']},
+    {h:'回到了软件世界那个老含义：一个打包分发的单位',
+     l:['装的是：Skill、MCP 服务器、命令、hook 的任意组合。',
+        '解决的问题：一次装齐、统一更新，不是新增能力。',
+        '注意：各家内涵不完全一样，听到这四个字最好追问一句装的是什么。']}
+  ];
+  function draw(a){
+    var s='',d=D[sel];
+    s+=line(40,70,580,70,C.line2,2);
+    N.forEach(function(n,i){
+      var on=i===sel;
+      if(on) s+=line(40,70,n.x,70,C.accent,2);
+      s+=circ(n.x,70,on?13:9,on?'#fff':'#EEF2F5',' stroke="'+(on?C.accent:C.line2)+'" stroke-width="'+(on?3:1.5)+'"');
+      if(on) s+=circ(n.x,70,4,C.accent);
+      s+=txt(n.x,48,n.t,11.5,on?C.accentInk:C.ink3,'middle',on?'700':'400');
+      s+=txt(n.x,94,n.y,10.5,on?C.accent:C.ink3,'middle','400','mono');
+    });
+    s+=rect(16,116,588,118,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    s+=txt(32,142,d.h,13,C.accentInk,'start','700');
+    s+=line(32,152,588,152,C.line,1);
+    d.l.forEach(function(t,i){
+      s+=txt(32,176+i*22,t,11.5,i===2?C.ink3:C.ink2,'start',i===2?'400':'400');
+    });
+    s+='</g>';
+    setSvg('tl-svg',s);
+  }
+  play('tl-svg',700,function(p){ draw(p); });
+  bind('tl-btns','data-t',function(v){ sel=v; tween(340,function(p){ draw(p); }); });
+})();
+
+/* ====== 13 · 四层全景图 ====== */
+(function(){
+  var sel=0;
+  var L=[
+    {n:'Tool · 能力层',b:[['它是什么','一个能被模型调用的动作'],['谁来写','工程师，要写代码'],['装在哪','可以内置，也可以由 MCP 服务器提供'],['少了它','模型只会说，不会动手']]},
+    {n:'MCP · 连接层',b:[['它是什么','一份关于「怎么对接」的书面约定'],['谁来写','协议由社区维护，服务器由工程师实现'],['装在哪','宿主里配一次，指向本机进程或远端网址'],['少了它','每个工具都得单独对接一遍']]},
+    {n:'Skill · 章法层',b:[['它是什么','一个装着 SKILL.md 的文件夹'],['谁来写','会这门活的人，可以完全不写代码'],['装在哪','技能目录里，用到才加载'],['少了它','能动手但没章法，每次做法都不一样']]},
+    {n:'插件 · 打包层',b:[['它是什么','一个能一次装齐的安装包'],['谁来写','把上面几样凑齐的人'],['装在哪','插件市场，或一个仓库地址'],['少了它','每样都要单独装、单独更新']]}
+  ];
+  var ALL=['Tool 给它手 —— 能做什么动作','MCP 给它插座 —— 动作怎么接进来','Skill 给它章法 —— 什么时候按什么规矩做','插件给它礼盒 —— 上面几样怎么一次装齐'];
+  var TOOLS=['get_weather','create_issue','search_web'];
+  function draw(a){
+    var s='';
+    function on(k){ return sel===4||sel===k; }
+    function op(k){ return on(k)?1:0.28; }
+    s+='<g opacity="'+op(3).toFixed(2)+'">';
+    s+=rect(22,14,366,364,on(3)?C.accentSoft:'#FCFDFE',6,' stroke="'+(on(3)?C.accent:'#9DB8DC')+'" stroke-width="'+(on(3)?2.2:1.2)+'" stroke-dasharray="7 5"');
+    s+=txt(32,33,'插件 · 打包层',11,on(3)?C.accent:C.ink3,'start','600','mono');
+    s+='</g>';
+    s+='<g opacity="'+op(2).toFixed(2)+'">';
+    s+=rect(42,48,130,76,on(2)?'#fff':'#FCFDFE',4,' stroke="'+(on(2)?C.accent:C.line2)+'" stroke-width="'+(on(2)?2:1)+'"');
+    s+=txt(52,70,'Skill',12.5,on(2)?C.accentInk:C.ink3,'start','650');
+    s+=txt(52,86,'SKILL.md',10,on(2)?C.ink3:C.ink3,'start','400','mono');
+    [[100,88],[109,70],[118,80]].forEach(function(d){ s+=line(52,d[0],52+d[1],d[0],on(2)?C.accentLine:C.line2,1.5); });
+    s+=txt(52,114,'章法',10,on(2)?C.accent:C.ink3,'start','600','mono');
+    s+=pth('M172 86 H281 V136',on(2)?C.accent:C.line2,1.6);
+    s+=pth('M276 130 L281 139 L286 130',on(2)?C.accent:C.line2,1.6);
+    s+='</g>';
+    s+=rect(196,140,170,64,'#fff',5,' stroke="'+C.line2+'" stroke-width="1.4"');
+    s+=txt(281,167,'模型',14,C.ink2,'middle','700');
+    s+=txt(281,186,'只会吐字',10.5,C.ink3,'middle','400');
+    s+='<g opacity="'+op(1).toFixed(2)+'">';
+    s+=txt(42,230,'MCP · 连接层',10.5,on(1)?C.accent:C.ink3,'start','600','mono');
+    s+=rect(42,236,324,22,on(1)?C.accent:'#DDE3E9',3);
+    s+=txt(204,251,'统一插口 · 每边只接一次',10.5,on(1)?'#fff':C.ink3,'middle','600');
+    s+=pth('M281 204 V232',on(1)?C.accent:C.line2,1.6);
+    s+=pth('M276 226 L281 235 L286 226',on(1)?C.accent:C.line2,1.6);
+    s+='</g>';
+    s+='<g opacity="'+op(0).toFixed(2)+'">';
+    [92,204,316].forEach(function(x){ s+=line(x,258,x,278,on(0)?C.accent:C.line2,1.5); });
+    TOOLS.forEach(function(t,i){
+      var x=42+i*112;
+      s+=rect(x,278,100,56,on(0)?C.accentSoft:'#fff',4,' stroke="'+(on(0)?C.accent:C.line2)+'" stroke-width="'+(on(0)?2:1)+'"');
+      s+=txt(x+50,302,t,10.5,on(0)?C.accentInk:C.ink3,'middle','600','mono');
+      s+=txt(x+50,320,'Tool',9.5,on(0)?C.ink3:C.ink3,'middle','400','mono');
+    });
+    s+=txt(42,356,'Tool · 能力层',10.5,on(0)?C.accent:C.ink3,'start','600','mono');
+    s+='</g>';
+    s+=line(406,52,604,52,C.accentLine,1);
+    s+=txt(406,40,sel===4?'四层一起看':L[sel].n,14,C.accentInk,'start','700');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    if(sel===4){
+      ALL.forEach(function(t,i){
+        s+=txt(406,80+i*56,String(i+1),11,C.accent,'start','700','mono');
+        s+=wlines(424,80+i*56,t,11.5,C.ink2,15,17,'400',3);
+      });
+    }else{
+      L[sel].b.forEach(function(b,i){
+        var y=74+i*56;
+        s+=txt(406,y,b[0],10.5,C.ink3,'start','600','mono');
+        s+=wlines(406,y+18,b[1],11.5,i===3?C.hotInk:C.ink2,16,17,i===3?'600':'400',3);
+      });
+    }
+    s+='</g>';
+    setSvg('map-svg',s);
+  }
+  play('map-svg',860,function(p){ draw(p); });
+  bind('map-btns','data-m',function(v){ sel=v; tween(360,function(p){ draw(p); }); });
+})();
+
+/* ====== 15 · 归类判断树 ====== */
+(function(){
+  var sel=0;
+  var Q=['① 它是一段能被模型调用的动作吗？','② 它规定的是两边怎么对接吗？','③ 它主要是一份告诉我怎么做的文字吗？','都不是——它是把上面几样打在一起的包'];
+  var O=[['Tool · 工具','一个动作'],['MCP · 协议','一份对接约定'],['Skill · 技能','一份说明'],['插件 · Plugin','一个安装包']];
+  var EX=[
+    {k:0,a:'「get_weather」→ ① 是 → Tool。',d:'给个城市，返回天气。什么时候调它，模型自己决定。'},
+    {k:1,a:'「GitHub MCP Server」→ ① 否，② 是 → MCP。',d:'它不是某一个动作，而是规定 GitHub 那边怎么跟 AI 应用对上话；里面装着 35 个 Tool。'},
+    {k:0,a:'「read_file」→ ① 是 → Tool。',d:'它住在 filesystem MCP 里，但它本身是一个动作。插座和插在插座上的电器不是一回事。'},
+    {k:2,a:'「pptx」→ ①② 否，③ 是 → Skill。',d:'它是一个文件夹：SKILL.md 加几个脚本。不新增动作，只规定做 PPT 按什么章法。'},
+    {k:3,a:'「sales-kit」→ 三问全否 → 插件。',d:'它是把 3 个 Skill、1 个 MCP、2 条命令打成的一个包。装它等于一次装齐那六样。'}
+  ];
+  var Y=[16,88,160,232];
+  function draw(a){
+    var s='',k=EX[sel].k;
+    Q.forEach(function(q,i){
+      var y=Y[i],lit=i<=k;
+      var op=lit?clamp(a*(k+3)-i*0.55,0,1):1;
+      s+='<g opacity="'+op.toFixed(2)+'">';
+      s+=rect(16,y,284,42,lit?C.accentSoft:'#fff',4,' stroke="'+(lit?C.accent:C.line)+'" stroke-width="'+(lit?2:1)+'"');
+      s+=txt(30,y+26,q,11.5,lit?C.accentInk:C.ink3,'start',lit?'600':'400');
+      s+='</g>';
+      var ol=(i===k)?clamp(a*(k+3)-(i+1)*0.55,0,1):(i<k?clamp(a*(k+3)-i*0.55,0,1)*0.9:0.25);
+      s+='<g opacity="'+ol.toFixed(2)+'">';
+      s+=pth('M300 '+(y+21)+' H392',i===k?C.accent:C.line2,i===k?2.2:1.4);
+      s+=pth('M386 '+(y+15)+' L396 '+(y+21)+' L386 '+(y+27),i===k?C.accent:C.line2,i===k?2.2:1.4);
+      s+=txt(346,y+13,i===3?'那就':'是',10,i===k?C.accent:C.ink3,'middle','600');
+      s+=rect(400,y,204,42,i===k?'#fff':'#FCFDFE',4,' stroke="'+(i===k?C.accent:C.line)+'" stroke-width="'+(i===k?2:1)+'"');
+      s+=txt(502,y+18,O[i][0],12.5,i===k?C.accentInk:C.ink3,'middle',i===k?'700':'500');
+      s+=txt(502,y+33,O[i][1],10.5,i===k?C.ink3:C.ink3,'middle','400');
+      s+='</g>';
+      if(i<3){
+        var nl=(i<k)?clamp(a*(k+3)-i*0.55,0,1):0.25;
+        s+=pth('M158 '+(y+42)+' V'+(Y[i+1]-4),i<k?C.hot:C.line2,1.4,' opacity="'+nl.toFixed(2)+'"');
+        s+=pth('M153 '+(Y[i+1]-10)+' L158 '+(Y[i+1]-1)+' L163 '+(Y[i+1]-10),i<k?C.hot:C.line2,1.4,' opacity="'+nl.toFixed(2)+'"');
+        s+=txt(170,(y+42+Y[i+1])/2+4,'否',10,i<k?C.hotInk:C.ink3,'start','600',' opacity="'+nl.toFixed(2)+'"');
+      }
+    });
+    s+=rect(16,288,588,48,'#fff',4,' stroke="'+C.accentLine+'" stroke-width="1" opacity="'+a.toFixed(2)+'"');
+    s+='<g opacity="'+a.toFixed(2)+'">';
+    s+=txt(32,308,EX[sel].a,12,C.accentInk,'start','700');
+    s+=txt(32,327,EX[sel].d,11.5,C.ink2,'start','400');
+    s+='</g>';
+    setSvg('judge-svg',s);
+  }
+  play('judge-svg',860,function(p){ draw(p); });
+  bind('judge-ex','data-e',function(v){ sel=v; tween(460,function(p){ draw(p); }); });
+})();
+
+/* ====== 14 · 表格整行高亮 ====== */
+(function(){
+  var rows=$$('#mtx tbody tr');
+  rows.forEach(function(r){
+    r.style.cursor='pointer';
+    r.addEventListener('click',function(){
+      var was=r.classList.contains('hit');
+      rows.forEach(function(x){ x.classList.remove('hit'); });
+      if(!was) r.classList.add('hit');
+    });
+  });
+})();
+
+/* ====== 16 · 名词速查筛选 ====== */
+(function(){
+  var items=$$('#gloss .gl'),btns=$$('#gloss-btns .btn');
+  if(!items.length||!btns.length) return;
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      btns.forEach(function(x){ x.classList.remove('sel'); });
+      b.classList.add('sel');
+      var c=b.getAttribute('data-c');
+      items.forEach(function(g){
+        var m=(c==='all'||g.getAttribute('data-cat')===c);
+        g.classList.toggle('dim',!m);
+        g.classList.toggle('hit',m&&c!=='all');
+      });
+    });
+  });
+})();
+})();
+</script>
+
+</body>
+</html>
