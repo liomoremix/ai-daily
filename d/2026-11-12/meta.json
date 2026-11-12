@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-12",
+  "id": "tool-vs-mcp-vs-skill-vs-plugin",
+  "category": "概念",
+  "series": "名词解释",
+  "subject": "Tool / MCP / Skill / 插件的区别",
+  "title": "Tool、MCP、Skill、插件不是四个同类，是四层不同的东西",
+  "hook": "这四个词几乎总是混在一起说，好像装哪个都差不多。其实它们在回答四个完全不同的问题：Tool 问「AI 能不能做这个动作」，MCP 问「这些动作怎么接进来」，Skill 问「什么时候、按什么章法做」，插件问「怎么打包、怎么安装、怎么更新」。分清这四层，你就不会再被「装个插件让 AI 变强」这种话绕晕。",
+  "read_minutes": 24,
+  "sources": [
+    {
+      "url": "https://developers.openai.com/api/docs/guides/function-calling",
+      "title": "OpenAI 官方文档 — Function calling"
+    },
+    {
+      "url": "https://openai.com/index/function-calling-and-other-api-updates/",
+      "title": "OpenAI — Function calling and other API updates（2023-06-13）"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+      "title": "Anthropic — Tool use (function calling) Overview"
+    },
+    {
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html",
+      "title": "AWS 官方文档 — Use a tool to complete a model response"
+    },
+    {
+      "url": "https://arxiv.org/abs/2210.03629",
+      "title": "Yao et al. — ReAct: Synergizing Reasoning and Acting in Language Models（arXiv 提交 2022-10-06，ICLR 2023）"
+    },
+    {
+      "url": "https://www.anthropic.com/news/model-context-protocol",
+      "title": "Anthropic — Introducing the Model Context Protocol（2024-11-25）"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25",
+      "title": "Model Context Protocol 官方规范（2025-11-25 修订版）"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/changelog",
+      "title": "OpenAI API Changelog（2025-05-20 条目）"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/guides/tools-connectors-mcp",
+      "title": "OpenAI — MCP 使用指南"
+    },
+    {
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/announcing-official-mcp-support-for-google-services",
+      "title": "Google Cloud Blog — Announcing Model Context Protocol (MCP) support for Google services（2025-12-11）"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/ai/mcp/overview",
+      "title": "Microsoft Learn — Model Context Protocol (MCP) on Windows overview"
+    },
+    {
+      "url": "https://simonwillison.net/2025/Dec/31/the-year-in-llms/",
+      "title": "Simon Willison — 2025: The year in LLMs（2025-12-31）"
+    },
+    {
+      "url": "https://registry.modelcontextprotocol.io/v0/servers",
+      "title": "Official MCP Registry — servers"
+    },
+    {
+      "url": "https://www.anthropic.com/news/skills",
+      "title": "Anthropic — Introducing Agent Skills（2025-10-16）"
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+      "title": "Anthropic Engineering — Equipping agents for the real world with Agent Skills"
+    },
+    {
+      "url": "https://agentskills.io/home.md",
+      "title": "Agent Skills 开放规范 — Overview"
+    },
+    {
+      "url": "https://www.ithome.com/html/digi/1016811.htm",
+      "title": "IT之家 — AI 智能体的「说明书」转为社区共治：Anthropic 捐赠 Agent Skills 开放标准（2026-10-23）"
+    },
+    {
+      "url": "https://www.anthropic.com/news/advanced-tool-use",
+      "title": "Anthropic — Introducing advanced tool use on the Claude Developer Platform（2025-11-24）"
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/code-execution-with-mcp",
+      "title": "Anthropic Engineering — Code execution with MCP: Building more efficient agents（2025-11-04）"
+    },
+    {
+      "url": "https://www.anthropic.com/research/writing-tools-for-agents",
+      "title": "Anthropic — Writing effective tools for agents（2025-09-11）"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/plugins.md",
+      "title": "Claude Code 官方文档 — Plugins"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/skills",
+      "title": "Claude Code — Skills"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Plug-in_(computing)",
+      "title": "Wikipedia — Plug-in (computing)"
+    },
+    {
+      "url": "https://openai.com/index/chatgpt-plugins/",
+      "title": "OpenAI — ChatGPT plugins（2023-03-23）"
+    },
+    {
+      "url": "https://code.visualstudio.com/api/get-started/extension-anatomy",
+      "title": "Microsoft — VS Code Extension Anatomy"
+    },
+    {
+      "url": "https://liomoremix.github.io/ai-daily/d/2026-11-05/index.html",
+      "title": "AI 每日一识 2026-11-05 — Skill 不是让 AI 变聪明，是给它一本岗位说明书"
+    }
+  ],
+  "cards": 16
+}
