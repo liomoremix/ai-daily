@@ -175,10 +175,10 @@ footer li{margin-bottom:5px;word-break:break-all}
   <p class="lede">这四个词几乎总是混在一起说，好像装哪个都差不多。其实它们在回答<b>四个完全不同的问题</b>：Tool 问「AI 能不能做这个动作」，MCP 问「这些动作怎么接进来」，Skill 问「什么时候、按什么章法做」，插件问「怎么打包、怎么安装、怎么更新」。分清这四层，你就不会再被「装个插件让 AI 变强」这种话绕晕。</p>
   <div class="stats">
     <div class="stat"><span class="v" data-count="4" data-suffix=" 层">0</span><span class="k">能力 / 连接 / 章法 / 打包，各回答一个不同的问题</span></div>
-    <div class="stat"><span class="v" data-count="58" data-suffix=" 个工具">0</span><span class="k">5 个 MCP 服务器带来的工具数，光清单就吃掉约 55,000 词元</span></div>
+    <div class="stat"><span class="v" data-count="58" data-suffix=" 个工具">0</span><span class="k">接进来的 5 箱工具一共 58 个，光清单就占掉约 55,000 个「词元」（AI 数文字的单位，第 5 卡讲）</span></div>
     <div class="stat"><span class="v" data-count="1" data-suffix=" 条命令">0</span><span class="k">一个插件把 Skill、MCP 服务器、命令一起装好</span></div>
   </div>
-  <p class="scrollhint">↓ 16 张卡，约 24 分钟。大部分卡都能点，专业词第一次出现都会当场解释。</p>
+  <p class="scrollhint">↓ 16 张卡，约 24 分钟。大部分卡都能点；专业词第一次出现都会先用一句大白话解释，学名写在后面，想查原名翻第 16 卡。</p>
 </header>
 
 <!-- ============ 1 ============ -->
@@ -187,7 +187,7 @@ footer li{margin-bottom:5px;word-break:break-all}
   <p class="rv">先别看定义。想象你招了一个新人：<b>脑子非常好使，但今天是他第一天上班，两手空空</b>。要让他真能干活，你会依次撞上四个完全不同的问题：</p>
   <ul class="rv">
     <li>他能不能真的动手做事，而不只是嘴上说说？——这是在配<b>能力</b>。</li>
-    <li>公司要用的系统有几十个，每家接口都不一样，怎么统一接进来？——这是在定<b>连接方式</b>。</li>
+    <li>公司要用的系统有几十个，每家「说话的方式」都不一样，怎么统一接进来？——这是在定<b>连接方式</b>。</li>
     <li>他知不知道我们公司办事的章法？——这是在给<b>知识</b>。</li>
     <li>下个月又来五个新人，难道一样一样重配？——这是在做<b>打包分发</b>。</li>
   </ul>
@@ -208,7 +208,7 @@ footer li{margin-bottom:5px;word-break:break-all}
 <!-- ============ 2 ============ -->
 <section class="card" id="c2">
   <div class="no-head"><span class="no">02</span><h2>起点：模型只会吐字，它没有手</h2></div>
-  <p class="rv">要理解 Tool 为什么存在，得先接受一件反直觉的事：<b>大语言模型唯一在做的事，是猜下一个字</b>。它没有眼睛，没有手，也没有网线。它能给你的，永远只是一段文字。</p>
+  <p class="rv">先认识一下主角。我们说的<b>模型</b>，就是 ChatGPT、Claude 这类程序：读过海量文字，学会了「接话」。要理解 Tool 为什么存在，得先接受一件反直觉的事：<b>它唯一在做的事，是猜下一个字</b>。它没有眼睛，没有手，也没有网线。它能给你的，永远只是一段文字。</p>
   <p class="rv">所以你问它「上海现在多少度」，它并不会去查。它只能根据训练时见过的海量文本，<b>猜一个看起来最像答案的数字</b>。猜对了是运气，猜错了有个专门的名字，叫<span class="term" title="模型编出听起来合理、但实际上不存在或不对的内容。根本原因是它在猜，不是在查">幻觉</span>。</p>
   <p class="rv">麻烦的地方在于：它猜错的时候，和猜对的时候一样有底气。你从语气上分不出来。</p>
   <p class="rv">要让它真去查，就得给它一样东西：<b>一个可以被调用的动作</b>。这个东西叫 <span class="term" title="Tool，工具。一个模型可以申请调用的具体动作，比如查天气、发邮件、读表格。模型自己不执行它，只申请">Tool（工具）</span>。</p>
@@ -227,7 +227,7 @@ footer li{margin-bottom:5px;word-break:break-all}
 <section class="card" id="c3">
   <div class="no-head"><span class="no">03</span><h2>Tool 的真面目：一张格式固定的申请单</h2></div>
   <p class="rv">这是全页最需要说清楚的一件事：<b>模型从来不执行工具。</b></p>
-  <p class="rv">它做的事只有一件——输出一段格式极其严格的文字，内容是「我要调用某某工具，参数是这些」。这段文字叫<span class="term" title="一种用大括号和引号组织数据的文本格式，程序之间传数据几乎都用它。人也能读，但主要是给机器读的">JSON</span>，你可以把它理解成一张<b>填好的申请单</b>。真正跑去查天气的，是外面那段由工程师写的程序。查完了，再把结果按同样严格的格式塞回给模型。</p>
+  <p class="rv">它做的事只有一件——输出一段格式极其严格的文字，内容是「我要调用某某工具，要填的内容是这些」。这段文字叫<span class="term" title="一种用大括号和引号组织数据的文本格式，程序之间传数据几乎都用它。人也能读，但主要是给机器读的">JSON</span>，你可以把它理解成一张<b>填好的申请单</b>。真正跑去查天气的，是外面那段由工程师写的程序。查完了，再把结果按同样严格的格式塞回给模型。</p>
   <p class="rv">拖动滑杆，走完这一整个来回：</p>
   <figure class="rv">
     <svg class="stage" id="call-svg" viewBox="0 0 620 344" role="img" aria-label="工具调用六步：提问、模型看工具清单、模型吐出申请单、外部程序执行、结果回传、模型用人话转述"></svg>
@@ -237,8 +237,8 @@ footer li{margin-bottom:5px;word-break:break-all}
     </div>
     <figcaption>六步里只有第 4 步真的发生了「查询」这件事，而做这件事的不是模型。第 3 步和第 5 步那两张单子，就是所谓「工具调用」的全部秘密。</figcaption>
   </figure>
-  <p class="rv">这个「申请—执行—回传」的来回，专业上有两个名字，指的是<b>同一件事</b>：<span class="term" title="tool use。模型输出调用申请、外部程序执行、结果回传给模型的完整机制">工具调用（tool use）</span>，也叫<span class="term" title="function calling。和 tool use 是同一个机制的不同叫法，OpenAI 最早用这个词">函数调用（function calling）</span>。OpenAI 在 2023 年 6 月把这个能力放进 API，Anthropic、AWS 后来都做了同一套。</p>
-  <p class="rv">它的学术源头更早：2022 年 10 月的一篇论文 <b>ReAct</b>，标题直译是「让语言模型把推理和行动协同起来」。核心想法就一句话——<b>让模型想一步、动一步、看到结果再想下一步</b>，而不是先一口气想完再动手。今天所有的 AI agent，骨架都还是这个。</p>
+  <p class="rv">这个「申请—执行—回传」的来回，专业上有两个名字，指的是<b>同一件事</b>：<span class="term" title="tool use。模型输出调用申请、外部程序执行、结果回传给模型的完整机制">工具调用（tool use）</span>，也叫<span class="term" title="function calling。和 tool use 是同一个机制的不同叫法，OpenAI 最早用这个词">函数调用（function calling）</span>。OpenAI 在 2023 年 6 月第一个把它做进自家产品，Anthropic、AWS 后来都做了同一套。</p>
+  <p class="rv">这个「想一步、动一步、看到结果再想下一步」的思路也不是新发明：2022 年 10 月就有一篇论文把它写清楚了（学界给它起了个名字叫 <b>ReAct</b>，想查原名翻第 16 卡）。今天所有会自己干活的 AI 助手——业内叫 <span class="term" title="agent，智能体。能自己「想一步、动一步」接着干下去的 AI 助手，而不是问一句答一句">agent（智能体）</span>——骨架都还是这个。</p>
   <div class="callout">记住第 4 步那个停顿：模型提交申请单之后，<b>它是停在那里等的</b>。它不能自己去点鼠标、不能自己发请求。所以「AI 会不会乱来」这件事，决定权始终握在外面那段程序手里——那段程序才是真正能拦住它的地方。</div>
 </section>
 
@@ -247,9 +247,9 @@ footer li{margin-bottom:5px;word-break:break-all}
   <div class="no-head"><span class="no">04</span><h2>模型怎么挑工具？它只看那一句描述</h2></div>
   <p class="rv">一个工具交给模型的时候，附带三样东西：</p>
   <ul class="rv">
-    <li><b>名字</b>，比如 <code>get_weather</code>；</li>
+    <li><b>名字</b>，比如 <code>get_weather</code>（查天气）；</li>
     <li><b>一句描述</b>，说明这个工具干什么、什么时候该用；</li>
-    <li><b>参数格式</b>，说明要填哪几栏、每栏是什么类型——这份格式约定叫 <span class="term" title="schema。一份写明「数据必须长什么样」的约定：有哪几个字段、每个字段是文字还是数字、哪些必填">schema</span>。</li>
+    <li><b>要填哪几栏</b>，每栏是文字还是数字、哪些必须填——这份「表格格式」的约定有个学名叫 <span class="term" title="schema。一份写明「数据必须长什么样」的约定：有哪几栏、每栏是文字还是数字、哪些必须填">schema</span>。</li>
   </ul>
   <p class="rv">关键在于：<b>模型看不到工具背后的代码，它只能读到那句描述。</b>它就是靠这一句话来决定「这个活该派给谁」的。描述写得含糊，它就挑错。</p>
   <figure class="rv">
@@ -258,18 +258,18 @@ footer li{margin-bottom:5px;word-break:break-all}
       <button class="btn sel" data-d="0">描述写清楚了</button>
       <button class="btn" data-d="1">描述含糊</button>
     </div>
-    <figcaption>两种情况下模型的能力、提示词、问题都完全一样，唯一变的是那句描述。结果一个选对、一个选错。</figcaption>
+    <figcaption>两种情况下模型本身、你问的问题都完全一样，唯一变的是那句描述。结果一个选对、一个选错。</figcaption>
   </figure>
-  <p class="rv">这不是我在编道理。Anthropic 2025 年 9 月专门写过一篇工程文章，标题就叫《给 agent 写真正好用的工具》，里面反复强调的正是这件事：工具不是越多越好，<b>名字要有命名空间、描述要写清什么时候用、返回值要带上够用的上下文</b>。写得不好的工具，会让 agent 反复试错、绕远路。</p>
+  <p class="rv">这不是我在编道理。Anthropic 2025 年 9 月专门写过一篇工程文章，标题就叫《给 AI 助手写真正好用的工具》，里面反复强调的正是这件事：工具不是越多越好，<b>名字要一眼看出归谁管、描述要写清什么时候该用、回传的结果要带上够用的背景信息</b>。写得不好的工具，会让 AI 助手反复试错、绕远路。</p>
   <div class="callout">这件事有个很实际的后果：<b>很多「AI 不行」的问题，其实是文案问题。</b>把工具描述从「获取数据」改成「查询指定城市当前实时天气，返回温度、湿度、风力」，成功率可能立刻上一个台阶——而模型一个字都没变。</div>
 </section>
 
 <!-- ============ 5 ============ -->
 <section class="card" id="c5">
   <div class="no-head"><span class="no">05</span><h2>工具多了，第一个被吃掉的是「对话空间」</h2></div>
-  <p class="rv">模型一次能看到的文字总量是有上限的，这个上限叫<span class="term" title="context window。模型一次能读进去的文字总量，包括你的提问、它的回答、系统指令，以及那份工具清单。超出的部分它根本看不见">上下文窗口</span>。里面装的东西按<span class="term" title="token。模型处理文字的最小单位，大约是一个词或半个词。计费和长度限制都按它算">词元（token）</span>计算，一个词元大约是一个英文单词的一半到四分之三个汉字。</p>
-  <p class="rv">现在注意一件很多人没意识到的事：<b>那份工具清单，本身就要占掉上下文，而且是一开场就占住，一个字都不用说就先扣掉。</b></p>
-  <p class="rv">下面是 Anthropic 在 2025 年 11 月 24 日官方发布里给出的真实数字。点按钮，一个个把 MCP 服务器接上去：</p>
+  <p class="rv">把模型想象成一位<b>桌面有限的办事员</b>：他一次能摊在桌上看的纸是有上限的——这个上限叫<span class="term" title="context window。模型一次能读进去的文字总量，包括你的提问、它的回答、系统指令，以及那份工具清单。超出的部分它根本看不见">上下文窗口</span>。纸的张数按<span class="term" title="token。模型处理文字的最小单位，大约是一个词或半个词。计费和长度限制都按它算">词元（token）</span>算，一个词元大约是一个英文单词的一半到四分之三个汉字。</p>
+  <p class="rv">现在注意一件很多人没意识到的事：<b>那份工具清单，本身就要占掉桌面，而且是一开场就占住，一个字都不用说就先扣掉。</b></p>
+  <p class="rv">下面是 Anthropic 在 2025 年 11 月 24 日官方发布里给出的真实数字。点按钮，一个个把外面的工具箱接上去（「MCP 服务器」是什么，下一张卡讲；这里先把它当成<b>一箱工具</b>）：</p>
   <figure class="rv">
     <svg class="stage" id="cost-svg" viewBox="0 0 620 336" role="img" aria-label="条形图：逐个接入 GitHub、Slack、Sentry、Grafana、Splunk、Jira 六个 MCP 服务器，工具清单占用的词元从 26000 累加到超过 72000，可用对话空间同步被压缩"></svg>
     <div class="btnrow" id="cost-btns">
@@ -280,8 +280,8 @@ footer li{margin-bottom:5px;word-break:break-all}
     </div>
     <figcaption>数字取自 Anthropic 官方发布：GitHub 35 个工具约 26,000 词元、Slack 11 个约 21,000、Sentry 5 个约 3,000、Grafana 5 个约 3,000、Splunk 2 个约 2,000、Jira 单个约 17,000。灰色的「还能对话的空间」是本页按 200,000 词元窗口画的示意，用来显示挤压效果。</figcaption>
   </figure>
-  <p class="rv">前五个加起来，<b>58 个工具、约 55,000 词元，你还没敲第一个字</b>。再加一个 Jira，很快就突破 100,000。Anthropic 在同一篇文章里还举了另一个例子：让 agent 从 Google Drive 找数据写进 Salesforce，如果把所有相关工具定义一次性全塞进去，光这一步就要 150,000 词元；改成让 agent 自己去翻、只加载用得上的那部分，降到 2,000 词元——省下 98.7%。</p>
-  <p class="rv">所以他们做了一个很直白的缓解方案，叫 <b>Tool Search Tool</b>：工具定义默认<b>不</b>加载，模型需要时先搜一下，找到了才读进来。同样那 58 个工具的场景，开销从 55,000 降到约 8,700 词元，少了 85%，而工具一个都没少。</p>
+  <p class="rv">前五个加起来，<b>58 个工具、约 55,000 词元，你还没敲第一个字</b>。再加一个 Jira，很快就突破 100,000。Anthropic 在同一篇文章里还举了另一个例子：让 AI 助手从 Google Drive 找数据写进 Salesforce，如果把所有相关工具的定义一次性全摊上桌，光这一步就要 150,000 词元；改成让它自己去翻、只拿用得上的那部分，降到 2,000 词元——省下 98.7%。</p>
+  <p class="rv">所以他们做了一个很直白的缓解办法：<b>工具清单默认不摊上桌</b>，模型需要时先翻目录、找到了才拿上来读。这个办法叫 <b>Tool Search Tool</b>。同样那 58 个工具的场景，开销从 55,000 降到约 8,700 词元，少了 85%，而工具一个都没少。</p>
   <div class="callout fact">把这张图记在心里。<b>第 10 张卡</b>会看到，Skill 从设计之初就没有这个毛病——而原因恰恰是它换了一种加载方式。</div>
 </section>
 
@@ -301,7 +301,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     <figcaption>左边是 4 个 AI 应用，右边是 4 个要接的系统。上面那种情况每多一家，两边都要各自再写一轮；下面那种情况，两边各自只做一次。</figcaption>
   </figure>
   <p class="rv">这就是所谓的 <b>N×M 问题</b>：M 个应用要接 N 个系统，没有统一约定就得写 M×N 套专用对接代码；有了统一约定，变成 M+N。4 乘 4 只是 16 和 8 的差别，看着不惊人。但真实世界里两边都是几十上百——<b>数字会差出一个量级</b>。</p>
-  <p class="rv">它确实成了行业标准。OpenAI 在 2025 年 5 月的 API 更新里加入了远程 MCP 服务器支持；Google Cloud 在 2025 年 12 月宣布旗下服务官方支持 MCP，博客里用的比喻正是「常被比作 AI 的 USB-C」；Microsoft 同月在 Windows 文档里给出了系统级的 MCP 支持。开发者 Simon Willison 在 2025 年的年度总结里记了一笔：<b>2025 年 5 月，OpenAI、Anthropic、Mistral 在八天之内先后加上了 MCP 支持</b>。截至 2026 年 11 月，MCP 官方注册表里列出的服务器<b>超过 40,000 个</b>。</p>
+  <p class="rv">它确实成了行业标准。OpenAI 在 2025 年 5 月更新自家开发者接口时加入了远程 MCP 服务器支持；Google Cloud 在 2025 年 12 月宣布旗下服务官方支持 MCP，博客里用的比喻正是「常被比作 AI 的 USB-C」；Microsoft 同月在 Windows 文档里给出了系统级的 MCP 支持。开发者 Simon Willison 在 2025 年的年度总结里记了一笔：<b>2025 年 5 月，OpenAI、Anthropic、Mistral 在八天之内先后加上了 MCP 支持</b>。截至 2026 年 11 月，MCP 官方的公开名录里列出的服务器<b>超过 40,000 个</b>。</p>
   <div class="callout warn">Willison 在同一篇文章里点了这个混淆的名：<b>「很多人以为模型必须支持 MCP 才能用工具。」</b>不是的。工具调用是模型自带的能力（第 3 张卡），MCP 只是把这些工具<b>接进来</b>的一种方式。没有 MCP，工具照样能用，只是每一家都得单独对接。</div>
 </section>
 <!-- ============ 7 ============ -->
@@ -309,16 +309,16 @@ footer li{margin-bottom:5px;word-break:break-all}
   <div class="no-head"><span class="no">07</span><h2>MCP 接过来的东西，不止是工具</h2></div>
   <p class="rv">很多人以为「MCP 服务器 = 一堆工具」。其实规范里定义了<b>三类</b>东西，而它们最漂亮的差别，恰好是上一页讲过的那个问题：<b>由谁决定用它</b>。</p>
   <figure class="rv">
-    <svg class="stage" id="prim-svg" viewBox="0 0 620 280" role="img" aria-label="三类 MCP 原语：Tools 由模型自己决定调用，Resources 由应用决定喂什么，Prompts 由用户主动从菜单里挑"></svg>
+    <svg class="stage" id="prim-svg" viewBox="0 0 620 280" role="img" aria-label="三类东西：Tools 由模型自己决定用不用，Resources 由应用决定喂什么，Prompts 由用户主动从菜单里挑"></svg>
     <div class="btnrow" id="prim-btns">
-      <button class="btn sel" data-p="0">Tools · 模型决定</button>
-      <button class="btn" data-p="1">Resources · 应用决定</button>
-      <button class="btn" data-p="2">Prompts · 用户决定</button>
+      <button class="btn sel" data-p="0">Tools 工具 · 模型决定</button>
+      <button class="btn" data-p="1">Resources 资料 · 应用决定</button>
+      <button class="btn" data-p="2">Prompts 模板 · 用户决定</button>
     </div>
     <figcaption>注意每一栏里「谁按下按钮」的位置不一样——发起方不同，这三类东西的权限边界就完全不同。</figcaption>
   </figure>
   <ul class="rv">
-    <li><b>Tools（工具）</b>：<span class="term" title="model-controlled。模型自己判断什么时候该调，人不一定每次都点头。所以危险性也最高">模型自己决定</span>什么时候调。例子：GitHub 服务器上的 <code>create_issue</code>——模型觉得该开个 issue，它就申请开。</li>
+    <li><b>Tools（工具）</b>：<span class="term" title="model-controlled。模型自己判断什么时候该用，人不一定每次都点头。所以危险性也最高">模型自己决定</span>什么时候用。例子：GitHub 插座上的 <code>create_issue</code>（开一个任务单）——模型觉得该开，它就申请开。</li>
     <li><b>Resources（资源）</b>：<span class="term" title="application-controlled。由外层应用决定把哪些数据读进来喂给模型，模型没有主动去抓的权力">由应用决定</span>读什么喂给模型。例子：一份项目文件、一张数据库表的结构说明。模型只能读到被递到手上的那部分。</li>
     <li><b>Prompts（提示模板）</b>：<span class="term" title="user-controlled。必须由人主动挑，模型不能自己触发。像餐厅菜单，你不点它不会自己上菜">由用户主动挑</span>。例子：服务器事先准备好一个「帮我审一遍这段代码」的模板，你在菜单里点它才会跑。</li>
   </ul>
@@ -330,25 +330,21 @@ footer li{margin-bottom:5px;word-break:break-all}
   <div class="no-head"><span class="no">08</span><h2>一次真实的 MCP 连接长什么样</h2></div>
   <p class="rv">MCP 规范里规定了三个角色。名字起得很技术，其实分工特别朴素：</p>
   <ul class="rv">
-    <li><b>Host（宿主）</b>：你打开的那个 AI 应用本身。Claude、Qoder、Cursor 都是宿主。</li>
-    <li><b>Client（客户端）</b>：宿主<b>内部</b>为每一个服务器单独开的一个「接线员」。一个服务器配一个，一对一，互不干扰。</li>
-    <li><b>Server（服务器）</b>：真正握着工具和数据的那一端。它可能就在你这台电脑上（一个本地小程序），也可能在云上（一个网址）。</li>
+    <li><b>你打开的那个 AI 应用</b>（学名 Host，宿主）：Claude、Qoder、Cursor 都是。</li>
+    <li><b>应用内部的接线员</b>（学名 Client，客户端）：应用为每一个服务器单独开一个，一对一，互不干扰。</li>
+    <li><b>外面真正干活的那一端</b>（学名 Server，服务器）：真正握着工具和数据。它可能就在你这台电脑上（一个本地小程序），也可能在云上（一个网址）。</li>
   </ul>
   <figure class="rv">
-    <svg class="stage" id="topo-svg" viewBox="0 0 620 310" role="img" aria-label="拓扑图：宿主应用内部为三个 MCP 服务器各开一个客户端，一对一连线；点某个服务器可以看它跑在哪、用什么传输方式"></svg>
+    <svg class="stage" id="topo-svg" viewBox="0 0 620 310" role="img" aria-label="一张接线图：你打开的 AI 应用内部为三个服务器各配一名接线员，一对一连线；点某个服务器可以看它跑在哪、怎么传话、能碰到你什么东西"></svg>
     <div class="btnrow" id="topo-btns">
-      <button class="btn sel" data-t="0">本机文件系统</button>
-      <button class="btn" data-t="1">本机 Git</button>
-      <button class="btn" data-t="2">云上 GitHub</button>
+      <button class="btn sel" data-t="0">本机的文件</button>
+      <button class="btn" data-t="1">本机的代码仓库</button>
+      <button class="btn" data-t="2">云上的 GitHub</button>
     </div>
     <figcaption>点按钮看每条链路：这个服务器跑在哪台机器上、用什么方式传话、它能碰到你什么东西。</figcaption>
   </figure>
-  <p class="rv">「用什么方式传话」这一层，术语叫<span class="term" title="transport。协议规定的实际传话通道。MCP 主要支持两种：本机的 stdio 和走网络的 Streamable HTTP">传输（transport）</span>，规范里主要给了两种：</p>
-  <ul class="rv">
-    <li><b>stdio</b>：服务器就是你电脑上的一个进程，宿主直接跟它对话，不出这台机器。本机文件、本机 Git 通常走这条。</li>
-    <li><b>Streamable HTTP</b>：走网络，服务器在远端。GitHub、Slack 这类云服务通常走这条。</li>
-  </ul>
-  <p class="rv">MCP 底层用的消息格式叫 <span class="term" title="JSON-RPC 2.0。一种用 JSON 表达的「远程调用」约定：一条消息说明我要调哪个方法、带什么参数，另一条消息回结果或报错">JSON-RPC 2.0</span>——说白了就是「用 JSON 写的一问一答标准格式」。规范本身还明确说过，它的设计灵感来自 <b>LSP</b>（语言服务器协议），那是编辑器行业十年前就验证过的同一套路子：一次统一接口，换来整个生态。</p>
+  <p class="rv">「怎么传话」这一层只有两种情况，特别好记：<b>服务器就在你这台电脑上</b>（本机文件、本机的代码仓库通常如此，话不出这台机器），或者<b>服务器在网络那头</b>（GitHub、Slack 这类云服务）。规范里给这两种情况各起了一个学名（stdio 与 Streamable HTTP），想查原名翻第 16 卡。</p>
+  <p class="rv">至于两边的消息具体长什么样，规范也写死了统一格式，谁都不许自由发挥。这套「一次把对接方式统一、换来整个生态」的路子不是新发明：编辑器行业十年前就用同一招统一过对接方式，并且验证有效。想查这两个学名（JSON-RPC 2.0、LSP）同样翻第 16 卡。</p>
   <div class="callout warn">装一个 MCP 服务器，等于<b>授权它在你允许的范围内读真实数据、做真实动作</b>。第三方服务器和第三方 Skill 一样要看清来源——它拿到的不是「读一读」的权限，而是「代表你动手」的权限。</div>
 </section>
 
@@ -357,7 +353,7 @@ footer li{margin-bottom:5px;word-break:break-all}
   <div class="no-head"><span class="no">09</span><h2>Skill：它不给你新能力，只给你章法</h2></div>
   <p class="rv">Skill 我们单独讲过一整页，这里只说它和 Tool 的<b>根本差别</b>——这一条最容易被忽略：</p>
   <p class="rv"><b>Tool 新增一个能做的动作。Skill 一个新动作都不新增。</b></p>
-  <p class="rv">一个 Skill 就是一个文件夹，核心是一份叫 <code>SKILL.md</code> 的文本文件，可能再带上一些脚本、模板和参考资料。它是 Anthropic 在 <b>2025 年 10 月 16 日</b>发布的格式，官方定义是「一种轻量、开放的格式，用专门的知识和工作流扩展 AI agent 的能力」。</p>
+  <p class="rv">一个 Skill 就是一个文件夹，核心是一份<b>纯文字说明书</b>，文件名固定叫 <code>SKILL.md</code>，可能再带上一些脚本、模板和参考资料。它是 Anthropic 在 <b>2025 年 10 月 16 日</b>发布的格式，官方定义是「一种轻量、开放的格式，用专门的知识和工作流扩展 AI 助手的能力」。</p>
   <p class="rv">打个比方最清楚：<b>Tool 是给厨师一把新刀，Skill 是给他一张菜谱。</b>菜谱自己不会切菜——它只是让已经会切菜的人，按这家店的标准来切。所以完全存在「一个工具都不调用」的 Skill，比如「写周报要分三段、口径按这张表、超过 800 字要拆附录」。</p>
   <figure class="rv">
     <svg class="stage" id="skill-svg" viewBox="0 0 620 320" role="img" aria-label="同一个做 PPT 的任务：没有 Skill 时模型摸索五步、换了三种模板、字号忽大忽小、忘了标数据来源；有 Skill 时照着三步走，一次符合规范"></svg>
@@ -367,7 +363,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     </div>
     <figcaption>同一个模型、同一批工具、同一个任务。差别只在它手上有没有那份写好的章法。注意两边的步数和最后盖的章。</figcaption>
   </figure>
-  <p class="rv">这个格式后来没有留在一家手里。<b>2026 年 10 月 22 日</b>，Anthropic 把它——连同名字、logo、GitHub 组织和 agentskills.io 域名一起——捐给了 Linux 基金会旗下的 <b>Agentic AI Foundation</b>，交给社区中立维护；此前 MCP 也是这么处理的。当时公布的数字是：已有<b>超过 70 个 agent 平台</b>集成了这套格式，名单里包括 ChatGPT、Cursor、GitHub Copilot 和 VS Code；公开的技能约 <b>100 万个</b>，累计安装接近 <b>2.8 亿次</b>。</p>
+  <p class="rv">这个格式后来没有留在一家手里。<b>2026 年 10 月 22 日</b>，Anthropic 把它——连同名字、logo、GitHub 组织和 agentskills.io 域名一起——捐给了 Linux 基金会旗下的 <b>Agentic AI Foundation</b>，交给社区中立维护；此前 MCP 也是这么处理的。当时公布的数字是：已有<b>超过 70 个 AI 产品</b>集成了这套格式，名单里包括 ChatGPT、Cursor、GitHub Copilot 和 VS Code；公开的技能约 <b>100 万个</b>，累计安装接近 <b>2.8 亿次</b>。</p>
   <p class="rv">这意味着一份写好的 Skill，不是只能在一个产品里用——它可以跟着你换工具。</p>
   <div class="callout">所以「装了 Skill，AI 就变强了」这句话不太准。更准的说法是：<b>它还是那个它，只是终于知道你们这儿办事的规矩了。</b>能力来自模型和工具，一致性来自 Skill。</div>
 </section>
@@ -375,14 +371,14 @@ footer li{margin-bottom:5px;word-break:break-all}
 <!-- ============ 10 ============ -->
 <section class="card" id="c10">
   <div class="no-head"><span class="no">10</span><h2>为什么 Skill 装一百个也不挤：渐进式披露</h2></div>
-  <p class="rv">还记得第 5 张卡吗——58 个工具的定义，一开场就吃掉 55,000 词元。那 Skill 呢？一个团队装上几十上百个 Skill，为什么没把上下文撑爆？</p>
-  <p class="rv">因为它的加载方式<b>从设计上就是分层的</b>。这套机制叫<span class="term" title="progressive disclosure。渐进式披露：信息按需一层层展开，一次只把当前用得上的那部分放进上下文">渐进式披露</span>，官方规范里写明了三层：</p>
+  <p class="rv">还记得第 5 张卡吗——58 个工具的定义，一开场就吃掉 55,000 词元。那 Skill 呢？一个团队装上几十上百个 Skill，为什么没把桌面撑爆？</p>
+  <p class="rv">因为它的加载方式<b>从设计上就是分层的</b>。这套机制叫<span class="term" title="progressive disclosure。渐进式披露：信息按需一层层展开，一次只把当前用得上的那部分放上桌面">渐进式披露</span>，官方规范里写明了三层：</p>
   <ul class="rv">
     <li><b>第一层 · 发现</b>：启动的时候，只读每个 Skill 的<b>名字和一句话描述</b>。就这两行，别的都不读。</li>
     <li><b>第二层 · 激活</b>：当前任务和某个描述对上了，才把那份 <code>SKILL.md</code> 的<b>全文</b>读进来。</li>
     <li><b>第三层 · 执行</b>：真要用到，才去翻它带的参考文件、跑它带的脚本。</li>
   </ul>
-  <p class="rv">规范里的原话是：完整的指令只在任务需要时才加载，所以 agent 可以<b>手边放很多技能，只占很小的上下文</b>。</p>
+  <p class="rv">规范里的意思是：完整的说明书只在任务真需要时才加载，所以 AI 助手可以<b>手边放很多技能，只占很小的桌面空间</b>。</p>
   <figure class="rv">
     <svg class="stage" id="pd-svg" viewBox="0 0 620 310" role="img" aria-label="三层加载：40 个 Skill 在第一层只占约 2000 词元，命中一个后进到第二层加约 3000，用到附件才进第三层；右侧红色参照线是 58 个工具定义的 55000 词元"></svg>
     <div class="btnrow" id="pd-btns">
@@ -397,7 +393,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     <li><b>工具清单</b>是「一开场全部塞进去」——不管这次用不用得上，58 个定义都得占着位置。</li>
     <li><b>Skill</b> 是「用到才翻」——没被点中的那些，只留着一行名字。</li>
   </ul>
-  <p class="rv">这也正是 Anthropic 后来给工具打补丁的思路：那个 <b>Tool Search Tool</b>（第 5 张卡，把 55,000 降到约 8,700）本质上就是<b>让工具也开始「用到才加载」</b>——往 Skill 已经走通的路上靠。而《用 MCP 做代码执行》那篇给的另一条路更彻底：让 agent 自己去翻服务器目录、按需读定义，同一个任务从 150,000 词元降到 2,000。</p>
+  <p class="rv">这也正是 Anthropic 后来给工具打补丁的思路：那个 <b>Tool Search Tool</b>（第 5 张卡，把 55,000 降到约 8,700）本质上就是<b>让工具也开始「用到才拿上桌」</b>——往 Skill 已经走通的路上靠。而《用 MCP 做代码执行》那篇给的另一条路更彻底：让 AI 助手自己去翻服务器目录、按需读定义，同一个任务从 150,000 词元降到 2,000。</p>
   <div class="callout">一句能带走的话：<b>在 AI 的世界里，「能不能装很多」不取决于你装了多少，取决于加载方式。</b>预先全量加载的东西，装几十个就开始拖累；按需展开的东西，装几百个也只是目录长一点。</div>
 </section>
 
@@ -416,9 +412,9 @@ footer li{margin-bottom:5px;word-break:break-all}
 单独用，不需要插件。当你想把几个 Skill、子 agent、
 钩子或 MCP 服务器打包成一个单元时，才用插件。</span></div>
   <p class="rv">所以插件<b>不是一种新能力</b>。它是一个<span class="term" title="分发单位：不是功能上的分类，而是「怎么打包、怎么安装、怎么更新」这一层的单位。像一箱牛奶和一瓶牛奶的区别，不在牛奶本身">分发单位</span>——解决的问题是「一次装齐、统一更新」。</p>
-  <p class="rv">里面可能同时装着：几个 Skill、几个 MCP 服务器、几条<span class="term" title="command。一条可以自己定义、输入后直接触发一整套动作的短命令，比如 /周报">快捷命令</span>、几个 <span class="term" title="hook，钩子。在某个特定事件发生时自动触发的一段动作，比如「每次提交代码前自动跑一遍检查」。它不由模型决定，是硬规则">hook</span>、几个<span class="term" title="subagent，子 agent。主 agent 可以派活给一个有专门职责的下级 agent，让它在自己独立的上下文里干完再汇报">子 agent</span>。</p>
+  <p class="rv">里面可能同时装着：几个 Skill、几个 MCP 服务器、几条<span class="term" title="command。一条可以自己定义、输入后直接触发一整套动作的短命令，比如 /周报">快捷命令</span>、几个 <span class="term" title="hook，钩子。在某个特定事件发生时自动触发的一段动作，比如「每次提交代码前自动跑一遍检查」。它不由模型决定，是硬规则">钩子（hook）</span>、几个<span class="term" title="subagent，子 agent。主 agent 可以派活给一个有专门职责的下级 agent，让它在自己独立的上下文里干完再汇报">子 agent</span>。</p>
   <figure class="rv">
-    <svg class="stage" id="plug-svg" viewBox="0 0 620 320" role="img" aria-label="装配动画：散落的两个 Skill、一个 MCP 服务器、一条命令和一个 hook 被装进礼盒，盖上后成为一个可安装的插件，再一条命令装到新员工手上"></svg>
+    <svg class="stage" id="plug-svg" viewBox="0 0 620 320" role="img" aria-label="装配动画：散落的两个 Skill、一个 MCP 服务器、一条命令和一个钩子被装进礼盒，盖上后成为一个可安装的插件，再一条命令装到新员工手上"></svg>
     <div class="btnrow" id="plug-btns">
       <button class="btn sel" data-g="0">① 散着的零件</button>
       <button class="btn" data-g="1">② 装进盒子</button>
@@ -426,14 +422,14 @@ footer li{margin-bottom:5px;word-break:break-all}
     </div>
     <figcaption>三个阶段。注意第 ③ 步：盒子本身没有给新人增加任何新本事，它只是让「配齐」这件事从五次操作变成一次。</figcaption>
   </figure>
-  <div class="callout">这也解释了为什么各家「插件」装的东西不完全一样：有的只装 Skill，有的能连 MCP 服务器一起装，有的还带命令和 hook。<b>内涵会随产品变，但它在四层里站的位置不变——永远是最外面那个「打包 + 一键安装 + 统一更新」。</b></div>
+  <div class="callout">这也解释了为什么各家「插件」装的东西不完全一样：有的只装 Skill，有的能连 MCP 服务器一起装，有的还带快捷命令和钩子。<b>内涵会随产品变，但它在四层里站的位置不变——永远是最外面那个「打包 + 一键安装 + 统一更新」。</b></div>
 </section>
 
 <!-- ============ 12 ============ -->
 <section class="card" id="c12">
   <div class="no-head"><span class="no">12</span><h2>「插件」这个词，内涵换过一轮</h2></div>
   <p class="rv">四个词里，「插件」是最老的一个，也是最容易被误读的一个——因为它在 AI 圈里已经换过一次意思了。</p>
-  <p class="rv">在软件世界里它是个几十年的老词。维基百科的定义是：<b>插件是一段软件组件，它扩展一个已有系统的功能，而不需要把那个系统重新构建一遍。</b>浏览器插件、VS Code 扩展、Photoshop 滤镜，全是这个意思——<b>宿主程序留好一个口子，第三方往里塞东西</b>。</p>
+  <p class="rv">在软件世界里它是个几十年的老词。维基百科的定义是：<b>插件是一段软件组件，它扩展一个已有系统的功能，而不需要把那个系统重新构建一遍。</b>浏览器插件、VS Code 扩展、Photoshop 滤镜，全是这个意思——<b>主程序留好一个口子，第三方往里塞东西</b>。</p>
   <p class="rv">然后 AI 圈用了一次这个词，而且翻车了：</p>
   <figure class="rv">
     <svg class="stage" id="tl-svg" viewBox="0 0 620 250" role="img" aria-label="时间轴四个节点：传统软件插件、2023 年 3 月的 ChatGPT Plugins、2024 年退役被 GPTs 与 Actions 取代、2025 到 2026 年今天作为打包单位的插件"></svg>
@@ -446,7 +442,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     <figcaption>点四个节点，看同一个词在不同时候指的是什么。注意 2023 年那次和今天这次，装的东西根本不是一类。</figcaption>
   </figure>
   <p class="rv">2023 年 3 月 23 日，OpenAI 发布 <b>ChatGPT Plugins</b>，让第三方给 ChatGPT 接上实时能力——查航班、订餐厅、读网页。干的事，正是今天 MCP 干的事。一年多以后，它被 GPTs 和 Actions 取代，2024 年陆续退役。</p>
-  <p class="rv">而今天各家产品里的「插件」，回到了软件世界那个老含义：<b>一个打包分发的单位</b>，里面装的是 Skill、MCP 服务器、命令、hook。</p>
+  <p class="rv">而今天各家产品里的「插件」，回到了软件世界那个老含义：<b>一个打包分发的单位</b>，里面装的是 Skill、MCP 服务器、快捷命令、钩子。</p>
   <div class="callout warn">所以听到「装个插件」这四个字，最好追一句：<b>装的是能力（工具 / MCP）、章法（Skill），还是一个打包好的套装？</b>同样四个字，2023 年指的是第一类，今天多半指第三类。</div>
 </section>
 <!-- ============ 13 ============ -->
@@ -486,16 +482,16 @@ footer li{margin-bottom:5px;word-break:break-all}
         <tr><th scope="row">它本质上是什么</th><td>一个能被调用的<b>动作</b></td><td>一份关于「怎么对接」的<b>书面约定</b></td><td>一个装着说明的<b>文件夹</b></td><td>一个<b>安装包</b></td></tr>
         <tr><th scope="row">它回答什么问题</th><td>AI 能不能做这个动作</td><td>这些动作怎么接进来</td><td>什么时候、按什么章法做</td><td>怎么打包、怎么装、怎么更新</td></tr>
         <tr><th scope="row">谁来写它</th><td>工程师，要写代码</td><td>协议由社区维护；服务器由工程师实现</td><td>会这门活的人，<b>可以完全不写代码</b></td><td>把上面几样凑齐的人</td></tr>
-        <tr><th scope="row">里面装的是什么</th><td>名字 + 描述 + 参数格式 + 实现代码</td><td>消息格式 + 传输方式 + 三类原语</td><td>SKILL.md + 可选的脚本、模板、参考资料</td><td>Skill、MCP 服务器、命令、hook 的任意组合</td></tr>
+        <tr><th scope="row">里面装的是什么</th><td>名字 + 一句描述 + 要填哪几栏 + 真正干活的代码</td><td>消息长什么样 + 怎么传话 + 三类东西各由谁决定</td><td>SKILL.md 说明书 + 可选的脚本、模板、参考资料</td><td>Skill、MCP 服务器、命令、钩子的任意组合</td></tr>
         <tr><th scope="row">AI 少了它会怎样</th><td>只会说，不会动手</td><td>每个工具都得单独对接一遍</td><td>能动手但没章法，每次做法都不一样</td><td>每样都要单独装、单独更新</td></tr>
         <tr><th scope="row">能不能单独存在</th><td>能</td><td>能，但没东西可接就没意义</td><td>能</td><td>它就是「把别的东西打在一起」，本身不新增能力</td></tr>
-        <tr><th scope="row">占不占上下文</th><td>占，而且<b>一开场全量占住</b></td><td>不直接占，占的是它接进来的那些工具定义</td><td>只占一行名字和描述，用到才展开全文</td><td>取决于里面装了什么</td></tr>
-        <tr><th scope="row">真实例子</th><td><code>get_weather</code>、<code>create_issue</code>、<code>search_web</code></td><td>GitHub MCP Server、filesystem MCP Server</td><td><code>pptx</code>、<code>docx</code>、代码审查类 Skill</td><td>一整套按岗位配好的能力包</td></tr>
+        <tr><th scope="row">占不占「桌面空间」（上下文）</th><td>占，而且<b>一开场全量占住</b></td><td>不直接占，占的是它接进来的那些工具定义</td><td>只占一行名字和描述，用到才展开全文</td><td>取决于里面装了什么</td></tr>
+        <tr><th scope="row">真实例子</th><td><code>get_weather</code>（查天气）、<code>create_issue</code>（开任务单）、<code>search_web</code>（搜网页）</td><td>GitHub MCP Server、filesystem MCP Server</td><td><code>pptx</code>、<code>docx</code>、代码审查类 Skill</td><td>一整套按岗位配好的能力包</td></tr>
       </tbody>
     </table>
   </div>
   <p class="tw-hint rv">← 表格可以左右拖动 →</p>
-  <div class="callout fact">如果只留一行，留这行：<b>Tool 是能力，MCP 是接口，Skill 是知识，插件是包装。</b>能力和接口是给机器看的，知识是给人写的，包装是给分发用的。</div>
+  <div class="callout fact">如果只留一行，留这行：<b>Tool 是「手」，MCP 是「插座」，Skill 是「章法」，插件是「礼盒」。</b>手和插座是给机器用的，章法是写给人看的，礼盒是为了好分发。</div>
 </section>
 
 <!-- ============ 15 ============ -->
@@ -505,11 +501,11 @@ footer li{margin-bottom:5px;word-break:break-all}
   <figure class="rv">
     <svg class="stage" id="judge-svg" viewBox="0 0 620 348" role="img" aria-label="判断树：三个是非题依次筛出 Tool、MCP、Skill，都不是则归为插件；点下面的真实例子看它走哪条路"></svg>
     <div class="btnrow" id="judge-ex">
-      <button class="btn sel" data-e="0">get_weather</button>
-      <button class="btn" data-e="1">GitHub MCP Server</button>
-      <button class="btn" data-e="2">read_file（在 filesystem MCP 里）</button>
-      <button class="btn" data-e="3">pptx（SKILL.md + 脚本）</button>
-      <button class="btn" data-e="4">sales-kit（3 个 Skill + 1 个 MCP + 2 条命令）</button>
+      <button class="btn sel" data-e="0">get_weather（查天气）</button>
+      <button class="btn" data-e="1">GitHub MCP Server（插座）</button>
+      <button class="btn" data-e="2">read_file（插座上的电器）</button>
+      <button class="btn" data-e="3">pptx（说明书 + 脚本）</button>
+      <button class="btn" data-e="4">sales-kit（套装：3 说明书 + 1 插座 + 2 命令）</button>
     </div>
     <figcaption>点下面五个真实例子，看它顺着哪条路走到底。第 2 个和第 3 个是一组——一个是插座，一个是插在插座上的那件工具。</figcaption>
   </figure>
@@ -522,7 +518,7 @@ footer li{margin-bottom:5px;word-break:break-all}
   <div class="no-head"><span class="no">16</span><h2>名词速查：本页出现过的每个术语</h2></div>
   <p class="rv">按四层分好了类，忘了哪个回来查一句就行。每条都是一句人话，不含二次术语。</p>
   <div class="btnrow rv" id="gloss-btns" style="margin-top:0;margin-bottom:14px">
-    <button class="btn sel" data-c="all">全部 30 条</button>
+    <button class="btn sel" data-c="all">全部 31 条</button>
     <button class="btn" data-c="tool">Tool 与调用</button>
     <button class="btn" data-c="mcp">MCP 与协议</button>
     <button class="btn" data-c="skill">Skill</button>
@@ -532,6 +528,7 @@ footer li{margin-bottom:5px;word-break:break-all}
     <div class="gl" data-cat="tool"><b>Tool（工具）</b><span>一个模型可以申请调用的具体动作。模型自己不执行它，只提交申请。</span></div>
     <div class="gl" data-cat="tool"><b>工具调用 / 函数调用</b><span>模型输出申请单、外部程序执行、结果回传的完整来回。两个词是同一件事。</span></div>
     <div class="gl" data-cat="tool"><b>ReAct</b><span>2022 年那篇奠基论文：让模型想一步、动一步、看到结果再想下一步。</span></div>
+    <div class="gl" data-cat="tool"><b>agent（智能体）</b><span>会自己「想一步、动一步」接着干下去的 AI 助手，而不是问一句答一句。本页多数场合写的「AI 助手」就是它。</span></div>
     <div class="gl" data-cat="tool"><b>JSON</b><span>一种用大括号和引号组织数据的文本格式。申请单就是用它写的。</span></div>
     <div class="gl" data-cat="tool"><b>参数（parameter）</b><span>调用工具时要填的那几栏，比如城市名、日期、条数。</span></div>
     <div class="gl" data-cat="tool"><b>Schema</b><span>写明「数据必须长什么样」的约定：有哪几栏、每栏是文字还是数字、哪些必填。</span></div>
@@ -543,24 +540,24 @@ footer li{margin-bottom:5px;word-break:break-all}
     <div class="gl" data-cat="mcp"><b>JSON-RPC 2.0</b><span>MCP 底层用的消息格式：用 JSON 写的一问一答标准套路。</span></div>
     <div class="gl" data-cat="mcp"><b>MCP 服务器</b><span>真正握着工具和数据的那一端。可以跑在你本机，也可以在云上。</span></div>
     <div class="gl" data-cat="mcp"><b>Host / Client / Server</b><span>宿主是你打开的那个 AI 应用；客户端是宿主内部为每个服务器配的专属接线员，一对一；服务器是提供能力的那端。</span></div>
-    <div class="gl" data-cat="mcp"><b>传输（transport）</b><span>实际的传话通道。stdio 是本机进程直接对话，Streamable HTTP 是走网络。</span></div>
+    <div class="gl" data-cat="mcp"><b>传话方式（transport）</b><span>两边实际怎么传消息。服务器在你本机就叫本机直连（学名 stdio），在网络那头就叫走网络（学名 Streamable HTTP）。</span></div>
     <div class="gl" data-cat="mcp"><b>LSP（语言服务器协议）</b><span>编辑器行业早十年的同一套路子，MCP 明确说自己的设计灵感来自它。</span></div>
     <div class="gl" data-cat="mcp"><b>N×M 问题</b><span>M 个应用接 N 个系统，没统一约定要写 M×N 套对接；有了就变成 M+N。</span></div>
-    <div class="gl" data-cat="mcp"><b>Resources（资源）</b><span>MCP 三类原语之一：由应用决定读什么喂给模型，模型不能主动去抓。</span></div>
-    <div class="gl" data-cat="mcp"><b>Prompts（提示模板）</b><span>MCP 三类原语之一：现成的模板，必须由人主动挑，像菜单点菜。</span></div>
+    <div class="gl" data-cat="mcp"><b>Resources（资源）</b><span>MCP 的三类东西之一：由应用决定读什么喂给模型，模型不能主动去抓。</span></div>
+    <div class="gl" data-cat="mcp"><b>Prompts（提示模板）</b><span>MCP 的三类东西之一：现成的模板，必须由人主动挑，像菜单点菜。</span></div>
     <div class="gl" data-cat="skill"><b>Skill（技能）</b><span>一个文件夹，核心是一份 SKILL.md。它不新增能力，只提供章法。</span></div>
     <div class="gl" data-cat="skill"><b>SKILL.md</b><span>Skill 的正文文件：什么时候翻开我、按哪几步做、哪些事不能做。</span></div>
     <div class="gl" data-cat="skill"><b>Frontmatter</b><span>SKILL.md 开头那段登记信息，至少要有名字和一句话描述。第一层加载只读它。</span></div>
-    <div class="gl" data-cat="skill"><b>渐进式披露</b><span>信息按需一层层展开，一次只把当前用得上的那部分放进上下文。</span></div>
+    <div class="gl" data-cat="skill"><b>渐进式披露</b><span>信息按需一层层展开，一次只把当前用得上的那部分放上桌面。</span></div>
     <div class="gl" data-cat="skill"><b>上下文窗口</b><span>模型一次能读进去的文字总量，包括你的话、它的回答和那份工具清单。</span></div>
     <div class="gl" data-cat="skill"><b>词元（token）</b><span>模型处理文字的最小单位，大约是一个英文单词的一半到四分之三个汉字。计费和长度限制都按它算。</span></div>
-    <div class="gl" data-cat="plug"><b>插件（plugin）</b><span>一个安装包：把若干 Skill、MCP 服务器、命令、hook 打成一个单元，一次装齐、统一更新。</span></div>
+    <div class="gl" data-cat="plug"><b>插件（plugin）</b><span>一个安装包：把若干 Skill、MCP 服务器、快捷命令、钩子打成一个单元，一次装齐、统一更新。</span></div>
     <div class="gl" data-cat="plug"><b>分发单位</b><span>不是功能上的分类，而是「怎么打包、怎么装、怎么更新」这一层的单位。</span></div>
     <div class="gl" data-cat="plug"><b>Hook（钩子）</b><span>在某个特定事件发生时自动触发的一段动作。它不由模型决定，是硬规则。</span></div>
     <div class="gl" data-cat="plug"><b>子 agent（subagent）</b><span>主 agent 派活给一个有专门职责的下级，让它在独立的上下文里干完再汇报。</span></div>
     <div class="gl" data-cat="plug"><b>Tool Search Tool</b><span>Anthropic 的缓解方案：工具定义默认不加载，模型需要时先搜再读。58 个工具的开销从 55,000 降到约 8,700 词元。</span></div>
   </div>
-  <div class="callout fact">如果只记四条：<b>Tool 是能力，MCP 是接口，Skill 是知识，插件是包装。</b>剩下二十六条都是这四条的注脚。</div>
+  <div class="callout fact">如果只记四条：<b>Tool 是手，MCP 是插座，Skill 是章法，插件是礼盒。</b>剩下二十七条都是这四条的注脚。</div>
 </section>
 
 <!-- ============ 结尾提问 ============ -->
@@ -586,7 +583,7 @@ footer li{margin-bottom:5px;word-break:break-all}
 </section>
 
 <footer>
-  <p><b>口径与出处</b>：本页所有定义、机制描述与数字均取自下列公开资料，核查于 2026 年 11 月 12 日；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图。<b>真实数字</b>：第 5、10 张卡的词元开销（GitHub 35 个工具约 26,000、Slack 11 个约 21,000、Sentry 与 Grafana 各 5 个约 3,000、Splunk 2 个约 2,000、五者合计 58 个工具约 55,000、Jira 单个约 17,000、Tool Search Tool 降到约 8,700 即减少 85%、Google Drive 到 Salesforce 场景从 150,000 降到 2,000 即省 98.7%）均直接引自 Anthropic 2025 年 11 月 24 日与 11 月 4 日两篇官方发布；MCP 发布日 2024-11-25、Agent Skills 发布日 2025-10-16、ChatGPT Plugins 发布日 2023-03-23、OpenAI 函数调用发布 2023 年 6 月、ReAct 论文提交 2022 年 10 月、MCP 官方注册表服务器数「超过 40,000」（2026 年 11 月查询，为下限值，注册表未提供精确总数接口）。<b>示意值（非实测）</b>：第 5 张卡灰色「还能对话的空间」按 200,000 词元窗口绘制，仅用于显示挤压效果；第 10 张卡「40 个 Skill、第一层约 2,000 词元、第二层加约 3,000 词元、第三层加约 1,500 词元」为演示渐进式披露而设的假想数字，不是任何厂商的实测统计；第 2、4、9、13、15 张卡里的天气、PPT、sales-kit 等场景均为教学虚构。本页零外部依赖，可离线打开。</p>
+  <p><b>口径与出处</b>：本页所有定义、机制描述与数字均取自下列公开资料，核查于 2026 年 11 月 12 日；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图。<b>真实数字</b>：第 5、10 张卡的词元开销（GitHub 35 个工具约 26,000、Slack 11 个约 21,000、Sentry 与 Grafana 各 5 个约 3,000、Splunk 2 个约 2,000、五者合计 58 个工具约 55,000、Jira 单个约 17,000、Tool Search Tool 降到约 8,700 即减少 85%、Google Drive 到 Salesforce 场景从 150,000 降到 2,000 即省 98.7%）均直接引自 Anthropic 2025 年 11 月 24 日与 11 月 4 日两篇官方发布；MCP 发布日 2024-11-25、Agent Skills 发布日 2025-10-16、ChatGPT Plugins 发布日 2023-03-23、OpenAI 函数调用发布 2023 年 6 月、ReAct 论文提交 2022 年 10 月、MCP 官方名录（registry）服务器数「超过 40,000」（2026 年 11 月查询，为下限值，名录未提供精确总数）。<b>示意值（非实测）</b>：第 5 张卡灰色「还能对话的空间」按 200,000 词元窗口绘制，仅用于显示挤压效果；第 10 张卡「40 个 Skill、第一层约 2,000 词元、第二层加约 3,000 词元、第三层加约 1,500 词元」为演示渐进式披露而设的假想数字，不是任何厂商的实测统计；第 2、4、9、13、15 张卡里的天气、PPT、sales-kit 等场景均为教学虚构。本页零外部依赖，可离线打开。<b>读法说明</b>：主线一律先用生活比方把事讲完，学名只作为括号里的小标签出现；stdio、Streamable HTTP、JSON-RPC 2.0、LSP、ReAct、agent 等更深的原名已从主线移出，保留在本页名词速查与下列出处中，不影响主线阅读。</p>
   <ul>
     <li>函数调用（又称工具调用）机制：你描述函数，模型输出符合 JSON Schema 的结构化调用，由你的代码执行后回传结果：<a href="https://developers.openai.com/api/docs/guides/function-calling" rel="noopener">OpenAI 官方文档 — Function calling</a></li>
     <li>OpenAI 于 2023 年 6 月发布函数调用能力：<a href="https://openai.com/index/function-calling-and-other-api-updates/" rel="noopener">OpenAI — Function calling and other API updates（2023-06-13）</a></li>
@@ -774,8 +771,8 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
 /* ====== 1 · 四层结构 ====== */
 (function(){
   var L=[
-    {n:'Tool · 能力层',q:'它回答：AI 能不能真的做这个动作。',e:'例子：get_weather、create_issue',m:'少了它：模型只会说话，不会动手。',ly:210},
-    {n:'MCP · 连接层',q:'它回答：这些动作按什么统一方式接进来。',e:'例子：GitHub MCP Server',m:'少了它：每个工具都得单独对接一遍。',ly:153},
+    {n:'Tool · 能力层',q:'它回答：AI 能不能真的做这个动作。',e:'例子：查天气、开任务单这类动作',m:'少了它：模型只会说话，不会动手。',ly:210},
+    {n:'MCP · 连接层',q:'它回答：这些动作按什么统一方式接进来。',e:'例子：GitHub 的插座（MCP 服务器）',m:'少了它：每个工具都得单独对接一遍。',ly:153},
     {n:'Skill · 章法层',q:'它回答：什么时候用、按什么步骤用、哪些事不能做。',e:'例子：pptx、docx、代码审查类',m:'少了它：能动手，但每次做法都不一样。',ly:83},
     {n:'插件 · 打包层',q:'它回答：怎么打包、怎么安装、怎么统一更新。',e:'例子：3 个 Skill + 1 个 MCP 的安装包',m:'少了它：每样都要单独装、单独更新。',ly:143}
   ];
@@ -899,7 +896,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
 (function(){
   var ST=[
     {a:'你',ac:C.ink3,l:['上海现在多少度？']},
-    {a:'模型',ac:C.accent,l:['读到一份工具清单：','名字 + 一句描述 + 参数格式']},
+    {a:'模型',ac:C.accent,l:['读到一份工具清单：','名字 + 一句描述 + 要填哪几栏']},
     {a:'模型',ac:C.accent,l:['输出一张申请单（JSON）：','{"tool":"get_weather","city":"上海"}'],m:1},
     {a:'外部程序',ac:C.good,l:['真正发起查询 —— 模型在这里等着，','它不能自己点鼠标，也不能自己发请求']},
     {a:'外部程序',ac:C.good,l:['按同样严格的格式把结果回传：','{"temp":26,"humidity":61}'],m:1},
@@ -998,7 +995,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     var act=GROUPS[sel], s='';
     var tot=act.reduce(function(x,i){ return x+SV[i].v; },0)*p;
     var cnt=act.reduce(function(x,i){ return x+(SV[i].t||0); },0);
-    s+=txt(16,26,'已接入的 MCP 服务器 · 光工具清单就占掉的词元',10.5,C.ink3,'start','600','mono');
+    s+=txt(16,26,'已接上的工具箱 · 光清单就占掉的词元',10.5,C.ink3,'start','600','mono');
     SV.forEach(function(d,i){
       var y=46+i*28, on=act.indexOf(i)>-1, w=on?(d.v/MAX)*XW*p:0;
       s+='<g opacity="'+(on?1:0.24).toFixed(2)+'">';
@@ -1014,7 +1011,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     s+=txt(100,240,cnt+' 个工具',12,C.ink2,'start','650');
     s+=txt(604,244,fmt(tot)+' 词元',19,C.accent,'end','700','mono');
     var fy=264, fw=FW*(tot/WIN);
-    s+=txt(16,fy-6,'模型一次能看到的总量（上下文窗口，示意 200,000 词元）',10,C.ink3,'start','400','mono');
+    s+=txt(16,fy-6,'模型桌面一次能摊开的总量（示意 200,000 词元）',10,C.ink3,'start','400','mono');
     s+=rect(16,fy,FW,26,'#EDF0F3',3);
     if(fw>0.5) s+=rect(16,fy,fw,26,C.accent,3);
     if(fw>150) s+=txt(24,fy+17,'工具清单 '+fmt(tot),10.5,'#fff','start','600');
@@ -1076,16 +1073,16 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
 /* ====== 7 · 三类原语：谁按下按钮 ====== */
 (function(){
   var sel=0;
-  var ACT=[{n:'模型',e:'model',x:40},{n:'应用（宿主）',e:'host',x:230},{n:'用户',e:'user',x:420}];
+  var ACT=[{n:'模型',e:'model',x:40},{n:'你打开的应用',e:'host',x:230},{n:'你本人',e:'user',x:420}];
   var P=[
-    {chip:'模型控制 · model-controlled',prim:'Tools',
-     l1:'模型自己判断该不该调，人不一定每次都点头。',
-     l2:'例子：GitHub 服务器上的 create_issue。'},
-    {chip:'应用控制 · application-controlled',prim:'Resources',
-     l1:'外层应用决定把哪些数据读进来喂给模型。',
+    {chip:'谁按下按钮：模型自己',prim:'Tools（工具）',
+     l1:'模型自己判断该不该用，人不一定每次都点头。',
+     l2:'例子：GitHub 插座上的 create_issue（开任务单）。'},
+    {chip:'谁按下按钮：你打开的应用',prim:'Resources（资源）',
+     l1:'外面的应用决定把哪些资料读进来递给它。',
      l2:'例子：一份项目文件、一张表的结构说明。'},
-    {chip:'用户控制 · user-controlled',prim:'Prompts',
-     l1:'必须由人主动从菜单里挑，模型不能自己触发。',
+    {chip:'谁按下按钮：你本人',prim:'Prompts（提示模板）',
+     l1:'必须由你主动从菜单里挑，模型不能自己触发。',
      l2:'例子：事先备好的「帮我审一遍这段代码」。'}
   ];
   function draw(a){
@@ -1094,7 +1091,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
       var on=i===sel;
       s+=rect(t.x,16,160,48,on?C.accentSoft:'#fff',4,' stroke="'+(on?C.accent:C.line)+'" stroke-width="'+(on?2:1)+'" opacity="'+(on?1:0.55).toFixed(2)+'"');
       s+=txt(t.x+80,38,t.n,13,on?C.accentInk:C.ink3,'middle','650');
-      s+=txt(t.x+80,55,on?t.e:'✗ 不是它发起',10,on?C.ink3:C.ink3,'middle','400',on?'mono':'sans');
+      s+=txt(t.x+80,55,on?'← 它按下按钮':'✗ 不是它发起',10,on?C.ink3:C.ink3,'middle','400',on?'mono':'sans');
     });
     s+=pth('M'+xc+' 64 V88 H310 V106',C.accent,1.8,' opacity="'+a.toFixed(2)+'"');
     s+=pth('M304 100 L310 109 L316 100',C.accent,1.8,' opacity="'+a.toFixed(2)+'"');
@@ -1122,29 +1119,29 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   var sel=0;
   var SV=[
     {n:'filesystem',sub:'本机文件'},
-    {n:'git',sub:'本机仓库'},
+    {n:'git',sub:'本机代码仓库'},
     {n:'GitHub',sub:'云端'}
   ];
   var INFO=[
-    [['跑在哪','你这台电脑上的一个进程'],['传输方式','stdio（不出这台机器）'],['它能碰到什么','你允许的那些文件夹里的文件']],
-    [['跑在哪','你这台电脑上的一个进程'],['传输方式','stdio（不出这台机器）'],['它能碰到什么','本机 Git 仓库的提交历史和分支']],
-    [['跑在哪','GitHub 的服务器上，在远端'],['传输方式','Streamable HTTP（走网络）'],['它能碰到什么','你授权给它的那些仓库、issue、PR']]
+    [['跑在哪','就在你这台电脑上跑着的小程序'],['传话方式','本机直连，不出这台机器'],['它能碰到什么','你允许的那些文件夹里的文件']],
+    [['跑在哪','就在你这台电脑上跑着的小程序'],['传话方式','本机直连，不出这台机器'],['它能碰到什么','本机代码仓库的提交记录和分支']],
+    [['跑在哪','GitHub 那边的机器上，在远端'],['传话方式','走网络，服务器在远端'],['它能碰到什么','你授权给它的那些仓库、任务单、合并请求']]
   ];
   var Y=[64,116,168];
   function draw(a){
     var s='';
     s+=rect(16,16,274,206,'#FCFDFE',6,' stroke="'+C.line2+'" stroke-width="1.2"');
-    s+=txt(28,38,'Host · 宿主',11.5,C.accent,'start','700','mono');
+    s+=txt(28,38,'你打开的 AI 应用（宿主）',11.5,C.accent,'start','700','mono');
     s+=txt(28,54,'你打开的那个 AI 应用',10.5,C.ink3,'start','400');
     SV.forEach(function(t,i){
       var on=i===sel;
       s+=rect(36,Y[i],234,40,on?C.accentSoft:'#fff',4,' stroke="'+(on?C.accent:C.line)+'" stroke-width="'+(on?1.8:1)+'"');
-      s+=txt(48,Y[i]+18,'Client '+(i+1),11,on?C.accentInk:C.ink3,'start','600','mono');
+      s+=txt(48,Y[i]+18,'接线员 '+(i+1),11,on?C.accentInk:C.ink3,'start','600','mono');
       s+=txt(48,Y[i]+32,on?'一对一，只连它自己':'待命',9.5,C.ink3,'start','400');
       s+=line(270,Y[i]+20,380,Y[i]+20,on?C.accent:C.line2,on?2.5:1.2);
       s+=rect(380,Y[i],224,40,on?'#fff':'#FCFDFE',4,' stroke="'+(on?C.accent:C.line)+'" stroke-width="'+(on?2:1)+'"');
       s+=txt(392,Y[i]+18,t.n,11.5,on?C.accentInk:C.ink3,'start','650','mono');
-      s+=txt(392,Y[i]+32,t.sub+(on?'':' · Server'),9.5,on?C.ink3:C.ink3,'start','400');
+      s+=txt(392,Y[i]+32,t.sub+(on?'':' · 干活的那端'),9.5,on?C.ink3:C.ink3,'start','400');
     });
     s+=rect(16,234,588,68,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
     s+='<g opacity="'+a.toFixed(2)+'">';
@@ -1222,7 +1219,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   var TT=['第一层 · 发现','第二层 · 激活','第三层 · 执行'];
   var EX=['启动时只读了 40 个 Skill 的名字和一句话描述，全文一个字都没进来。',
           '这次任务和「做 PPT」那条描述对上了，只把那一个的全文读进来。另外 39 个还是只有一行名字。',
-          '真要用到，才去翻它带的模板文件和脚本。没被点中的部分，始终没进过上下文。'];
+          '真要用到，才去翻它带的模板文件和脚本。没被点中的部分，始终没摊上过桌面。'];
   var NOTE=['40 个 Skill 全在这里，每个只占一行名字。','命中了 1 个：pptx。它的全文刚被读进来。','又翻了它带的 2 个附件。其余 39 个从头到尾没动过。'];
   var FULL=55000,BW=308;
   function draw(a){
@@ -1236,7 +1233,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     s+=rect(16,198,224,90,'#fff',4,' stroke="'+C.line+'" stroke-width="1"');
     s+=txt(30,220,TT[sel],11,C.accent,'start','700','mono');
     s+=wlines(30,242,NOTE[sel],11.5,C.ink2,15,17,'400',3);
-    s+=txt(296,34,'当前占用上下文',11,C.ink3,'start','600','mono');
+    s+=txt(296,34,'当前占桌面多少词元',11,C.ink3,'start','600','mono');
     s+=txt(296,78,v.toLocaleString('en-US'),34,C.accent,'start','700','mono');
     s+=txt(296,100,DELTA[sel]+' · '+DL[sel],11,sel===0?C.ink3:C.hotInk,'start','400');
     var w1=Math.max(3,VAL[sel]/FULL*BW),w0=Math.max(3,VAL[prev]/FULL*BW),wb=lerp(w0,w1,a);
@@ -1259,7 +1256,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
 (function(){
   var sel=0,prev=0;
   var PARTS=[
-    ['Skill','周报规范'],['Skill','PPT 模板'],['MCP','内部数据'],['命令','/周报'],['hook','提交前检查']
+    ['Skill','周报规范'],['Skill','PPT 模板'],['MCP','内部数据'],['命令','/周报'],['钩子','提交前检查']
   ];
   var CAP=['五个零件散着，各自都能单独用——不需要插件。',
            '装进一个盒子，起了个名字：sales-kit。',
@@ -1315,9 +1312,9 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     {t:'今天的插件',y:'2025–2026',x:550}
   ];
   var D=[
-    {h:'宿主程序留好口子，第三方往里塞东西',
+    {h:'主程序留好口子，第三方往里塞东西',
      l:['装的是：功能。浏览器插件、VS Code 扩展、Photoshop 滤镜。',
-        '特点：必须按宿主定的接口写，宿主一升级就可能把你搞坏。',
+        '特点：必须按主程序定的规矩写，主程序一升级就可能把你搞坏。',
         '和 AI 的关系：没关系。这是几十年的老词，含义一直没变。']},
     {h:'AI 圈第一次用这个词，指的是「给模型接上外部能力」',
      l:['装的是：实时能力。查航班、订餐厅、读网页。',
@@ -1328,7 +1325,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
         '后来的分工：接能力交给工具调用和 MCP，配人设交给 GPTs。',
         '留下的教训：分层比打包更重要。']},
     {h:'回到了软件世界那个老含义：一个打包分发的单位',
-     l:['装的是：Skill、MCP 服务器、命令、hook 的任意组合。',
+     l:['装的是：Skill、MCP 服务器、命令、钩子的任意组合。',
         '解决的问题：一次装齐、统一更新，不是新增能力。',
         '注意：各家内涵不完全一样，听到这四个字最好追问一句装的是什么。']}
   ];
@@ -1362,7 +1359,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   var sel=0;
   var L=[
     {n:'Tool · 能力层',b:[['它是什么','一个能被模型调用的动作'],['谁来写','工程师，要写代码'],['装在哪','可以内置，也可以由 MCP 服务器提供'],['少了它','模型只会说，不会动手']]},
-    {n:'MCP · 连接层',b:[['它是什么','一份关于「怎么对接」的书面约定'],['谁来写','协议由社区维护，服务器由工程师实现'],['装在哪','宿主里配一次，指向本机进程或远端网址'],['少了它','每个工具都得单独对接一遍']]},
+    {n:'MCP · 连接层',b:[['它是什么','一份关于「怎么对接」的书面约定'],['谁来写','约定由社区维护，服务器由工程师实现'],['装在哪','在应用里配一次，指向本机小程序或远端网址'],['少了它','每个工具都得单独对接一遍']]},
     {n:'Skill · 章法层',b:[['它是什么','一个装着 SKILL.md 的文件夹'],['谁来写','会这门活的人，可以完全不写代码'],['装在哪','技能目录里，用到才加载'],['少了它','能动手但没章法，每次做法都不一样']]},
     {n:'插件 · 打包层',b:[['它是什么','一个能一次装齐的安装包'],['谁来写','把上面几样凑齐的人'],['装在哪','插件市场，或一个仓库地址'],['少了它','每样都要单独装、单独更新']]}
   ];
@@ -1435,7 +1432,7 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
   var EX=[
     {k:0,a:'「get_weather」→ ① 是 → Tool。',d:'给个城市，返回天气。什么时候调它，模型自己决定。'},
     {k:1,a:'「GitHub MCP Server」→ ① 否，② 是 → MCP。',d:'它不是某一个动作，而是规定 GitHub 那边怎么跟 AI 应用对上话；里面装着 35 个 Tool。'},
-    {k:0,a:'「read_file」→ ① 是 → Tool。',d:'它住在 filesystem MCP 里，但它本身是一个动作。插座和插在插座上的电器不是一回事。'},
+    {k:0,a:'「read_file」→ ① 是 → Tool。',d:'它住在本机文件那个插座里，但它本身是一个动作。插座和插在插座上的电器不是一回事。'},
     {k:2,a:'「pptx」→ ①② 否，③ 是 → Skill。',d:'它是一个文件夹：SKILL.md 加几个脚本。不新增动作，只规定做 PPT 按什么章法。'},
     {k:3,a:'「sales-kit」→ 三问全否 → 插件。',d:'它是把 3 个 Skill、1 个 MCP、2 条命令打成的一个包。装它等于一次装齐那六样。'}
   ];
