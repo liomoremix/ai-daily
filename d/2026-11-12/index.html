@@ -50,6 +50,23 @@ h1 .u{background:linear-gradient(var(--accent-soft),var(--accent-soft)) no-repea
 .stat .k{display:block;margin-top:5px;font-size:11.5px;line-height:1.5;color:var(--ink-3)}
 .scrollhint{margin:20px 0 0;font:12px/1 var(--mono);color:var(--ink-3)}
 
+.brief{margin:0 0 4px}
+.brief-h{margin:0 0 10px;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.brief-h b{color:var(--ink);font-weight:600}
+.brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:640px){.brief-grid{grid-template-columns:1fr}}
+.brief-cell{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px 13px}
+.brief-cell .bn{font:700 15px/1.2 var(--mono);color:var(--accent-ink);letter-spacing:-.01em}
+.brief-cell .ba{display:inline-block;margin-left:8px;font:600 10.5px/1 var(--mono);color:var(--accent);background:var(--accent-soft);border-radius:3px;padding:3px 6px;vertical-align:2px}
+.brief-cell p{margin:7px 0 0;font-size:13.5px;line-height:1.7;color:var(--ink-2)}
+.more-row{margin:14px 0 20px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.more-btn{appearance:none;border:1px solid var(--accent);background:var(--accent);color:#fff;font:600 14px/1 var(--sans);padding:13px 24px;border-radius:8px;cursor:pointer}
+.more-btn:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.more-btn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+.more-hint{margin:0;flex:1;min-width:230px;font:11.5px/1.7 var(--mono);color:var(--ink-3)}
+#detail.collapsed{display:none}
+body:not(.expanded) .rail{display:none}
+
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px 24px;margin:18px 0;scroll-margin-top:16px}
 .card h2{margin:0 0 4px;font-size:20px;line-height:1.4;font-weight:680;letter-spacing:-.01em}
 .card h3{margin:24px 0 8px;font-size:15.5px;font-weight:650;color:var(--ink)}
@@ -172,18 +189,32 @@ footer li{margin-bottom:5px;word-break:break-all}
 <header class="hero" id="hero">
   <span class="kicker">AI 名词 · Tool / MCP / Skill / 插件</span>
   <h1><span class="u">Tool、MCP、Skill、插件不是四个同类，是四层不同的东西</span></h1>
-  <p class="lede">这四个词几乎总是混在一起说，好像装哪个都差不多。其实它们在回答<b>四个完全不同的问题</b>：Tool 问「AI 能不能做这个动作」，MCP 问「这些动作怎么接进来」，Skill 问「什么时候、按什么章法做」，插件问「怎么打包、怎么安装、怎么更新」。分清这四层，你就不会再被「装个插件让 AI 变强」这种话绕晕。</p>
+  <div class="brief">
+    <p class="brief-h">先用<b>四句大白话</b>认识这四个词。赶时间的话，看完这四句和下面三个数字就够了。</p>
+    <div class="brief-grid">
+      <div class="brief-cell"><span class="bn">Tool</span><span class="ba">一只手</span><p>AI 真能去做的一个动作，比如查天气、开任务单。没有它，AI 只会说、不会做。</p></div>
+      <div class="brief-cell"><span class="bn">MCP</span><span class="ba">插座标准</span><p>「怎么接进来」的统一规矩：谁家的工具都按同一个插口接，不用一家一家重新布线。</p></div>
+      <div class="brief-cell"><span class="bn">Skill</span><span class="ba">一张菜谱</span><p>一份写好的说明书：不教新本事，只规定什么时候动手、按哪几步做，做出来每次都一个样。</p></div>
+      <div class="brief-cell"><span class="bn">插件</span><span class="ba">一个礼盒</span><p>把上面几样打成一个包：一条命令一次装齐，以后统一更新。</p></div>
+    </div>
+    <div class="more-row">
+      <button class="more-btn" id="more-btn" aria-expanded="false" aria-controls="detail">了解更多 ↓</button>
+      <p class="more-hint">16 张卡、14 组可以点的动画，约 24 分钟；大部分卡都能点。专业词第一次出现都会先用一句大白话解释，学名写在后面，想查原名翻第 16 卡。</p>
+    </div>
+  </div>
   <div class="stats">
     <div class="stat"><span class="v" data-count="4" data-suffix=" 层">0</span><span class="k">能力 / 连接 / 章法 / 打包，各回答一个不同的问题</span></div>
     <div class="stat"><span class="v" data-count="58" data-suffix=" 个工具">0</span><span class="k">接进来的 5 箱工具一共 58 个，光清单就占掉约 55,000 个「词元」（AI 数文字的单位，第 5 卡讲）</span></div>
     <div class="stat"><span class="v" data-count="1" data-suffix=" 条命令">0</span><span class="k">一个插件把 Skill、MCP 服务器、命令一起装好</span></div>
   </div>
-  <p class="scrollhint">↓ 16 张卡，约 24 分钟。大部分卡都能点；专业词第一次出现都会先用一句大白话解释，学名写在后面，想查原名翻第 16 卡。</p>
 </header>
+
+<div id="detail" class="collapsed">
 
 <!-- ============ 1 ============ -->
 <section class="card" id="c1">
   <div class="no-head"><span class="no">01</span><h2>这四个词，其实在回答四个问题</h2></div>
+  <p class="rv lede">这四个词几乎总是混在一起说，好像装哪个都差不多。其实它们在回答<b>四个完全不同的问题</b>：Tool 问「AI 能不能做这个动作」，MCP 问「这些动作怎么接进来」，Skill 问「什么时候、按什么章法做」，插件问「怎么打包、怎么安装、怎么更新」。分清这四层，你就不会再被「装个插件让 AI 变强」这种话绕晕。</p>
   <p class="rv">先别看定义。想象你招了一个新人：<b>脑子非常好使，但今天是他第一天上班，两手空空</b>。要让他真能干活，你会依次撞上四个完全不同的问题：</p>
   <ul class="rv">
     <li>他能不能真的动手做事，而不只是嘴上说说？——这是在配<b>能力</b>。</li>
@@ -582,6 +613,8 @@ footer li{margin-bottom:5px;word-break:break-all}
   <p class="tail">没有标准答案。但如果你能说出「这件事我们缺的是能力，那件事缺的是章法」，你已经比大多数人更清楚该怎么给 AI 配家当了。</p>
 </section>
 
+</div><!-- /#detail -->
+
 <footer>
   <p><b>口径与出处</b>：本页所有定义、机制描述与数字均取自下列公开资料，核查于 2026 年 11 月 12 日；产品能力和厂商表述会随版本变化，以官方最新文档为准。页内所有图表均为讲解用的示意图。<b>真实数字</b>：第 5、10 张卡的词元开销（GitHub 35 个工具约 26,000、Slack 11 个约 21,000、Sentry 与 Grafana 各 5 个约 3,000、Splunk 2 个约 2,000、五者合计 58 个工具约 55,000、Jira 单个约 17,000、Tool Search Tool 降到约 8,700 即减少 85%、Google Drive 到 Salesforce 场景从 150,000 降到 2,000 即省 98.7%）均直接引自 Anthropic 2025 年 11 月 24 日与 11 月 4 日两篇官方发布；MCP 发布日 2024-11-25、Agent Skills 发布日 2025-10-16、ChatGPT Plugins 发布日 2023-03-23、OpenAI 函数调用发布 2023 年 6 月、ReAct 论文提交 2022 年 10 月、MCP 官方名录（registry）服务器数「超过 40,000」（2026 年 11 月查询，为下限值，名录未提供精确总数）。<b>示意值（非实测）</b>：第 5 张卡灰色「还能对话的空间」按 200,000 词元窗口绘制，仅用于显示挤压效果；第 10 张卡「40 个 Skill、第一层约 2,000 词元、第二层加约 3,000 词元、第三层加约 1,500 词元」为演示渐进式披露而设的假想数字，不是任何厂商的实测统计；第 2、4、9、13、15 张卡里的天气、PPT、sales-kit 等场景均为教学虚构。本页零外部依赖，可离线打开。<b>读法说明</b>：主线一律先用生活比方把事讲完，学名只作为括号里的小标签出现；stdio、Streamable HTTP、JSON-RPC 2.0、LSP、ReAct、agent 等更深的原名已从主线移出，保留在本页名词速查与下列出处中，不影响主线阅读。</p>
   <ul>
@@ -766,6 +799,20 @@ if(RM){ $('#hero').classList.add('in'); } else { requestAnimationFrame(function(
     links.forEach(function(a,i){ a.classList.toggle('on',i===cur); });
   }
   addEventListener('scroll',on,{passive:true}); on();
+})();
+
+(function(){
+  var btn=$('#more-btn'),det=$('#detail');
+  if(!btn||!det) return;
+  btn.addEventListener('click',function(){
+    var open=det.classList.contains('collapsed');
+    det.classList.toggle('collapsed',!open);
+    document.body.classList.toggle('expanded',open);
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    btn.textContent=open?'收起详解 ↑':'了解更多 ↓';
+    var t=open?$('#c1'):$('#hero');
+    if(t) t.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+  });
 })();
 
 /* ====== 1 · 四层结构 ====== */
