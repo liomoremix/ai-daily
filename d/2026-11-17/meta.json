@@ -5,8 +5,8 @@
   "series": "名词解释",
   "subject": "Agent Harness 与 Agent",
   "title": "什么是 Harness？它和 Agent 有什么区别？",
-  "hook": "请 AI 帮忙订一桌饭。Agent 会查空位、换方案，Harness 帮它用工具、记进度，并在下单前等你确认。",
-  "read_minutes": 8,
+  "hook": "Agent 是你交任务的整套 AI 助手，Harness 是让它运转的支撑软件。用四个交互实验，看清它们如何配合。",
+  "read_minutes": 10,
   "sources": [
     {
       "title": "Anthropic · Agent 与 Harness 的定义",
