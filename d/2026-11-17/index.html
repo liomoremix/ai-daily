@@ -6,91 +6,10 @@
 <meta name="color-scheme" content="light">
 <title>什么是 Harness？它和 Agent 有什么区别？</title>
 <style>
-  :root {
-    --ink: #18362c;
-    --pine: #102e25;
-    --leaf: #d9ef9a;
-    --paper: #f1f5e8;
-    --card: #fcfdf8;
-    --line: #d2dbc9;
-    --muted: #52665c;
-    --sans: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif;
-    --serif: "Songti SC", "STSong", "SimSun", serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.85 var(--sans); }
-  [hidden] { display: none !important; }
-  button, summary, a { -webkit-tap-highlight-color: transparent; }
-  :focus-visible { outline: 3px solid #a66518; outline-offset: 4px; }
-  a { color: inherit; text-underline-offset: .24em; }
-  button { font: inherit; cursor: pointer; }
-  h1, h2, h3, p, figure, dl, dd { margin: 0; }
-  .hero { color: #f8f9ed; background: var(--pine); }
-  .hero-inner { max-width: 1160px; margin: auto; padding: 32px clamp(24px, 5vw, 72px) 56px; }
-  .mast { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 20px; border-bottom: 1px solid #587063; padding-bottom: 14px; color: #dfeada; font-size: .81rem; }
-  .mast strong { color: var(--leaf); font-size: .93rem; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: clamp(15px, 4vw, 52px); padding-top: 44px; }
-  h1 { font: 700 clamp(2.55rem, 5.9vw, 5.5rem)/1.06 var(--serif); letter-spacing: -.055em; }
-  h1 span { display: block; }
-  h1 span + span { margin-top: .32em; font-size: .61em; letter-spacing: -.035em; line-height: 1.28; }
-  .setup { margin-top: 1.35rem; color: #d9e5da; font-size: .93rem; }
-  .definitions { margin: 12px 0 21px; max-width: 460px; }
-  .definitions div { display: grid; grid-template-columns: 5.25rem 1fr; gap: 2px 9px; padding: 7px 0; border-bottom: 1px solid #476453; }
-  .definitions dt { font: 700 1.14rem/1.5 Georgia, serif; color: var(--leaf); }
-  .definitions dd { font-size: .91rem; line-height: 1.65; }
-  .more { display: inline-flex; gap: 24px; align-items: center; min-height: 48px; padding: 8px 16px; border: 0; border-radius: 6px; background: var(--leaf); color: #142c20; font-weight: 750; }
-  .more:hover { background: #ecf6c7; }
-  .more[aria-expanded="true"] .arrow { transform: rotate(180deg); }
-  .arrow { font-size: 1.22em; transition: transform .22s; }
-  .hero-art { width: 100%; display: block; font-family: var(--sans); }
-  .guide { width: min(calc(100% - 40px), 960px); margin: auto; padding: 48px 0 28px; }
-  .guide > h2 { font: 700 clamp(2rem, 4.5vw, 3.2rem)/1.22 var(--serif); margin-bottom: 22px; }
-  .guide > h2:focus { outline: none; }
-  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
-  .card { min-width: 0; padding: clamp(19px, 3.4vw, 34px); background: var(--card); border: 1px solid var(--line); border-radius: 7px; }
-  .card.wide { grid-column: 1 / -1; }
-  .card h3 { font-size: clamp(1.3rem, 2.8vw, 1.85rem); line-height: 1.35; letter-spacing: -.025em; }
-  .card p { max-width: 68ch; margin-top: 12px; }
-  .card p + p { margin-top: 10px; }
-  .example { padding-left: 12px; border-left: 3px solid #93a963; color: var(--muted); }
-  .lab { background: #eaf0e0; border-color: #c9d7bb; }
-  .lab-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 30px; }
-  .lab-grid > * { min-width: 0; }
-  .lab figure { background: #f8faf2; border: 1px solid #c7d3be; border-radius: 7px; padding: 8px; }
-  .drawing { overflow: auto; }
-  .diagram { width: 100%; min-width: 270px; display: block; font-family: var(--sans); }
-  .diagram text { font-size: 23px; fill: var(--ink); text-anchor: middle; }
-  .diagram .small { font-size: 20px; }
-  .rail { fill: none; stroke: #7d9688; stroke-width: 3; }
-  .node { fill: #edf1e5; stroke: #9bad9c; stroke-width: 2; transition: fill .22s, stroke .22s; }
-  [data-active="true"] > .node { fill: var(--leaf); stroke: #405e3c; }
-  .bead { fill: #1c613e; transition: transform .38s cubic-bezier(.22,.77,.38,1); }
-  .lab figcaption { padding: 3px 8px; font-size: .73rem; color: var(--muted); }
-  .controls { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 7px; }
-  .controls button { background: #f8faf2; border: 1px solid #a6b69e; border-radius: 5px; min-height: 44px; padding: 5px 10px; color: var(--ink); font-size: .9rem; font-weight: 650; }
-  .controls button:hover { border-color: #456454; }
-  .controls button[aria-pressed="true"] { background: #1e4735; border-color: #1e4735; color: #fff; }
-  .card .readout { padding: 9px 12px; margin-top: 11px; min-height: 5em; border-left: 3px solid #547454; background: #f5f8ed; font-size: .94rem; line-height: 1.63; }
-  .questions { margin-top: 21px; padding: 25px clamp(19px, 3.4vw, 34px); border-radius: 7px; background: #dcebd4; }
-  .questions h2 { font-size: 1.35rem; margin-bottom: 9px; }
-  .questions p + p { margin-top: 5px; }
-  footer { margin-top: 24px; border-top: 1px solid #c1ccba; padding: 10px 0; font-size: .88rem; color: var(--muted); }
-  footer summary { width: fit-content; cursor: pointer; padding: 8px 0; }
-  .sources { display: flex; flex-wrap: wrap; column-gap: 18px; row-gap: 4px; padding-bottom: 8px; }
-  @media (max-width: 680px) {
-    .hero-inner { padding: 22px 21px 29px; }
-    .hero-grid { grid-template-columns: 1fr; padding-top: 29px; gap: 22px; }
-    h1 { font-size: clamp(2.35rem, 10.3vw, 4rem); }
-    h1 span + span { font-size: .67em; }
-    .hero-art { max-width: 370px; justify-self: center; }
-    .guide { width: calc(100% - 28px); padding-top: 30px; }
-    .cards, .lab-grid { grid-template-columns: 1fr; gap: 13px; }
-    .card .readout { min-height: 0; }
-    .lab figure { margin-top: 4px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
+:root{--ink:#202638;--muted:#637086;--blue:#355be8;--paper:#fafbfe;--sans:"Microsoft YaHei UI","PingFang SC",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.95 var(--sans)}[hidden]{display:none!important}button,a,summary{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer}a{color:inherit;text-underline-offset:5px}:focus-visible{outline:3px solid #355be8;outline-offset:5px}h1,h2,h3,p,figure,dl,dd{margin:0}.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 58%,#eaf0ff,transparent 55%),#fafbfe}.hero-inner{max-width:1200px;margin:auto;padding:28px 40px 66px}.mast{display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:12px}.mast strong{font-weight:600;color:var(--ink);font-size:14px}.hero-grid{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:66px}.hero-copy{max-width:760px}h1{font-size:clamp(38px,5.8vw,72px);line-height:1.2;font-weight:750;letter-spacing:-2px}h1 span{display:block}h1 span+span{font-size:.48em;font-weight:400;letter-spacing:0;margin-top:14px;color:var(--muted)}.setup{margin-top:27px;font-size:16px;color:var(--muted)}.definitions{display:flex;gap:50px;text-align:left;max-width:640px;margin:26px auto}.definitions>div{flex:1}.definitions dt{font-size:18px;font-weight:700;color:var(--blue);margin-bottom:4px}.definitions dd{font-size:15px;line-height:1.85}.more{display:inline-flex;align-items:center;gap:28px;background:var(--ink);color:white;border:0;border-radius:28px;padding:10px 26px;min-height:48px;font-size:14px}.more:hover{background:var(--blue)}.arrow{transition:transform .25s}.more[aria-expanded=true] .arrow{transform:rotate(180deg)}.hero-art{order:-1;width:min(100%,560px);height:210px;margin-bottom:28px;display:block}.hero-art .signal{stroke-dasharray:6 12;animation:travel 9s linear infinite}.hero-art .core{transform-origin:280px 110px;animation:breathe 5s ease-in-out infinite}@keyframes travel{to{stroke-dashoffset:-180}}@keyframes breathe{50%{transform:scale(1.06)}}.guide{max-width:1080px;margin:auto;padding:90px 34px 40px}.guide>h2{max-width:640px;margin:auto auto 64px;font-size:36px;font-weight:500;line-height:1.4;letter-spacing:-1px}.guide>h2:focus{outline:none}.cards{display:block}.card{max-width:640px;margin:0 auto 64px}.card h3{font-size:25px;line-height:1.5;font-weight:650;letter-spacing:-.5px}.card p{margin-top:22px;color:#4d586e;line-height:2.05}.card strong{color:var(--ink)}.card.lab{max-width:none;margin:100px auto 120px;position:relative}.lab-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:70px;align-items:center}.lab:nth-of-type(4) .lab-grid,.lab:nth-of-type(7) .lab-grid{direction:rtl}.lab-grid>*{min-width:0;direction:ltr}.lab figure{position:relative}.drawing{overflow:auto}.diagram{width:100%;min-width:280px;display:block}.diagram text{font-family:var(--sans);fill:var(--ink);text-anchor:middle;font-size:18px}.diagram .tiny{font-size:13px;fill:var(--muted)}[data-node]{opacity:0;transition:opacity .4s;pointer-events:none}[data-node][data-active=true]{opacity:1}.lab figcaption{text-align:center;color:#7a8495;font-size:11px;margin-top:16px}.controls{display:flex;flex-wrap:wrap;gap:0 17px;margin-top:24px;border-bottom:1px solid #dce2ed}.controls button{border:0;border-bottom:2px solid transparent;color:#6b7588;background:transparent;padding:10px 0;min-height:44px;font-size:13px}.controls button[aria-pressed=true]{border-color:var(--blue);color:var(--blue);font-weight:700}.card .readout{font-size:14px;color:var(--blue);line-height:1.9;min-height:108px;margin-top:20px}.example{font-size:19px;padding:25px 0;color:var(--ink)!important}.questions{max-width:640px;margin:90px auto 45px;padding-top:35px;border-top:1px solid #dce2ed}.questions h2{font-size:23px;font-weight:500;margin-bottom:20px}.questions p{margin-top:14px;color:var(--muted)}footer{max-width:640px;margin:auto;color:var(--muted);font-size:12px}footer summary{cursor:pointer;padding:10px 0}.sources{display:flex;flex-direction:column;gap:7px;padding-top:10px}
+@media(max-width:680px){.hero-inner{padding:22px 22px 46px}.mast{font-size:10px}.hero-grid{padding-top:30px}.hero-art{height:165px;margin-bottom:22px}h1{font-size:39px;letter-spacing:-1.5px}h1 span+span{font-size:20px;line-height:1.6}.setup{font-size:14px;margin-top:20px}.definitions{gap:24px;margin:24px 0}.definitions dt{font-size:16px}.definitions dd{font-size:13px}.guide{padding:60px 25px 35px}.guide>h2{font-size:28px;margin-bottom:44px}.card h3{font-size:23px}.card{margin-bottom:45px}.card p{font-size:15px;margin-top:18px}.card.lab{margin:65px auto 80px}.lab-grid{grid-template-columns:1fr;gap:20px}.lab figure{grid-row:1}.diagram{max-height:330px}.card .readout{min-height:0}.controls{gap:0 14px}.questions{margin-top:65px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -99,7 +18,7 @@
     <div class="hero-inner">
       <div class="mast"><strong>AI 每日一识</strong><time datetime="2026-11-17">2026 年 11 月 17 日</time></div>
       <div class="hero-grid">
-        <div>
+        <div class="hero-copy">
           <h1><span>什么是 Harness？</span><span>它和 Agent 有什么区别？</span></h1>
           <p class="setup">想象你请 AI 帮忙订一桌饭。</p>
           <dl class="definitions">
@@ -108,25 +27,16 @@
           </dl>
           <button class="more" id="more" type="button" aria-expanded="false" aria-controls="guide" hidden><span>了解更多</span><span class="arrow" aria-hidden="true">↓</span></button>
         </div>
-        <svg class="hero-art" viewBox="0 0 420 306" role="img" aria-label="插图。订位请求交给助手，系统查找空位，满座时把结果送回，确认后才能订位。">
-          <rect x="6" y="6" width="408" height="294" rx="12" fill="#204737" stroke="#72907e"/>
-          <path d="M26 46h368M26 223h368" stroke="#648372" fill="none"/>
-          <circle cx="31" cy="27" r="4" fill="#d9ef9a"/><text x="46" y="32" font-size="15" fill="#e2eedc">周五晚饭的订位单</text>
-          <path d="M123 101h61m107 0h78v94h-21M167 170v-30h64v-28" fill="none" stroke="#d3e0c9" stroke-width="2.5" stroke-dasharray="5 5"/>
-          <path d="m176 95 9 6-9 6m181 82-9 6 9 6m-132-82 6-8 6 8" fill="none" stroke="#d3e0c9" stroke-width="2.5"/>
-          <rect x="28" y="74" width="95" height="54" rx="5" fill="#f2f4e7"/>
-          <rect x="185" y="74" width="106" height="54" rx="5" fill="#d9ef9a"/>
-          <rect x="92" y="170" width="150" height="44" rx="5" fill="#355c4a" stroke="#86a192"/>
-          <rect x="259" y="170" width="89" height="44" rx="5" fill="#f0d1a3"/>
-          <g text-anchor="middle" fill="#18362c">
-            <text x="75" y="107" font-size="16">四人晚饭</text>
-            <text x="238" y="107" font-size="17" font-weight="700">查找空位</text>
-            <text x="304" y="198" font-size="16" font-weight="700">等你确认</text>
-          </g>
-          <text x="167" y="198" fill="#ecf2e8" font-size="16" text-anchor="middle">满座就回去再找</text>
-          <path d="M30 256h49m-49 12h32" stroke="#a8bea8" stroke-width="3" stroke-linecap="round"/>
-          <text x="388" y="271" text-anchor="end" font-size="15" fill="#d9ef9a">从一句话，到一件办成的事</text>
-        </svg>
+        
+<svg class="hero-art" viewBox="0 0 560 210" role="img" aria-label="AI 助手居中，通过办事系统连接查位、进度和确认">
+<defs><radialGradient id="orb" cx=".3" cy=".25" r=".8"><stop stop-color="#a0beff"/><stop offset=".55" stop-color="#496ee8"/><stop offset="1" stop-color="#203792"/></radialGradient></defs>
+<path d="M100 110C160 20 215 20 280 110S390 200 460 110M100 110C160 200 215 200 280 110S390 20 460 110" stroke="#d5dff6" fill="none" stroke-width="1.5"/>
+<path class="signal" d="M100 110C160 20 215 20 280 110S390 200 460 110M100 110C160 200 215 200 280 110S390 20 460 110" stroke="#7d9bea" fill="none" stroke-width="2"/>
+<ellipse cx="280" cy="110" rx="91" ry="78" fill="none" stroke="#ccd8f4"/>
+<g class="core"><circle cx="280" cy="110" r="51" fill="url(#orb)"/><ellipse cx="265" cy="92" rx="18" ry="9" fill="#d4e2ff" opacity=".28" transform="rotate(-30 265 92)"/><circle cx="267" cy="110" r="3" fill="white"/><circle cx="293" cy="110" r="3" fill="white"/><path d="M272 125q8 7 16 0" stroke="white" fill="none" stroke-width="2" stroke-linecap="round"/></g>
+<g fill="#fafbfe" stroke="#cbd7f3"><circle cx="100" cy="110" r="25"/><circle cx="460" cy="110" r="25"/><circle cx="280" cy="22" r="17"/></g>
+<g fill="none" stroke="#526fd0" stroke-width="1.8" stroke-linecap="round"><circle cx="97" cy="107" r="8"/><path d="m103 113 8 8m342-10 5 5 10-12M274 18h12m-12 5h8"/></g>
+<g fill="#637086" font-size="13" text-anchor="middle"><text x="100" y="156">查空位</text><text x="460" y="156">等你确认</text><text x="280" y="204">记进度 · 接工具 · 守规则</text></g></svg>
       </div>
     </div>
   </header>
@@ -135,12 +45,12 @@
     <h2 id="guide-title" tabindex="-1">拆开一张订位单</h2>
     <div class="cards">
       <article class="card">
-        <h3>01 ／ 助手到底要会什么？</h3>
+        <h3>助手到底要会什么？</h3>
         <p>你说「周五帮我订四个人的晚饭，离地铁近一点」。会聊天的 AI 可以给你几条建议。能办事的助手还得查店、查空位，再根据查到的结果决定下一步。这里说的 <strong>Agent</strong>，就是这种可以一边做、一边调整的 AI 助手。</p>
         <p>如果查到七点满座，它可以先看看附近第二家。几家都没位时，它还可以问你七点半是否方便。你给的是一个目标，它负责把目标拆成能做的小事。</p>
       </article>
       <article class="card">
-        <h3>02 ／ 办事系统在背后做什么？</h3>
+        <h3>办事系统在背后做什么？</h3>
         <p>Agent 说「查第二家」以后，要有人把请求交给订位服务，再把答复送回来。这个系统还可以保存人数、店名和已查过的时间，并决定哪些操作需要你同意。这些帮助手跑起来的安排，就是 <strong>Agent Harness</strong>。</p>
         <p>这里的「工具」是软件替助手执行的具体动作，比如查空位。AI 负责判断接下来该试什么，办事系统负责把获准的动作执行下去。平常说「一个 Agent」也常指整套能运行的助手，里面已经包含 AI 模型和 Harness。</p>
       </article>
@@ -148,7 +58,7 @@
       <article class="card wide lab" data-scene>
         <div class="lab-grid">
           <div>
-            <h3>03 ／ 满座以后，它怎么换一家？</h3>
+            <h3>满座以后，它怎么换一家？</h3>
             <p>每次只做一步，拿到新消息后再决定下一步。你可以顺着按钮走一遍，也可以来回比较每一步谁在做什么。</p>
             <div class="controls" role="group" aria-label="查看办事步骤">
               <button type="button" data-phase="0" aria-pressed="true" data-message="Agent 从请求里提取周五、四人和地铁附近，先挑一家能查空位的店。">接到请求</button>
@@ -160,14 +70,7 @@
           </div>
           <figure>
             <div class="drawing">
-              <svg class="diagram" viewBox="0 0 462 215" role="img" aria-label="办事步骤在接收、查位、回报和重试之间流转">
-                <path class="rail" d="M202 67h58m99 28v34m-99 37h-58M102 140V95"/>
-                <g data-node="0" data-active="true"><rect class="node" x="33" y="28" width="169" height="67" rx="9"/><text x="117" y="68">接到请求</text></g>
-                <g data-node="1"><rect class="node" x="260" y="28" width="169" height="67" rx="9"/><text x="344" y="68">查空位</text></g>
-                <g data-node="2"><rect class="node" x="260" y="129" width="169" height="67" rx="9"/><text x="344" y="169">收到满座</text></g>
-                <g data-node="3"><rect class="node" x="33" y="129" width="169" height="67" rx="9"/><text x="117" y="169">换一家</text></g>
-                <circle class="bead" cx="47" cy="45" r="5"/>
-              </svg>
+              <svg class="diagram" viewBox="0 0 462 320" role="img" aria-label="订位过程交互示意"><g data-node="0" data-active="true"><path d="M88 230C140 230 150 90 240 110S330 240 390 130" fill="none" stroke="#dce4f6" stroke-width="4"/><circle cx="92" cy="229" r="12" fill="#4169e8"/><text x="230" y="55">「周五，四个人，离地铁近」</text><text class="tiny" x="230" y="290">先把你的目标记清楚</text></g><g data-node="1" data-active="false"><path d="M88 230C140 230 150 90 240 110S330 240 390 130" fill="none" stroke="#a7bced" stroke-width="4"/><circle cx="234" cy="110" r="24" fill="#e3ebff"/><circle cx="234" cy="110" r="12" fill="#4169e8"/><text x="230" y="55">正在查第一家</text><text class="tiny" x="230" y="290">Harness 把查位请求送出去</text></g><g data-node="2" data-active="false"><path d="M88 230C140 230 150 90 240 110S330 240 390 130" fill="none" stroke="#dce4f6" stroke-width="4"/><circle cx="234" cy="110" r="24" fill="#fce9dc"/><path d="m224 100 20 20m0-20-20 20" stroke="#c27c4c" stroke-width="3"/><text x="230" y="55">七点已经满座</text><text class="tiny" x="230" y="290">真实回报，让助手改计划</text></g><g data-node="3" data-active="false"><path d="M88 230C140 230 150 90 240 110S330 240 390 130" fill="none" stroke="#a7bced" stroke-width="4"/><circle cx="390" cy="130" r="24" fill="#e3ebff"/><circle cx="390" cy="130" r="12" fill="#4169e8"/><text x="230" y="55">那就查附近的第二家</text><text class="tiny" x="230" y="290">Agent 选择下一步，再交给工具执行</text></g></svg>
             </div>
             <figcaption>示意，不含真实账本或订位记录</figcaption>
           </figure>
@@ -177,7 +80,7 @@
       <article class="card wide lab" data-scene>
         <div class="lab-grid">
           <div>
-            <h3>04 ／ 它什么时候必须停下来？</h3>
+            <h3>它什么时候必须停下来？</h3>
             <p>查空位和真的订上一桌，是两种后果。可以允许助手自行查位，但由系统拦住需要交订金的操作，等你看过餐厅、时间和费用后再决定。</p>
             <div class="controls" role="group" aria-label="试试订位权限">
               <button type="button" data-phase="0" aria-pressed="true" data-message="查空位可以直接做。你马上能看见有哪些选择。">只查空位</button>
@@ -188,13 +91,7 @@
           </div>
           <figure>
             <div class="drawing">
-              <svg class="diagram" viewBox="0 0 462 180" role="img" aria-label="查空位可以通过，订位需要本人确认">
-                <path class="rail" d="M40 104h382m-11-8 11 8-11 8"/>
-                <g data-node="0" data-active="true"><rect class="node" x="14" y="48" width="133" height="89" rx="9"/><text x="80" y="103">可查询</text></g>
-                <g data-node="1"><rect class="node" x="165" y="48" width="133" height="89" rx="9"/><text x="231" y="103">等确认</text></g>
-                <g data-node="2"><rect class="node" x="315" y="48" width="133" height="89" rx="9"/><text x="381" y="103">可提交</text></g>
-                <circle class="bead" cx="31" cy="65" r="5"/>
-              </svg>
+              <svg class="diagram" viewBox="0 0 462 320" role="img" aria-label="订位过程交互示意"><g data-node="0" data-active="true"><circle cx="230" cy="145" r="70" fill="#edf2ff"/><circle cx="230" cy="140" r="34" fill="none" stroke="#6d8de3" stroke-width="3"/><path d="m254 165 27 27" stroke="#6d8de3" stroke-width="5" stroke-linecap="round"/><text x="230" y="270">可以查，先看看有什么选择</text></g><g data-node="1" data-active="false"><circle cx="230" cy="145" r="70" fill="#fcf0e4"/><path d="M207 120v-17a23 23 0 0 1 46 0v17" fill="none" stroke="#ba854d" stroke-width="4"/><rect x="195" y="120" width="70" height="60" rx="14" fill="#ead1ad"/><circle cx="230" cy="146" r="6" fill="#a16f3a"/><path d="M230 150v12" stroke="#a16f3a" stroke-width="3"/><text x="230" y="270">这一笔订位，等你点头</text></g><g data-node="2" data-active="false"><circle cx="230" cy="145" r="70" fill="#e4f3ed"/><path d="m199 143 22 23 43-44" fill="none" stroke="#4c9a7c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><text x="230" y="270">得到授权，可以提交</text></g></svg>
             </div>
             <figcaption>示意 · 规则可随订位服务和用户授权调整</figcaption>
           </figure>
@@ -204,7 +101,7 @@
       <article class="card wide lab" data-scene>
         <div class="lab-grid">
           <div>
-            <h3>05 ／ 中途断掉，回来还能接着做吗？</h3>
+            <h3>中途断掉，回来还能接着做吗？</h3>
             <p>吃饭计划做了一半，手机断网。能不能接着做，取决于系统有没有存下接手需要的信息。保存的进度可以很短，一张明确的交接单就够用。</p>
             <div class="controls" role="group" aria-label="比较两种恢复方式">
               <button type="button" data-phase="0" aria-pressed="true" data-message="没有保存进度时，重开后可能只能重新查，或者又问一遍人数。">没留交接单</button>
@@ -214,12 +111,7 @@
           </div>
           <figure>
             <div class="drawing">
-              <svg class="diagram" viewBox="0 0 462 180" role="img" aria-label="没有记录就重查，保存交接单后可以续查">
-                <path class="rail" d="M170 90h111m-11-8 11 8-11 8"/>
-                <g data-node="0" data-active="true"><rect class="node" x="20" y="30" width="150" height="120" rx="9"/><text x="95" y="83">从头查</text><text class="small" x="95" y="116">缺少记录</text></g>
-                <g data-node="1"><rect class="node" x="281" y="30" width="161" height="120" rx="9"/><text x="361" y="83">往下查</text><text class="small" x="361" y="116">进度已保存</text></g>
-                <circle class="bead" cx="37" cy="47" r="5"/>
-              </svg>
+              <svg class="diagram" viewBox="0 0 462 320" role="img" aria-label="订位过程交互示意"><g data-node="0" data-active="true"><path d="M150 55h145l20 20v170H150Z" fill="white" stroke="#d7deec" stroke-width="1.5"/><path d="M180 110h100m-100 28h70m-70 28h85" stroke="#e6eaf2" stroke-width="4" stroke-linecap="round"/><text x="230" y="210" style="font-size:35px;fill:#9ba7bf">？</text><text x="230" y="290">上次查到哪了？</text></g><g data-node="1" data-active="false"><path d="M150 55h145l20 20v170H150Z" fill="white" stroke="#bccdf6" stroke-width="1.5"/><path d="M180 110h100m-100 28h70m-70 28h85" stroke="#8fa9e5" stroke-width="4" stroke-linecap="round"/><text class="tiny" x="230" y="85">四人 · 周五 · 七点</text><text class="tiny" x="230" y="205">第一家满座</text><text class="tiny" x="230" y="227">接着查第二家</text><text x="230" y="290">留下交接单，回来接着做</text></g></svg>
             </div>
             <figcaption>示意 · 旧记录能接续进度，当前空位仍要核实</figcaption>
           </figure>
@@ -227,7 +119,7 @@
       </article>
 
       <article class="card wide">
-        <h3>06 ／ 为什么最近总听见这个词？</h3>
+        <h3>为什么最近总听见这个词？</h3>
         <p>做一次问答，最重要的是一句回答是否清楚。办一件横跨多步的事，每一步都会留下新的结果。有些结果来自外部服务，有些结果会改变真实世界。一次小偏差可能一路带到最后，比如把四个人查成两个人，接着还按两个人下单。</p>
         <p>2025 年，Anthropic 分享了让编程助手用进度记录接续工作的做法。2026 年，OpenAI 也用自己的编程项目说明，清晰的资料、可执行的检查和及时回报，能帮助手持续工作。订位和写软件很不一样，遇到的难题却相通：助手做得越久、能做的动作越多，如何接续、检查和停手就越重要。</p>
       </article>
@@ -235,7 +127,7 @@
       <article class="card wide lab" data-scene>
         <div class="lab-grid">
           <div>
-            <h3>07 ／ 助手说「订好了」，能信吗？</h3>
+            <h3>助手说「订好了」，能信吗？</h3>
             <p>想象你到了餐厅，店员说系统里没有你的名字。可靠的做法是把「提交了请求」和「商家确认成功」分开。遇到网络中断时，应该先查原单状态。</p>
             <div class="controls" role="group" aria-label="比较两种下单回执">
               <button type="button" data-phase="0" aria-pressed="true" data-message="网页超时只说明暂时没收到回信。此时状态未知，先查已有订单，直接再下单可能订重。">网页超时</button>
@@ -245,12 +137,7 @@
           </div>
           <figure>
             <div class="drawing">
-              <svg class="diagram" viewBox="0 0 462 180" role="img" aria-label="网页超时意味着待核实，核对商家回执后才能确认">
-                <path class="rail" d="M190 90h82m-11-8 11 8-11 8"/>
-                <g data-node="0" data-active="true"><rect class="node" x="20" y="30" width="170" height="120" rx="9"/><text x="105" y="83">待核实</text><text class="small" x="105" y="116">没有回信</text></g>
-                <g data-node="1"><rect class="node" x="272" y="30" width="170" height="120" rx="9"/><text x="357" y="83">已确认</text><text class="small" x="357" y="116">回执已核对</text></g>
-                <circle class="bead" cx="38" cy="48" r="5"/>
-              </svg>
+              <svg class="diagram" viewBox="0 0 462 320" role="img" aria-label="订位过程交互示意"><g data-node="0" data-active="true"><circle cx="230" cy="140" r="64" stroke="#e0e6f1" stroke-width="3" fill="none"/><path d="M230 94v47l26 17" stroke="#9aa8c2" fill="none" stroke-width="4" stroke-linecap="round"/><text x="230" y="260">还没收到回信</text><text class="tiny" x="230" y="289">先查原订单，避免订重</text></g><g data-node="1" data-active="false"><path d="M155 50h150v180l-15-8-15 8-15-8-15 8-15-8-15 8-15-8-15 8-15-8-15 8Z" fill="white" stroke="#bdcfec" stroke-width="1.5"/><circle cx="230" cy="101" r="26" fill="#e4f3ed"/><path d="m217 100 9 10 18-20" stroke="#4c9a7c" stroke-width="3" fill="none"/><text class="tiny" x="230" y="158">周五 七点 · 四人</text><text class="tiny" x="230" y="187">商家已确认</text><text x="230" y="280">拿到回执，才报告成功</text></g></svg>
             </div>
             <figcaption>示意 · 以商家订单状态为依据</figcaption>
           </figure>
@@ -258,12 +145,12 @@
       </article>
 
       <article class="card">
-        <h3>08 ／ 多一套系统，有什么代价？</h3>
+        <h3>多一套系统，有什么代价？</h3>
         <p>每多查一家、重试一次、再核对一遍，都可能多花时间和费用。规则设得太松，助手可能越过你的预期。每步都要点确认，又会让办事比你自己做还麻烦。</p>
         <p>系统也只能依据拿到的信息做检查。商家没开放订位查询，它就查不到。餐厅资料写错营业时间，助手也可能照着错资料行动。系统可以告诉你哪些地方还没核实，关键环节依然需要可信的结果。</p>
       </article>
       <article class="card">
-        <h3>09 ／ 我用 AI 时能看什么？</h3>
+        <h3>我用 AI 时能看什么？</h3>
         <p>下次把事情交给一个助手，可以问「你现在能替我做哪一步？做完能给我看什么？」如果它只能推荐餐厅，就把它当参谋。如果它能订位，确认它会在哪一步问你，以及完成后会给哪种回执。</p>
         <p class="example">一句可以直接复制的话：请先找两家合适的店，把可订时间和是否要订金给我看。等我确认，再提交订位。</p>
       </article>
@@ -287,42 +174,34 @@
   </section>
 </main>
 <script>
-  const more = document.getElementById('more');
-  const guide = document.getElementById('guide');
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  guide.hidden = true;
-  more.hidden = false;
-  more.addEventListener('click', () => {
-    const open = guide.hidden;
-    guide.hidden = !open;
-    more.setAttribute('aria-expanded', String(open));
-    more.firstElementChild.textContent = open ? '收起详解' : '了解更多';
-    if (open) {
-      document.getElementById('guide-title').focus({ preventScroll: true });
-      guide.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
-    }
-  });
-
-  for (const scene of document.querySelectorAll('[data-scene]')) {
-    const nodes = [...scene.querySelectorAll('[data-node]')];
-    const buttons = [...scene.querySelectorAll('button')];
-    const readout = scene.querySelector('.readout');
-    const bead = scene.querySelector('.bead');
-    const first = nodes[0].firstElementChild;
-    for (const button of buttons) {
-      button.addEventListener('click', () => {
-        const phase = Number(button.dataset.phase);
-        const selected = nodes[phase].firstElementChild;
-        for (const [index, item] of buttons.entries()) {
-          item.setAttribute('aria-pressed', String(index === phase));
-          nodes[index].dataset.active = String(index === phase);
-        }
-        bead.style.transform = 'translate(' + (selected.x.baseVal.value - first.x.baseVal.value) +
-          'px, ' + (selected.y.baseVal.value - first.y.baseVal.value) + 'px)';
-        readout.textContent = button.dataset.message;
-      });
-    }
+const more = document.getElementById('more');
+const guide = document.getElementById('guide');
+const motion = matchMedia('(prefers-reduced-motion: reduce)');
+guide.hidden = true;
+more.hidden = false;
+more.addEventListener('click', () => {
+  const open = guide.hidden;
+  guide.hidden = !open;
+  more.setAttribute('aria-expanded', String(open));
+  more.firstElementChild.textContent = open ? '收起详解' : '了解更多';
+  if (open) {
+    document.getElementById('guide-title').focus({preventScroll:true});
+    guide.scrollIntoView({behavior:motion.matches?'instant':'smooth'});
   }
-</script>
+});
+for (const scene of document.querySelectorAll('[data-scene]')) {
+  const nodes = [...scene.querySelectorAll('[data-node]')];
+  const buttons = [...scene.querySelectorAll('button')];
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const phase = Number(button.dataset.phase);
+      buttons.forEach((item,index) => {
+        item.setAttribute('aria-pressed',String(index === phase));
+        nodes[index].dataset.active = String(index === phase);
+      });
+      scene.querySelector('.readout').textContent = button.dataset.message;
+    });
+  }
+}</script>
 </body>
 </html>
