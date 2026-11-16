@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>什么是 Harness？它和 Agent 有什么区别？</title>
+<style>
+  :root {
+    --ink: #18362c;
+    --pine: #102e25;
+    --leaf: #d9ef9a;
+    --paper: #f1f5e8;
+    --card: #fcfdf8;
+    --line: #d2dbc9;
+    --muted: #52665c;
+    --sans: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    --serif: "Songti SC", "STSong", "SimSun", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.85 var(--sans); }
+  [hidden] { display: none !important; }
+  button, summary, a { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 3px solid #a66518; outline-offset: 4px; }
+  a { color: inherit; text-underline-offset: .24em; }
+  button { font: inherit; cursor: pointer; }
+  h1, h2, h3, p, figure, dl, dd { margin: 0; }
+  .hero { color: #f8f9ed; background: var(--pine); }
+  .hero-inner { max-width: 1160px; margin: auto; padding: 32px clamp(24px, 5vw, 72px) 56px; }
+  .mast { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 20px; border-bottom: 1px solid #587063; padding-bottom: 14px; color: #dfeada; font-size: .81rem; }
+  .mast strong { color: var(--leaf); font-size: .93rem; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: clamp(15px, 4vw, 52px); padding-top: 44px; }
+  h1 { font: 700 clamp(2.55rem, 5.9vw, 5.5rem)/1.06 var(--serif); letter-spacing: -.055em; }
+  h1 span { display: block; }
+  h1 span + span { margin-top: .32em; font-size: .61em; letter-spacing: -.035em; line-height: 1.28; }
+  .setup { margin-top: 1.35rem; color: #d9e5da; font-size: .93rem; }
+  .definitions { margin: 12px 0 21px; max-width: 460px; }
+  .definitions div { display: grid; grid-template-columns: 5.25rem 1fr; gap: 2px 9px; padding: 7px 0; border-bottom: 1px solid #476453; }
+  .definitions dt { font: 700 1.14rem/1.5 Georgia, serif; color: var(--leaf); }
+  .definitions dd { font-size: .91rem; line-height: 1.65; }
+  .more { display: inline-flex; gap: 24px; align-items: center; min-height: 48px; padding: 8px 16px; border: 0; border-radius: 6px; background: var(--leaf); color: #142c20; font-weight: 750; }
+  .more:hover { background: #ecf6c7; }
+  .more[aria-expanded="true"] .arrow { transform: rotate(180deg); }
+  .arrow { font-size: 1.22em; transition: transform .22s; }
+  .hero-art { width: 100%; display: block; font-family: var(--sans); }
+  .guide { width: min(calc(100% - 40px), 960px); margin: auto; padding: 48px 0 28px; }
+  .guide > h2 { font: 700 clamp(2rem, 4.5vw, 3.2rem)/1.22 var(--serif); margin-bottom: 22px; }
+  .guide > h2:focus { outline: none; }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+  .card { min-width: 0; padding: clamp(19px, 3.4vw, 34px); background: var(--card); border: 1px solid var(--line); border-radius: 7px; }
+  .card.wide { grid-column: 1 / -1; }
+  .card h3 { font-size: clamp(1.3rem, 2.8vw, 1.85rem); line-height: 1.35; letter-spacing: -.025em; }
+  .card p { max-width: 68ch; margin-top: 12px; }
+  .card p + p { margin-top: 10px; }
+  .example { padding-left: 12px; border-left: 3px solid #93a963; color: var(--muted); }
+  .lab { background: #eaf0e0; border-color: #c9d7bb; }
+  .lab-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 30px; }
+  .lab-grid > * { min-width: 0; }
+  .lab figure { background: #f8faf2; border: 1px solid #c7d3be; border-radius: 7px; padding: 8px; }
+  .drawing { overflow: auto; }
+  .diagram { width: 100%; min-width: 270px; display: block; font-family: var(--sans); }
+  .diagram text { font-size: 23px; fill: var(--ink); text-anchor: middle; }
+  .diagram .small { font-size: 20px; }
+  .rail { fill: none; stroke: #7d9688; stroke-width: 3; }
+  .node { fill: #edf1e5; stroke: #9bad9c; stroke-width: 2; transition: fill .22s, stroke .22s; }
+  [data-active="true"] > .node { fill: var(--leaf); stroke: #405e3c; }
+  .bead { fill: #1c613e; transition: transform .38s cubic-bezier(.22,.77,.38,1); }
+  .lab figcaption { padding: 3px 8px; font-size: .73rem; color: var(--muted); }
+  .controls { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .controls button { background: #f8faf2; border: 1px solid #a6b69e; border-radius: 5px; min-height: 44px; padding: 5px 10px; color: var(--ink); font-size: .9rem; font-weight: 650; }
+  .controls button:hover { border-color: #456454; }
+  .controls button[aria-pressed="true"] { background: #1e4735; border-color: #1e4735; color: #fff; }
+  .card .readout { padding: 9px 12px; margin-top: 11px; min-height: 5em; border-left: 3px solid #547454; background: #f5f8ed; font-size: .94rem; line-height: 1.63; }
+  .questions { margin-top: 21px; padding: 25px clamp(19px, 3.4vw, 34px); border-radius: 7px; background: #dcebd4; }
+  .questions h2 { font-size: 1.35rem; margin-bottom: 9px; }
+  .questions p + p { margin-top: 5px; }
+  footer { margin-top: 24px; border-top: 1px solid #c1ccba; padding: 10px 0; font-size: .88rem; color: var(--muted); }
+  footer summary { width: fit-content; cursor: pointer; padding: 8px 0; }
+  .sources { display: flex; flex-wrap: wrap; column-gap: 18px; row-gap: 4px; padding-bottom: 8px; }
+  @media (max-width: 680px) {
+    .hero-inner { padding: 22px 21px 29px; }
+    .hero-grid { grid-template-columns: 1fr; padding-top: 29px; gap: 22px; }
+    h1 { font-size: clamp(2.35rem, 10.3vw, 4rem); }
+    h1 span + span { font-size: .67em; }
+    .hero-art { max-width: 370px; justify-self: center; }
+    .guide { width: calc(100% - 28px); padding-top: 30px; }
+    .cards, .lab-grid { grid-template-columns: 1fr; gap: 13px; }
+    .card .readout { min-height: 0; }
+    .lab figure { margin-top: 4px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="mast"><strong>AI 每日一识</strong><time datetime="2026-11-17">2026 年 11 月 17 日</time></div>
+      <div class="hero-grid">
+        <div>
+          <h1><span>什么是 Harness？</span><span>它和 Agent 有什么区别？</span></h1>
+          <p class="setup">想象你请 AI 帮忙订一桌饭。</p>
+          <dl class="definitions">
+            <div><dt>Agent</dt><dd>替你办事的 AI 助手。它会查有没有位，遇到满座就换一家。</dd></div>
+            <div><dt>Harness</dt><dd>助手背后的办事系统。它接通订位工具，记下进度，按规则在订位前请你确认。</dd></div>
+          </dl>
+          <button class="more" id="more" type="button" aria-expanded="false" aria-controls="guide" hidden><span>了解更多</span><span class="arrow" aria-hidden="true">↓</span></button>
+        </div>
+        <svg class="hero-art" viewBox="0 0 420 306" role="img" aria-label="插图。订位请求交给助手，系统查找空位，满座时把结果送回，确认后才能订位。">
+          <rect x="6" y="6" width="408" height="294" rx="12" fill="#204737" stroke="#72907e"/>
+          <path d="M26 46h368M26 223h368" stroke="#648372" fill="none"/>
+          <circle cx="31" cy="27" r="4" fill="#d9ef9a"/><text x="46" y="32" font-size="15" fill="#e2eedc">周五晚饭的订位单</text>
+          <path d="M123 101h61m107 0h78v94h-21M167 170v-30h64v-28" fill="none" stroke="#d3e0c9" stroke-width="2.5" stroke-dasharray="5 5"/>
+          <path d="m176 95 9 6-9 6m181 82-9 6 9 6m-132-82 6-8 6 8" fill="none" stroke="#d3e0c9" stroke-width="2.5"/>
+          <rect x="28" y="74" width="95" height="54" rx="5" fill="#f2f4e7"/>
+          <rect x="185" y="74" width="106" height="54" rx="5" fill="#d9ef9a"/>
+          <rect x="92" y="170" width="150" height="44" rx="5" fill="#355c4a" stroke="#86a192"/>
+          <rect x="259" y="170" width="89" height="44" rx="5" fill="#f0d1a3"/>
+          <g text-anchor="middle" fill="#18362c">
+            <text x="75" y="107" font-size="16">四人晚饭</text>
+            <text x="238" y="107" font-size="17" font-weight="700">查找空位</text>
+            <text x="304" y="198" font-size="16" font-weight="700">等你确认</text>
+          </g>
+          <text x="167" y="198" fill="#ecf2e8" font-size="16" text-anchor="middle">满座就回去再找</text>
+          <path d="M30 256h49m-49 12h32" stroke="#a8bea8" stroke-width="3" stroke-linecap="round"/>
+          <text x="388" y="271" text-anchor="end" font-size="15" fill="#d9ef9a">从一句话，到一件办成的事</text>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="guide" id="guide" aria-labelledby="guide-title">
+    <h2 id="guide-title" tabindex="-1">拆开一张订位单</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>01 ／ 助手到底要会什么？</h3>
+        <p>你说「周五帮我订四个人的晚饭，离地铁近一点」。会聊天的 AI 可以给你几条建议。能办事的助手还得查店、查空位，再根据查到的结果决定下一步。这里说的 <strong>Agent</strong>，就是这种可以一边做、一边调整的 AI 助手。</p>
+        <p>如果查到七点满座，它可以先看看附近第二家。几家都没位时，它还可以问你七点半是否方便。你给的是一个目标，它负责把目标拆成能做的小事。</p>
+      </article>
+      <article class="card">
+        <h3>02 ／ 办事系统在背后做什么？</h3>
+        <p>Agent 说「查第二家」以后，要有人把请求交给订位服务，再把答复送回来。这个系统还可以保存人数、店名和已查过的时间，并决定哪些操作需要你同意。这些帮助手跑起来的安排，就是 <strong>Agent Harness</strong>。</p>
+        <p>这里的「工具」是软件替助手执行的具体动作，比如查空位。AI 负责判断接下来该试什么，办事系统负责把获准的动作执行下去。平常说「一个 Agent」也常指整套能运行的助手，里面已经包含 AI 模型和 Harness。</p>
+      </article>
+
+      <article class="card wide lab" data-scene>
+        <div class="lab-grid">
+          <div>
+            <h3>03 ／ 满座以后，它怎么换一家？</h3>
+            <p>每次只做一步，拿到新消息后再决定下一步。你可以顺着按钮走一遍，也可以来回比较每一步谁在做什么。</p>
+            <div class="controls" role="group" aria-label="查看办事步骤">
+              <button type="button" data-phase="0" aria-pressed="true" data-message="Agent 从请求里提取周五、四人和地铁附近，先挑一家能查空位的店。">接到请求</button>
+              <button type="button" data-phase="1" aria-pressed="false" data-message="Harness 把店名、人数和时间交给订位工具。工具查的是实际空位。">查空位</button>
+              <button type="button" data-phase="2" aria-pressed="false" data-message="工具回报七点已满。Harness 把原样结果送回给 Agent，助手拿到结果才有依据改变计划。">收到满座</button>
+              <button type="button" data-phase="3" aria-pressed="false" data-message="Agent 决定查附近另一家，Harness 再执行查位。这个来回会继续，直到拿到方案、需要问你，或达到停止条件。">换一家</button>
+            </div>
+            <p class="readout" aria-live="polite">Agent 从请求里提取周五、四人和地铁附近，先挑一家能查空位的店。</p>
+          </div>
+          <figure>
+            <div class="drawing">
+              <svg class="diagram" viewBox="0 0 462 215" role="img" aria-label="办事步骤在接收、查位、回报和重试之间流转">
+                <path class="rail" d="M202 67h58m99 28v34m-99 37h-58M102 140V95"/>
+                <g data-node="0" data-active="true"><rect class="node" x="33" y="28" width="169" height="67" rx="9"/><text x="117" y="68">接到请求</text></g>
+                <g data-node="1"><rect class="node" x="260" y="28" width="169" height="67" rx="9"/><text x="344" y="68">查空位</text></g>
+                <g data-node="2"><rect class="node" x="260" y="129" width="169" height="67" rx="9"/><text x="344" y="169">收到满座</text></g>
+                <g data-node="3"><rect class="node" x="33" y="129" width="169" height="67" rx="9"/><text x="117" y="169">换一家</text></g>
+                <circle class="bead" cx="47" cy="45" r="5"/>
+              </svg>
+            </div>
+            <figcaption>示意，不含真实账本或订位记录</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="card wide lab" data-scene>
+        <div class="lab-grid">
+          <div>
+            <h3>04 ／ 它什么时候必须停下来？</h3>
+            <p>查空位和真的订上一桌，是两种后果。可以允许助手自行查位，但由系统拦住需要交订金的操作，等你看过餐厅、时间和费用后再决定。</p>
+            <div class="controls" role="group" aria-label="试试订位权限">
+              <button type="button" data-phase="0" aria-pressed="true" data-message="查空位可以直接做。你马上能看见有哪些选择。">只查空位</button>
+              <button type="button" data-phase="1" aria-pressed="false" data-message="正式订位前先停住。助手可以展示需要交的订金和取消条件，这时没有下单。">尝试订位</button>
+              <button type="button" data-phase="2" aria-pressed="false" data-message="你确认后，系统才尝试提交这笔订位。还要收到商家的成功回信，才能告诉你订成了。">确认下单</button>
+            </div>
+            <p class="readout" aria-live="polite">查空位可以直接做。你马上能看见有哪些选择。</p>
+          </div>
+          <figure>
+            <div class="drawing">
+              <svg class="diagram" viewBox="0 0 462 180" role="img" aria-label="查空位可以通过，订位需要本人确认">
+                <path class="rail" d="M40 104h382m-11-8 11 8-11 8"/>
+                <g data-node="0" data-active="true"><rect class="node" x="14" y="48" width="133" height="89" rx="9"/><text x="80" y="103">可查询</text></g>
+                <g data-node="1"><rect class="node" x="165" y="48" width="133" height="89" rx="9"/><text x="231" y="103">等确认</text></g>
+                <g data-node="2"><rect class="node" x="315" y="48" width="133" height="89" rx="9"/><text x="381" y="103">可提交</text></g>
+                <circle class="bead" cx="31" cy="65" r="5"/>
+              </svg>
+            </div>
+            <figcaption>示意 · 规则可随订位服务和用户授权调整</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="card wide lab" data-scene>
+        <div class="lab-grid">
+          <div>
+            <h3>05 ／ 中途断掉，回来还能接着做吗？</h3>
+            <p>吃饭计划做了一半，手机断网。能不能接着做，取决于系统有没有存下接手需要的信息。保存的进度可以很短，一张明确的交接单就够用。</p>
+            <div class="controls" role="group" aria-label="比较两种恢复方式">
+              <button type="button" data-phase="0" aria-pressed="true" data-message="没有保存进度时，重开后可能只能重新查，或者又问一遍人数。">没留交接单</button>
+              <button type="button" data-phase="1" aria-pressed="false" data-message="交接单写着：四人，七点，第一家满座，第二家待核实。助手接着查第二家，同时重新核实空位是否还在。">留了交接单</button>
+            </div>
+            <p class="readout" aria-live="polite">没有保存进度时，重开后可能只能重新查，或者又问一遍人数。</p>
+          </div>
+          <figure>
+            <div class="drawing">
+              <svg class="diagram" viewBox="0 0 462 180" role="img" aria-label="没有记录就重查，保存交接单后可以续查">
+                <path class="rail" d="M170 90h111m-11-8 11 8-11 8"/>
+                <g data-node="0" data-active="true"><rect class="node" x="20" y="30" width="150" height="120" rx="9"/><text x="95" y="83">从头查</text><text class="small" x="95" y="116">缺少记录</text></g>
+                <g data-node="1"><rect class="node" x="281" y="30" width="161" height="120" rx="9"/><text x="361" y="83">往下查</text><text class="small" x="361" y="116">进度已保存</text></g>
+                <circle class="bead" cx="37" cy="47" r="5"/>
+              </svg>
+            </div>
+            <figcaption>示意 · 旧记录能接续进度，当前空位仍要核实</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <h3>06 ／ 为什么最近总听见这个词？</h3>
+        <p>做一次问答，最重要的是一句回答是否清楚。办一件横跨多步的事，每一步都会留下新的结果。有些结果来自外部服务，有些结果会改变真实世界。一次小偏差可能一路带到最后，比如把四个人查成两个人，接着还按两个人下单。</p>
+        <p>2025 年，Anthropic 分享了让编程助手用进度记录接续工作的做法。2026 年，OpenAI 也用自己的编程项目说明，清晰的资料、可执行的检查和及时回报，能帮助手持续工作。订位和写软件很不一样，遇到的难题却相通：助手做得越久、能做的动作越多，如何接续、检查和停手就越重要。</p>
+      </article>
+
+      <article class="card wide lab" data-scene>
+        <div class="lab-grid">
+          <div>
+            <h3>07 ／ 助手说「订好了」，能信吗？</h3>
+            <p>想象你到了餐厅，店员说系统里没有你的名字。可靠的做法是把「提交了请求」和「商家确认成功」分开。遇到网络中断时，应该先查原单状态。</p>
+            <div class="controls" role="group" aria-label="比较两种下单回执">
+              <button type="button" data-phase="0" aria-pressed="true" data-message="网页超时只说明暂时没收到回信。此时状态未知，先查已有订单，直接再下单可能订重。">网页超时</button>
+              <button type="button" data-phase="1" aria-pressed="false" data-message="商家回了确认号，系统核对店名、时间和人数都正确，才有依据报告成功。">拿到确认号</button>
+            </div>
+            <p class="readout" aria-live="polite">网页超时只说明暂时没收到回信。此时状态未知，先查已有订单，直接再下单可能订重。</p>
+          </div>
+          <figure>
+            <div class="drawing">
+              <svg class="diagram" viewBox="0 0 462 180" role="img" aria-label="网页超时意味着待核实，核对商家回执后才能确认">
+                <path class="rail" d="M190 90h82m-11-8 11 8-11 8"/>
+                <g data-node="0" data-active="true"><rect class="node" x="20" y="30" width="170" height="120" rx="9"/><text x="105" y="83">待核实</text><text class="small" x="105" y="116">没有回信</text></g>
+                <g data-node="1"><rect class="node" x="272" y="30" width="170" height="120" rx="9"/><text x="357" y="83">已确认</text><text class="small" x="357" y="116">回执已核对</text></g>
+                <circle class="bead" cx="38" cy="48" r="5"/>
+              </svg>
+            </div>
+            <figcaption>示意 · 以商家订单状态为依据</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>08 ／ 多一套系统，有什么代价？</h3>
+        <p>每多查一家、重试一次、再核对一遍，都可能多花时间和费用。规则设得太松，助手可能越过你的预期。每步都要点确认，又会让办事比你自己做还麻烦。</p>
+        <p>系统也只能依据拿到的信息做检查。商家没开放订位查询，它就查不到。餐厅资料写错营业时间，助手也可能照着错资料行动。系统可以告诉你哪些地方还没核实，关键环节依然需要可信的结果。</p>
+      </article>
+      <article class="card">
+        <h3>09 ／ 我用 AI 时能看什么？</h3>
+        <p>下次把事情交给一个助手，可以问「你现在能替我做哪一步？做完能给我看什么？」如果它只能推荐餐厅，就把它当参谋。如果它能订位，确认它会在哪一步问你，以及完成后会给哪种回执。</p>
+        <p class="example">一句可以直接复制的话：请先找两家合适的店，把可订时间和是否要订金给我看。等我确认，再提交订位。</p>
+      </article>
+    </div>
+
+    <aside class="questions" aria-labelledby="thoughts">
+      <h2 id="thoughts">换你来定规则</h2>
+      <p>第一家七点满座时，你希望助手直接查七点半，还是优先找另一家七点有位的店？</p>
+      <p>如果订位需要预付 100 元，你点确认前最想看见哪条信息？</p>
+    </aside>
+    <footer>
+      <details>
+        <summary>延伸阅读 · 3 篇</summary>
+        <div class="sources">
+          <a href="https://www.anthropic.com/research/demystifying-evals-for-ai-agents">Anthropic · Agent 与 Harness 的定义</a>
+          <a href="https://www.anthropic.com/research/effective-harnesses-for-long-running-agents">Anthropic · 长任务如何接续</a>
+          <a href="https://openai.com/index/harness-engineering/">OpenAI · Harness 工程实践</a>
+        </div>
+      </details>
+    </footer>
+  </section>
+</main>
+<script>
+  const more = document.getElementById('more');
+  const guide = document.getElementById('guide');
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  guide.hidden = true;
+  more.hidden = false;
+  more.addEventListener('click', () => {
+    const open = guide.hidden;
+    guide.hidden = !open;
+    more.setAttribute('aria-expanded', String(open));
+    more.firstElementChild.textContent = open ? '收起详解' : '了解更多';
+    if (open) {
+      document.getElementById('guide-title').focus({ preventScroll: true });
+      guide.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
+    }
+  });
+
+  for (const scene of document.querySelectorAll('[data-scene]')) {
+    const nodes = [...scene.querySelectorAll('[data-node]')];
+    const buttons = [...scene.querySelectorAll('button')];
+    const readout = scene.querySelector('.readout');
+    const bead = scene.querySelector('.bead');
+    const first = nodes[0].firstElementChild;
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        const phase = Number(button.dataset.phase);
+        const selected = nodes[phase].firstElementChild;
+        for (const [index, item] of buttons.entries()) {
+          item.setAttribute('aria-pressed', String(index === phase));
+          nodes[index].dataset.active = String(index === phase);
+        }
+        bead.style.transform = 'translate(' + (selected.x.baseVal.value - first.x.baseVal.value) +
+          'px, ' + (selected.y.baseVal.value - first.y.baseVal.value) + 'px)';
+        readout.textContent = button.dataset.message;
+      });
+    }
+  }
+</script>
+</body>
+</html>
