@@ -1,0 +1,288 @@
+{
+  "official-0.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/download-page.DZ4QT3Pt.png"
+  },
+  "official-1.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/downloaded-installer.C0rVfq07.png"
+  },
+  "official-2.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/image-2.nX8V0i5W.png"
+  },
+  "official-3.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/image-3.C1dI3tJz.png"
+  },
+  "official-4.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/image-4.B1FHUmlf.png"
+  },
+  "official-5.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/image-5.BlN7t4Co.png"
+  },
+  "official-6.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/image-6.BqsUqnLs.png"
+  },
+  "official-7.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/image-7.O4VQi_-H.png"
+  },
+  "official-8.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/login-screen.Dxuj6Li0.png"
+  },
+  "official-9.png": {
+    "type": "official",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/login-wechat-qr.Ci-o675k.png"
+  },
+  "attached-prompt.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "attached.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "attachment-menu.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "attachment-submenu.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "file-result.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "followup.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "home.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "prompt.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "response.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "revised.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "running.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "word-menu.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "word-result.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "platform": "Windows",
+    "captured": "2026-11-16",
+    "privacy": "teaching area only"
+  },
+  "tutorial-shortcuts.png": {
+    "type": "tutorial",
+    "description": "本教程快捷键区域",
+    "date": "2026-11-16"
+  },
+  "practice-material.png": {
+    "type": "tutorial",
+    "description": "本教程虚构练习会议记录，浏览器文字排版",
+    "date": "2026-11-16"
+  },
+  "tutorial-self-check.png": {
+    "type": "tutorial",
+    "description": "本教程练习与自检区域",
+    "date": "2026-11-16"
+  },
+  "attached-instructions.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "description": "虚构读书会任务或已附文件的整理要求，仅截取教学区域",
+    "captured": "2026-11-16"
+  },
+  "bookclub-followup.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "description": "虚构读书会任务或已附文件的整理要求，仅截取教学区域",
+    "captured": "2026-11-16"
+  },
+  "bookclub-prompt.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "description": "虚构读书会任务或已附文件的整理要求，仅截取教学区域",
+    "captured": "2026-11-16"
+  },
+  "bookclub-response.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "description": "虚构读书会任务或已附文件的整理要求，仅截取教学区域",
+    "captured": "2026-11-16"
+  },
+  "bookclub-revised.png": {
+    "type": "local screenshot",
+    "app": "WorkBuddy 5.11.3",
+    "description": "虚构读书会任务或已附文件的整理要求，仅截取教学区域",
+    "captured": "2026-11-16"
+  },
+  "file-picker.png": {
+    "type": "local screenshot",
+    "app": "Windows 文件对话框",
+    "description": "教学练习文件的选择或另存为；不含私人目录列表",
+    "captured": "2026-11-16"
+  },
+  "save-dialog.png": {
+    "type": "local screenshot",
+    "app": "Windows 文件对话框",
+    "description": "教学练习文件的选择或另存为；不含私人目录列表",
+    "captured": "2026-11-16"
+  },
+  "saved-word-local.png": {
+    "type": "local screenshot",
+    "app": "WPS Office",
+    "description": "从独立练习文件夹打开另存的教学Word，只截取文档区域",
+    "captured": "2026-11-16"
+  },
+  "saved-word-open.png": {
+    "type": "local screenshot",
+    "app": "WPS Office",
+    "description": "从独立练习文件夹打开另存的教学Word，只截取文档区域",
+    "captured": "2026-11-16"
+  },
+  "saved-word-table.png": {
+    "type": "local screenshot",
+    "app": "WPS Office",
+    "description": "从独立练习文件夹打开另存的教学Word，只截取文档区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-builder.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-download.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-favorite.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-learning-route.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-2-1.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-2-4.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-3-0.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-3-1.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-3-2.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-3-3.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-4-2.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-4-4.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-5-0.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-6-0.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-6-1.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  },
+  "tutorial-prompt-6-2.png": {
+    "type": "tutorial screenshot",
+    "description": "本教学网页的实际提示词、下载或学习工具区域",
+    "captured": "2026-11-16"
+  }
+}
