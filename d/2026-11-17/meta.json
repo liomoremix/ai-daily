@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-17",
+  "id": "agent-harness-explained",
+  "category": "概念",
+  "series": "名词解释",
+  "subject": "Agent Harness 与 Agent",
+  "title": "什么是 Harness？它和 Agent 有什么区别？",
+  "hook": "请 AI 帮忙订一桌饭。Agent 会查空位、换方案，Harness 帮它用工具、记进度，并在下单前等你确认。",
+  "read_minutes": 8,
+  "sources": [
+    {
+      "title": "Anthropic · Agent 与 Harness 的定义",
+      "url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+    },
+    {
+      "title": "Anthropic · 长任务如何接续",
+      "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents"
+    },
+    {
+      "title": "OpenAI · Harness 工程实践",
+      "url": "https://openai.com/index/harness-engineering/"
+    }
+  ],
+  "cards": 9
+}
