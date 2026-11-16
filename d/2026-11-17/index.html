@@ -8,52 +8,85 @@
 <style>
 
 :root {
-  --ink: #252e3c;
-  --muted: #637084;
-  --blue: #3159b9;
-  --violet: #74559b;
-  --line: #dce2eb;
-  --sans: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --bg: #F4F6F8; --panel: #fff; --ink: #16202B; --muted: #55636F;
+  --line: #E2E7EB; --blue: #1B4B8F; --violet: #74559b;
+  --accent-soft: #E8F0FA; --accent-line: #C9DCF2;
+  --sans: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
-* { box-sizing: border-box; }
-body { margin: 0; color: var(--ink); background: #fff; font: 17px/1.95 var(--sans); }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.78 var(--sans); -webkit-font-smoothing: antialiased; }
 [hidden] { display: none !important; }
 h1, h2, h3, p, dl, dd, figure { margin: 0; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px 70px; }
 button { font: inherit; cursor: pointer; touch-action: manipulation; }
 a { color: var(--blue); text-underline-offset: 4px; }
-:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
-.hero { background: #f6f7fa; border-bottom: 1px solid #e4e7ee; }
-.hero-inner, .guide { max-width: 800px; margin: auto; padding-left: 42px; padding-right: 42px; }
-.hero-inner { padding-top: 24px; padding-bottom: 40px; }
-.mast { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 12px; }
-.mast strong { color: var(--ink); font-size: 14px; }
-.hero-copy { margin-top: 38px; }
-h1 { font-size: clamp(35px, 5vw, 51px); line-height: 1.25; letter-spacing: -1.3px; font-weight: 750; }
-h1 span { display: block; }
-h1 span + span { margin-top: 12px; font-size: .56em; font-weight: 450; letter-spacing: 0; color: var(--muted); }
-.definitions { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin: 28px 0 24px; }
-.definitions dt { font-size: 21px; font-weight: 650; margin-bottom: 5px; }
-.definitions dd { font-size: 16px; line-height: 1.85; }
-.definitions .agent { color: var(--blue); }
-.definitions .harness { color: var(--violet); }
-.relation { color: var(--muted); font-size: 14px; margin: 22px 0; line-height: 1.8; }
-.relation strong { display: block; color: var(--ink); font-weight: 500; }
-.more { display: inline-flex; align-items: center; gap: 24px; min-height: 48px; padding: 9px 20px; border: 0; border-radius: 7px; background: #2e415f; color: #fff; font-size: 15px; }
-.more:hover { background: var(--blue); }
-.more[aria-expanded=true] .arrow { transform: rotate(180deg); }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.topbar { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--line); z-index: 40; }
+.topbar i { display: block; height: 100%; width: 0; background: var(--blue); }
+.rail { display: none; }
+@media(min-width:1080px) {
+  .rail { display: block; position: fixed; left: calc(50% - 480px); top: 120px; width: 120px; z-index: 30; border-left: 1px solid var(--line); padding-left: 12px; }
+  .rail a { display: flex; gap: 8px; align-items: baseline; text-decoration: none; color: #71808e; font-size: 12px; padding: 5px 0; }
+  .rail a em { font: 600 10px/1.5 var(--mono); font-style: normal; }
+  .rail a:hover, .rail a[aria-current=true] { color: var(--blue); font-weight: 600; }
+}
+.hero { padding: 48px 0 26px; border-bottom: 1px solid var(--line); }
+.kicker { display: inline-block; font-size: 11px; font-weight: 600; line-height: 1.5; color: var(--blue); background: var(--accent-soft); padding: 5px 9px; border-radius: 3px; margin-bottom: 16px; }
+h1 { margin: 0 0 17px; font-size: 31px; line-height: 1.3; letter-spacing: -.015em; font-weight: 700; }
+h1 .u { background: linear-gradient(transparent 45%, var(--accent-soft) 45%, var(--accent-soft) 90%, transparent 90%); }
+.brief-h { font-size: 14px; line-height: 1.7; color: var(--muted); margin-bottom: 12px; }
+.brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.brief-cell { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px 13px; }
+.brief-cell .bn { font: 700 15px/1.3 var(--mono); color: #123A70; }
+.brief-cell .ba { display: inline-block; margin-left: 8px; font-size: 11px; line-height: 1.4; font-weight: 600; color: var(--blue); background: var(--accent-soft); border-radius: 3px; padding: 2px 6px; }
+.brief-cell p { margin-top: 7px; font-size: 14px; line-height: 1.75; color: var(--muted); }
+.more-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; margin: 16px 0 0; }
+.more { display: inline-flex; align-items: center; gap: 12px; min-height: 46px; padding: 10px 23px; border: 1px solid var(--blue); border-radius: 8px; color: white; background: var(--blue); font-size: 14px; font-weight: 600; }
+.more:hover { background: #123A70; }
 .arrow { display: inline-block; transition: transform .2s; }
-.guide { padding-top: 36px; padding-bottom: 36px; }
-.guide > h2 { font-size: 14px; font-weight: 400; color: var(--muted); margin-bottom: 30px; }
+.more[aria-expanded=true] .arrow { transform: rotate(180deg); }
+.more-hint { flex: 1; min-width: 210px; font-size: 12px; line-height: 1.7; color: #6f7e8a; }
+.guide { padding-top: 6px; }
+.guide > h2 { font-size: 13px; font-weight: 400; color: #6f7e8a; margin: 16px 0 0; }
 .guide > h2:focus { outline: none; }
-.card { margin-bottom: 48px; }
-.card h3 { font-size: 26px; line-height: 1.5; font-weight: 700; letter-spacing: -.4px; }
-.card p { margin-top: 16px; }
-.card strong { font-weight: 650; color: #233957; }
-.aside { color: var(--muted); font-size: 15px; }
-.demo { margin: 24px 0 20px; border: 1px solid #dce2eb; border-radius: 12px; overflow: hidden; background: #fafbfe; }
-.demo-heading { padding: 18px 20px 12px; font-size: 15px; font-weight: 550; color: #46546a; border-bottom: 1px solid #e5e9f0; }
-.drawing { overflow-x: auto; padding: 4px 10px; }
-.diagram { width: 100%; max-width: 460px; min-width: 280px; display: block; margin: auto; font-family: var(--sans); }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 1px 2px rgba(22,32,43,.05); padding: 22px 20px 24px; margin: 18px 0; scroll-margin-top: 16px; }
+.no-head { display: flex; gap: 10px; align-items: baseline; margin-bottom: 14px; }
+.no { flex: none; color: var(--blue); background: var(--accent-soft); font: 600 11px/1 var(--mono); padding: 5px 6px; border-radius: 3px; }
+.card h3 { font-size: 20px; line-height: 1.4; font-weight: 680; letter-spacing: -.01em; }
+.card p { margin: 0 0 14px; color: var(--muted); font-size: 15.5px; line-height: 1.85; }
+.card p:last-child { margin-bottom: 0; }
+.card strong { color: var(--ink); font-weight: 600; }
+.card .aside { font-size: 13px; color: #6f7e8a; }
+.demo { margin: 18px 0; }
+.demo-heading { font-size: 13px; line-height: 1.7; color: #6f7e8a; margin-bottom: 9px; }
+.drawing { overflow-x: auto; padding: 0 5px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; }
+.diagram { width: 100%; max-width: 470px; min-width: 280px; display: block; margin: auto; font-family: var(--sans); }
+.controls { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.controls button { min-height: 44px; padding: 9px 12px; border: 1px solid #CFD7DE; border-radius: 4px; background: white; color: var(--ink); font-size: 13px; font-weight: 600; line-height: 1.5; }
+.controls button:hover { border-color: var(--blue); }
+.controls button[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: white; }
+.card .readout { margin: 12px 0 0; padding: 12px 14px; color: #123A70; background: var(--accent-soft); border-left: 2px solid var(--blue); border-radius: 0 6px 6px 0; font-size: 14px; line-height: 1.8; min-height: 100px; }
+.demo figcaption { margin-top: 9px; font-size: 12px; color: #71808e; line-height: 1.65; }
+.card .takeaway { margin: 16px 0 0; padding: 12px 14px; border-left: 2px solid var(--blue); border-radius: 0 6px 6px 0; background: var(--accent-soft); color: #123A70; font-size: 14px; line-height: 1.8; }
+.questions { margin: 18px 0 0; padding: 22px 20px; background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 6px; }
+.questions h2 { font-size: 17px; font-weight: 650; color: #123A70; margin-bottom: 16px; }
+.questions p { font-size: 16px; color: #123A70; font-weight: 500; padding-top: 14px; border-top: 1px solid var(--accent-line); }
+.questions p + p { margin-top: 14px; }
+footer { margin-top: 26px; padding-top: 15px; border-top: 1px solid var(--line); font-size: 12.5px; color: #6f7e8a; }
+footer summary { width: fit-content; cursor: pointer; padding: 8px 0; }
+.sources { display: flex; flex-direction: column; gap: 8px; padding: 10px 0; }
+@media(max-width:640px) {
+  .brief-grid { grid-template-columns: 1fr; }
+  .hero { padding-top: 34px; }
+  .card { padding: 20px 16px; }
+  .card p { font-size: 16px; }
+  .card .readout { font-size: 14px; min-height: 0; }
+  .card .takeaway { font-size: 14px; }
+  .controls button { flex: 1 1 42%; }
+  .questions { padding: 20px 16px; }
+}
 .diagram text { text-anchor: middle; fill: var(--ink); font-size: 15px; }
 .diagram .unit rect { fill: white; stroke: #c8d2df; stroke-width: 1.2; transition: fill .25s, stroke .25s; }
 .diagram .unit.model rect { fill: #edf2fc; stroke: #b6c8ed; }
@@ -75,76 +108,34 @@ h1 span + span { margin-top: 12px; font-size: .56em; font-weight: 450; letter-sp
 [data-kind=proof][data-phase="2"] .check { stroke-dashoffset: 0; }
 [data-when] { opacity: 0; transition: opacity .2s; }
 [data-show=true] { opacity: 1; }
-.controls { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; padding: 0 16px 16px; }
-.controls button { min-width: 0; min-height: 46px; border: 1px solid #d1d9e5; border-radius: 6px; color: #526176; background: white; padding: 7px 8px; font-size: 14px; line-height: 1.5; }
-.controls button[aria-pressed=true] { color: white; background: #334d72; border-color: #334d72; }
-.controls button:hover { border-color: #6282bb; }
-.card .readout { font-size: 16px; line-height: 1.85; min-height: 110px; margin: 0; padding: 17px 20px; background: #eef2f8; border-top: 1px solid #dce3ef; color: #32445e; }
-.demo figcaption { font-size: 11px; color: var(--muted); padding: 10px 20px; background: #eef2f8; }
-.takeaway { padding-left: 15px; border-left: 3px solid #b8c6dd; }
-.questions { padding-top: 24px; border-top: 1px solid var(--line); margin: 52px 0 26px; }
-.questions h2 { font-size: 23px; font-weight: 650; }
-.questions p { margin-top: 16px; }
-footer { font-size: 13px; color: var(--muted); }
-footer summary { width: fit-content; cursor: pointer; padding: 10px 0; }
-.sources { display: flex; flex-direction: column; gap: 8px; padding: 12px 0; }
-@media(max-width:600px) {
-  .hero-inner, .guide { padding-left: 22px; padding-right: 22px; }
-  .hero-inner { padding-top: 20px; padding-bottom: 30px; }
-  .mast { font-size: 11px; }
-  .hero-copy { margin-top: 28px; }
-  h1 { font-size: 35px; letter-spacing: -1px; }
-  h1 span + span { font-size: 21px; line-height: 1.5; }
-  .definitions { grid-template-columns: 1fr; gap: 16px; margin: 24px 0 20px; }
-  .definitions > div { display: grid; grid-template-columns: 83px 1fr; gap: 10px; }
-  .definitions dt { font-size: 18px; margin: 0; }
-  .definitions dd { font-size: 16px; }
-  .relation { margin: 20px 0; }
-  .guide { padding-top: 30px; }
-  .card { margin-bottom: 40px; }
-  .card h3 { font-size: 24px; }
-  .card p { font-size: 17px; }
-  .demo { margin-left: -9px; margin-right: -9px; }
-  .demo-heading { padding: 14px; font-size: 14px; }
-  .drawing { padding: 7px 2px; }
-  .controls { grid-auto-flow: row; grid-template-columns: 1fr 1fr; padding: 0 12px 14px; gap: 7px; }
-  .controls button { font-size: 14px; }
-  .controls button:last-child:nth-child(3) { grid-column: 1 / -1; }
-  .card .readout { font-size: 16px; padding: 14px; min-height: 0; }
-  .demo figcaption { padding: 0 14px 12px; }
-}
-@media(prefers-reduced-motion:reduce) {
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<main>
+<div class="topbar" aria-hidden="true"><i id="prog"></i></div><nav class="rail" id="rail" aria-label="章节目录" hidden><a href="#c1"><em>01</em>两个词的关系</a><a href="#c2"><em>02</em>怎样用工具</a><a href="#c3"><em>03</em>怎样接进度</a><a href="#c4"><em>04</em>谁决定权限</a><a href="#c5"><em>05</em>怎样核实结果</a><a href="#c6"><em>06</em>为什么受关注</a><a href="#c7"><em>07</em>代价与局限</a><a href="#c8"><em>08</em>提示词与流程</a><a href="#c9"><em>09</em>怎样选助手</a></nav>
+<main class="wrap">
 <header class="hero" id="hero">
-<div class="hero-inner">
-<div class="mast"><strong>AI 每日一识</strong><time datetime="2026-11-17">2026 年 11 月 17 日</time></div>
-<div class="hero-copy">
-<h1><span>什么是 Harness？</span><span>先看清它与 Agent 的关系</span></h1>
-<dl class="definitions">
-<div><dt class="agent">Agent</dt><dd>你交给它目标，它会用工具、看结果、接着做的 AI 助手。</dd></div>
-<div><dt class="harness">Harness</dt><dd>让助手运转的支撑软件，负责接工具、传结果，也可以管进度和权限。</dd></div>
-</dl>
-<p class="relation"><strong>一个是整套助手，一个是其中的支撑。</strong><span>Harness 通常就在 Agent 里面。</span></p>
-<button class="more" id="more" type="button" aria-expanded="false" aria-controls="guide" hidden><span>了解更多</span><span class="arrow" aria-hidden="true">↓</span></button>
+<span class="kicker">AI 每日一识 · 名词解释 · 2026 年 11 月 17 日</span>
+<h1><span class="u">什么是 Harness？<br>它和 Agent 有什么区别？</span></h1>
+<p class="brief-h">Agent 是你交任务的整套助手，Harness 是让它运转的支撑软件。</p>
+<div class="brief-grid">
+<div class="brief-cell"><span class="bn">Agent</span><span class="ba">整套助手</span><p>你交给它目标，它会用工具、看结果、接着做，直到完成任务或需要你帮忙。</p></div>
+<div class="brief-cell"><span class="bn">Harness</span><span class="ba">运行支撑</span><p>通常就在 Agent 里面。负责接工具、传结果，也可以管理进度和权限。</p></div>
 </div>
-</div>
+<div class="more-row"><button class="more" id="more" type="button" aria-expanded="false" aria-controls="guide" hidden><span>了解更多</span><span class="arrow" aria-hidden="true">↓</span></button><p class="more-hint">9 节详解，4 组可点的动图，约 10 分钟。出处收在页尾，点击展开查看。</p></div>
 </header>
 <section class="guide" id="guide" aria-labelledby="guide-title">
 <h2 id="guide-title" tabindex="-1">约 10 分钟，拆开一个 AI 助手的工作过程。</h2>
 <div class="cards">
-<article class="card">
-<h3>Agent 是整套助手，Harness 在它里面</h3>
+<article class="card" id="c1">
+<div class="no-head"><span class="no">01</span><h3>Agent 是整套助手，Harness 在它里面</h3></div>
 <p>先想象一位办事员。你交给他一个目标，他要理解你的意思、使用手边的工具，再根据结果调整做法。Agent（常译作「智能体」）就像这样的 AI 助手，能围绕目标连续做事。</p>
 <p>这套助手里，<strong>AI 模型</strong>负责读懂信息、作出判断。你可以先把模型理解为处理语言、提出下一步的核心能力。<strong>Harness</strong>是围绕模型运行的一套软件，负责把信息送进去、安排工具执行，再把结果带回来。</p>
 <p>所以，谈 Agent 时，通常在看「这个助手能帮我完成什么」。谈 Harness 时，在看「这个助手背后的工作过程怎样组织」。一个能实际运行的 Agent，通常已经包含模型、Harness 和所接入的工具。</p>
 </article>
-<article class="card">
-<h3>为什么光会回答还不够？</h3>
+<article class="card" id="c2">
+<div class="no-head"><span class="no">02</span><h3>为什么光会回答还不够？</h3></div>
 <p>让 AI 帮你找资料，它可以写出「接下来搜索最新价格」。要真的搜到价格，还得有程序去执行搜索，并把搜到的内容交回来。</p>
 <p>这里的<strong>工具</strong>，就是能执行具体动作的软件功能，比如查网页、读文件、发邮件。Harness 把模型提出的动作连接到工具。模型拿到工具的结果，再判断下一步。这种来回配合，才让 Agent 能连续推进任务。</p>
 <p class="aside">下面借查餐厅空位演示一次。注意图中三个角色，例子里的「查位」换成「查资料」，配合方式依然成立。</p>
@@ -160,8 +151,8 @@ footer summary { width: fit-content; cursor: pointer; padding: 10px 0; }
 </figure>
 <p class="takeaway"><strong>这一圈说明 Harness 的基本作用</strong>——让模型的判断接上真实操作，再把操作结果接回判断。Agent 的连续办事能力就建立在这样的循环上。</p>
 </article>
-<article class="card">
-<h3>Harness 怎样帮 Agent 接着做？</h3>
+<article class="card" id="c3">
+<div class="no-head"><span class="no">03</span><h3>Harness 怎样帮 Agent 接着做？</h3></div>
 <p>长任务往往要分很多轮。AI 模型每次能同时处理的信息有限，这个范围叫<strong>上下文窗口</strong>，可以理解成眼前能摊开的资料。工作时间长了，旧内容可能放不下，下一轮也可能拿不到完整经过。</p>
 <p>Harness 可以安排保存进度，并在继续工作时提供相关记录。比如帮你整理一批文件，交接记录写明哪些已经处理、哪些还需要检查，Agent 就更容易接着做。</p>
 <figure class="demo" data-scene data-kind="memory" data-phase="0">
@@ -175,8 +166,8 @@ footer summary { width: fit-content; cursor: pointer; padding: 10px 0; }
 </figure>
 <p class="takeaway"><strong>这解释了 Agent 为什么有时能「记住进度」。</strong>这份能力往往来自模型与 Harness 的配合。保存什么、何时重新提供、记录是否准确，都影响接续效果。</p>
 </article>
-<article class="card">
-<h3>谁决定 Agent 能做到哪一步？</h3>
+<article class="card" id="c4">
+<div class="no-head"><span class="no">04</span><h3>谁决定 Agent 能做到哪一步？</h3></div>
 <p>让 Agent 整理邮件和让它发出邮件，后果不同。用户或开发者可以设定权限，例如允许读邮件、允许写草稿，发送之前必须确认。</p>
 <p>Harness 可以在动作交给工具之前执行这些限制。写一句「请谨慎发送」是在提醒模型；在系统里设置发送权限，则能让动作真的停下来等待授权。具体能限制什么，要看产品怎样实现。</p>
 <figure class="demo" data-scene data-kind="permission" data-phase="0">
@@ -190,8 +181,8 @@ footer summary { width: fit-content; cursor: pointer; padding: 10px 0; }
 </figure>
 <p class="takeaway"><strong>Agent 可以提出行动，Harness 可以按配置约束行动。</strong>它遵守的规则由人和产品设定，实际权限检查还可能由工具服务共同执行。</p>
 </article>
-<article class="card">
-<h3>怎样判断 Agent 真的完成了？</h3>
+<article class="card" id="c5">
+<div class="no-head"><span class="no">05</span><h3>怎样判断 Agent 真的完成了？</h3></div>
 <p>AI 能写出听起来很确定的回答。执行任务时，还需要查看真实结果。例如发送邮件后，要看发送记录；修改表格后，要打开文件检查改动是否正确。</p>
 <p>Harness 可以收集工具回报，并安排下一步检查。有些检查由 AI 阅读结果完成，有些由写好的程序自动完成。检查得到的证据，帮助 Agent 决定继续修正、向你求助，还是报告完成。</p>
 <figure class="demo" data-scene data-kind="proof" data-phase="0">
@@ -205,26 +196,26 @@ footer summary { width: fit-content; cursor: pointer; padding: 10px 0; }
 </figure>
 <p class="takeaway"><strong>Harness 帮 Agent 获得反馈。</strong>检查设计得是否充分、反馈是否可信，决定了「完成」这句话有多可靠。</p>
 </article>
-<article class="card">
-<h3>为什么这两年 Harness 被反复提起？</h3>
+<article class="card" id="c6">
+<div class="no-head"><span class="no">06</span><h3>为什么这两年 Harness 被反复提起？</h3></div>
 <p>当 AI 被要求处理更长、更复杂的任务，能力的短板会出现在整个办事过程里。模型可能判断得不错，但找不到资料、接不上工具、丢失进度，最后仍然交不出结果。</p>
 <p>2025 年，Anthropic 分享了让编程 Agent 留下进度记录、在下一轮继续工作的实践。2026 年，OpenAI 讨论了如何通过清晰的环境、资料和检查机制帮助 Agent 完成软件工作。</p>
 <p>这些实践让 Harness 受到更多关注。模型提供判断能力，围绕它的运行安排影响这种能力能否稳定发挥。不同团队使用 Harness 一词时，覆盖范围会有差异，有的偏重运行循环，有的还包含更广的工作环境和规则。</p>
 </article>
-<article class="card">
-<h3>换个 Harness，Agent 就会更聪明吗？</h3>
+<article class="card" id="c7">
+<div class="no-head"><span class="no">07</span><h3>换个 Harness，Agent 就会更聪明吗？</h3></div>
 <p>同一个模型，放进不同的系统，使用体验可能很不一样。有的 Agent 能读取你提供的文件、保存工作进度、检查结果；有的只拿到了当前一句话。给模型的信息和可执行动作不同，最终表现也会不同。</p>
 <p>更合适的 Harness 能减少漏步骤和重复劳动，但模型仍可能理解错需求，工具也可能返回错误信息。Harness 无法凭空补出未接入的资料，也无法保证所有判断正确。</p>
 <p>此外，多轮检查和重试会花时间，也可能增加费用。保存记录、维护工具、设计权限同样需要投入。任务很简单时，整套复杂流程未必值得。</p>
 </article>
-<article class="card">
-<h3>它与提示词、固定流程有什么关系？</h3>
+<article class="card" id="c8">
+<div class="no-head"><span class="no">08</span><h3>它与提示词、固定流程有什么关系？</h3></div>
 <p><strong>提示词</strong>就是你给 AI 的要求，例如「先查资料，再写总结」。Harness 可以把这些要求交给模型，也可以把部分要求落实为可执行的检查和限制。</p>
 <p>固定流程会预先规定每一步怎样走。Agent 则可以让模型根据中途结果选择下一步。真实产品经常把两种方式结合起来，例如查询过程由 AI 调整，提交付款必须经过固定的确认步骤。</p>
 <p>Harness 为这些安排提供运行支持。它能承载固定规则，也能支持模型灵活判断。仅凭产品用了这个名称，无法判断它开放了哪些能力。</p>
 </article>
-<article class="card">
-<h3>下次看到这两个词，问什么最有用？</h3>
+<article class="card" id="c9">
+<div class="no-head"><span class="no">09</span><h3>下次看到这两个词，问什么最有用？</h3></div>
 <p>看到「Agent」，先问它能替你完成什么任务，以及遇到变化时能否调整做法。看到「Harness」，再看它怎样接工具、保存进度、执行权限和检查结果。</p>
 <p>如果你要选一个帮忙处理文件的助手，可以实际试一件小事。让它处理几份资料，中途暂停后再继续，检查它有没有漏项，最后打开结果文件看看。这样能看到整套 Agent 的实际表现。</p>
 <p class="takeaway"><strong>Agent 是你交任务的整套助手。Harness 是让这套助手运转的支撑软件。</strong>前者描述办事能力，后者解释这种能力背后的组织方式。</p>
@@ -303,6 +294,37 @@ for (const scene of document.querySelectorAll('[data-scene]')) {
     });
   }
 }
+
+
+const rail = document.getElementById('rail');
+const cards = [...document.querySelectorAll('.card')];
+const chapterLinks = [...rail.querySelectorAll('a')];
+const progress = document.getElementById('prog');
+let readingFrame = 0;
+function updateReadingPosition() {
+  readingFrame = 0;
+  const range = document.documentElement.scrollHeight - innerHeight;
+  progress.style.width = guide.hidden || range <= 0 ? '0%' : Math.min(100, Math.max(0, scrollY / range * 100)) + '%';
+  let current = 0;
+  cards.forEach((card, index) => {
+    if (card.getBoundingClientRect().top <= 180) current = index;
+  });
+  if (range > 0 && scrollY >= range - 2) current = cards.length - 1;
+  chapterLinks.forEach((link, index) => {
+    link.setAttribute('aria-current', String(index === current));
+  });
+}
+function scheduleReadingUpdate() {
+  if (!readingFrame) readingFrame = requestAnimationFrame(updateReadingPosition);
+}
+rail.hidden = guide.hidden;
+more.addEventListener('click', () => {
+  rail.hidden = guide.hidden;
+  scheduleReadingUpdate();
+});
+addEventListener('scroll', scheduleReadingUpdate, {passive: true});
+addEventListener('resize', scheduleReadingUpdate);
+updateReadingPosition();
 
 </script>
 </body>
