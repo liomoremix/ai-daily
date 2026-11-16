@@ -1,25 +1,81 @@
 {
   "date": "2026-11-17",
-  "id": "agent-harness-explained",
-  "category": "概念",
-  "series": "名词解释",
-  "subject": "Agent Harness 与 Agent",
-  "title": "什么是 Harness？它和 Agent 有什么区别？",
-  "hook": "Agent 是你交任务的整套 AI 助手，Harness 是让它运转的支撑软件。用四个交互实验，看清它们如何配合。",
-  "read_minutes": 10,
+  "id": "workbuddy-qwenwork-ai-assistants-compared",
+  "category": "产品比较",
+  "series": "AI 办公入门",
+  "subject": "WorkBuddy、千问办公、TRAE、DeepSeek Harness、豆包",
+  "title": "WorkBuddy、千问办公与另外三款 AI，到底怎么选？",
+  "hook": "同样能做文件、处理任务，差别究竟在哪里？重点拆开 WorkBuddy 与千问办公，再看 TRAE、DeepSeek Harness 和豆包该怎样选。",
+  "read_minutes": 12,
   "sources": [
     {
-      "title": "Anthropic · Agent 与 Harness 的定义",
-      "url": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents"
+      "title": "WorkBuddy：版本更新",
+      "url": "https://www.workbuddy.cn/docs/workbuddy/Changelog"
     },
     {
-      "title": "Anthropic · 长任务如何接续",
-      "url": "https://www.anthropic.com/research/effective-harnesses-for-long-running-agents"
+      "title": "WorkBuddy：产品能力",
+      "url": "https://www.workbuddy.cn/docs/workbuddy/Overview"
     },
     {
-      "title": "OpenAI · Harness 工程实践",
-      "url": "https://openai.com/index/harness-engineering/"
+      "title": "WorkBuddy：连接器与授权",
+      "url": "https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Connector"
+    },
+    {
+      "title": "WorkBuddy：人机双写与适用范围",
+      "url": "https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Knowledge-Base/Cowriting"
+    },
+    {
+      "title": "WorkBuddy：本地与云端定时任务",
+      "url": "https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Automation-Guide"
+    },
+    {
+      "title": "WorkBuddy：手机远程操作",
+      "url": "https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six"
+    },
+    {
+      "title": "千问办公：客户端更新",
+      "url": "https://docs.qwenwork.cn/release-notes/desktop"
+    },
+    {
+      "title": "千问办公：资料空间",
+      "url": "https://docs.qwenwork.cn/web/materials"
+    },
+    {
+      "title": "千问办公：协作空间与开放范围",
+      "url": "https://docs.qwenwork.cn/web/collaboration"
+    },
+    {
+      "title": "千问办公：人机共创",
+      "url": "https://docs.qwenwork.cn/web/co-editing"
+    },
+    {
+      "title": "千问办公：自动任务与运行条件",
+      "url": "https://docs.qwenwork.cn/web/scheduled-tasks"
+    },
+    {
+      "title": "TRAE：合并升级与当前定位",
+      "url": "https://docs.trae.cn/work_traework-to-traecode-data-migration"
+    },
+    {
+      "title": "TRAE：版本更新",
+      "url": "https://docs.trae.cn/ide_changelog"
+    },
+    {
+      "title": "DeepSeek Harness：公开预览版与插件",
+      "url": "https://deepseek.com/harness/"
+    },
+    {
+      "title": "DeepSeek Harness：开源项目",
+      "url": "https://github.com/deepseek-ai/deepseek-harness"
+    },
+    {
+      "title": "豆包：工作任务功能须知",
+      "url": "https://www.doubao.com/legal/DoubaoAgentModeNotice"
+    },
+    {
+      "title": "豆包：办公、文件与信息处理说明",
+      "url": "https://www.doubao.com/legal/privacy"
     }
   ],
-  "cards": 9
+  "cards": 12
 }
