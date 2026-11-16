@@ -1,239 +1,21 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
-<title>什么是 Harness？它和 Agent 有什么区别？</title>
-<style>
-
-:root {
-  --bg: #F4F6F8; --panel: #fff; --ink: #16202B; --muted: #55636F;
-  --line: #E2E7EB; --blue: #1B4B8F; --violet: #74559b;
-  --accent-soft: #E8F0FA; --accent-line: #C9DCF2;
-  --sans: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
-}
-*, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.78 var(--sans); -webkit-font-smoothing: antialiased; }
-[hidden] { display: none !important; }
-h1, h2, h3, p, dl, dd, figure { margin: 0; }
-.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px 70px; }
-button { font: inherit; cursor: pointer; touch-action: manipulation; }
-a { color: var(--blue); text-underline-offset: 4px; }
-:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
-.topbar { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--line); z-index: 40; }
-.topbar i { display: block; height: 100%; width: 0; background: var(--blue); }
-.rail { display: none; }
-@media(min-width:1080px) {
-  .rail { display: block; position: fixed; left: calc(50% - 480px); top: 120px; width: 120px; z-index: 30; border-left: 1px solid var(--line); padding-left: 12px; }
-  .rail a { display: flex; gap: 8px; align-items: baseline; text-decoration: none; color: #71808e; font-size: 12px; padding: 5px 0; }
-  .rail a em { font: 600 10px/1.5 var(--mono); font-style: normal; }
-  .rail a:hover, .rail a[aria-current=true] { color: var(--blue); font-weight: 600; }
-}
-.hero { padding: 48px 0 26px; border-bottom: 1px solid var(--line); }
-.kicker { display: inline-block; font-size: 11px; font-weight: 600; line-height: 1.5; color: var(--blue); background: var(--accent-soft); padding: 5px 9px; border-radius: 3px; margin-bottom: 16px; }
-h1 { margin: 0 0 17px; font-size: 31px; line-height: 1.3; letter-spacing: -.015em; font-weight: 700; }
-h1 .u { background: linear-gradient(transparent 45%, var(--accent-soft) 45%, var(--accent-soft) 90%, transparent 90%); }
-.brief-h { font-size: 14px; line-height: 1.7; color: var(--muted); margin-bottom: 12px; }
-.brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.brief-cell { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px 13px; }
-.brief-cell .bn { font: 700 15px/1.3 var(--mono); color: #123A70; }
-.brief-cell .ba { display: inline-block; margin-left: 8px; font-size: 11px; line-height: 1.4; font-weight: 600; color: var(--blue); background: var(--accent-soft); border-radius: 3px; padding: 2px 6px; }
-.brief-cell p { margin-top: 7px; font-size: 14px; line-height: 1.75; color: var(--muted); }
-.more-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; margin: 16px 0 0; }
-.more { display: inline-flex; align-items: center; gap: 12px; min-height: 46px; padding: 10px 23px; border: 1px solid var(--blue); border-radius: 8px; color: white; background: var(--blue); font-size: 14px; font-weight: 600; }
-.more:hover { background: #123A70; }
-.arrow { display: inline-block; transition: transform .2s; }
-.more[aria-expanded=true] .arrow { transform: rotate(180deg); }
-.more-hint { flex: 1; min-width: 210px; font-size: 12px; line-height: 1.7; color: #6f7e8a; }
-.guide { padding-top: 6px; }
-.guide > h2 { font-size: 13px; font-weight: 400; color: #6f7e8a; margin: 16px 0 0; }
-.guide > h2:focus { outline: none; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 1px 2px rgba(22,32,43,.05); padding: 22px 20px 24px; margin: 18px 0; scroll-margin-top: 16px; }
-.no-head { display: flex; gap: 10px; align-items: baseline; margin-bottom: 14px; }
-.no { flex: none; color: var(--blue); background: var(--accent-soft); font: 600 11px/1 var(--mono); padding: 5px 6px; border-radius: 3px; }
-.card h3 { font-size: 20px; line-height: 1.4; font-weight: 680; letter-spacing: -.01em; }
-.card p { margin: 0 0 14px; color: var(--muted); font-size: 15.5px; line-height: 1.85; }
-.card p:last-child { margin-bottom: 0; }
-.card strong { color: var(--ink); font-weight: 600; }
-.card .aside { font-size: 13px; color: #6f7e8a; }
-.demo { margin: 18px 0; }
-.demo-heading { font-size: 13px; line-height: 1.7; color: #6f7e8a; margin-bottom: 9px; }
-.drawing { overflow-x: auto; padding: 0 5px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; }
-.diagram { width: 100%; max-width: 470px; min-width: 280px; display: block; margin: auto; font-family: var(--sans); }
-.controls { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
-.controls button { min-height: 44px; padding: 9px 12px; border: 1px solid #CFD7DE; border-radius: 4px; background: white; color: var(--ink); font-size: 13px; font-weight: 600; line-height: 1.5; }
-.controls button:hover { border-color: var(--blue); }
-.controls button[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: white; }
-.card .readout { margin: 12px 0 0; padding: 12px 14px; color: #123A70; background: var(--accent-soft); border-left: 2px solid var(--blue); border-radius: 0 6px 6px 0; font-size: 14px; line-height: 1.8; min-height: 100px; }
-.demo figcaption { margin-top: 9px; font-size: 12px; color: #71808e; line-height: 1.65; }
-.card .takeaway { margin: 16px 0 0; padding: 12px 14px; border-left: 2px solid var(--blue); border-radius: 0 6px 6px 0; background: var(--accent-soft); color: #123A70; font-size: 14px; line-height: 1.8; }
-.questions { margin: 18px 0 0; padding: 22px 20px; background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 6px; }
-.questions h2 { font-size: 17px; font-weight: 650; color: #123A70; margin-bottom: 16px; }
-.questions p { font-size: 16px; color: #123A70; font-weight: 500; padding-top: 14px; border-top: 1px solid var(--accent-line); }
-.questions p + p { margin-top: 14px; }
-footer { margin-top: 26px; padding-top: 15px; border-top: 1px solid var(--line); font-size: 12.5px; color: #6f7e8a; }
-footer summary { width: fit-content; cursor: pointer; padding: 8px 0; }
-.sources { display: flex; flex-direction: column; gap: 8px; padding: 10px 0; }
-@media(max-width:640px) {
-  .brief-grid { grid-template-columns: 1fr; }
-  .hero { padding-top: 34px; }
-  .card { padding: 20px 16px; }
-  .card p { font-size: 16px; }
-  .card .readout { font-size: 14px; min-height: 0; }
-  .card .takeaway { font-size: 14px; }
-  .controls button { flex: 1 1 42%; }
-  .questions { padding: 20px 16px; }
-}
-.diagram text { text-anchor: middle; fill: var(--ink); font-size: 15px; }
-.diagram .unit rect { fill: white; stroke: #c8d2df; stroke-width: 1.2; transition: fill .25s, stroke .25s; }
-.diagram .unit.model rect { fill: #edf2fc; stroke: #b6c8ed; }
-.diagram .unit.support rect { fill: #f1ecf7; stroke: #c8b9dd; }
-.diagram .unit-title { font-size: 15px; font-weight: 650; }
-.diagram .model .unit-title { fill: #3159b9; }
-.diagram .support .unit-title { fill: #74559b; }
-.diagram .unit-sub { font-size: 13px; fill: #58677a; }
-.diagram .route-caption { font-size: 13px; fill: #637084; }
-.diagram .route { fill: none; stroke: #7d8b9f; stroke-width: 1.5; }
-.diagram .route[data-active=true] { stroke: #365bc7; stroke-width: 2.3; }
-.diagram .unit[data-active=true] rect { stroke: #456bbd; stroke-width: 2; }
-.diagram .unit.support[data-active=true] rect { stroke: #8963b1; }
-.permission-bar { transition: opacity .2s; }
-[data-kind=permission][data-phase="2"] .permission-bar { opacity: 0; }
-.proof-stamp { opacity: .15; transition: opacity .3s; }
-[data-kind=proof][data-phase="2"] .proof-stamp { opacity: 1; }
-.diagram .check { stroke-dasharray: 50; stroke-dashoffset: 50; transition: stroke-dashoffset .7s; }
-[data-kind=proof][data-phase="2"] .check { stroke-dashoffset: 0; }
-[data-when] { opacity: 0; transition: opacity .2s; }
-[data-show=true] { opacity: 1; }
-
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>WorkBuddy、千问办公与另外三款 AI，到底怎么选？</title><style>
+:root{--bg:#f1f4f6;--paper:#fff;--ink:#203540;--muted:#526773;--line:#dce5e9;--blue:#155569;--green:#1b6b74;--soft:#eaf3f3;--sans:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.9 var(--sans)}[hidden]{display:none!important}h1,h2,h3,h4,p,figure{margin:0}button{font:inherit;cursor:pointer;touch-action:manipulation}a{color:var(--blue);text-underline-offset:4px}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #378390;outline-offset:4px}strong{font-weight:650;color:#213b46}.wrap{max-width:820px;margin:0 auto;padding:0 32px 60px}.topbar{position:fixed;top:0;left:0;width:100%;height:3px;background:var(--line);z-index:30}.topbar i{display:block;height:3px;background:var(--green);width:0}.hero{padding:48px 0 38px}.edition{display:flex;justify-content:space-between;border-bottom:1px solid #b6c8d0;padding-bottom:12px;color:var(--muted);font-size:12px}.hero h1{font-size:48px;line-height:1.26;letter-spacing:-.04em;margin:30px 0 15px}.intro{max-width:650px;font-size:17px;color:var(--muted);line-height:1.8}.hero-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px 0 22px}.hero-product{border-top:3px solid var(--green);padding:16px 0 0}.hero-product:nth-child(2){border-color:#5968a2}.hero-product h2{font-size:23px;line-height:1.4;font-weight:650}.hero-product p{font-size:15px;color:var(--muted);line-height:1.8;margin-top:9px}.other-products{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:18px;border-top:1px solid var(--line);padding-top:18px}.other-products b{font-size:14px;display:block}.other-products span{font-size:13px;line-height:1.7;display:block;color:var(--muted);margin-top:5px}.more-row{display:flex;gap:18px;align-items:center;margin-top:26px}.more{background:var(--blue);color:white;border:0;border-radius:7px;padding:12px 22px;font-size:15px;min-height:48px;display:flex;gap:22px;white-space:nowrap}.more:hover{background:#0e4658}.more-hint{font-size:12px;color:var(--muted);line-height:1.7}.arrow{transition:transform .2s}.more[aria-expanded=true] .arrow{transform:rotate(180deg)}.guide{background:white;border:1px solid var(--line);border-radius:12px;padding:0 36px}.guide>h2{font-size:13px;font-weight:400;color:var(--muted);padding-top:25px}.guide>h2:focus{outline:0}.card{padding:36px 0;border-bottom:1px solid var(--line);scroll-margin-top:20px}.card:last-child{border-bottom:0}.no-head{margin-bottom:22px}.no{font-size:12px;color:var(--green);display:block;margin-bottom:8px}.card h3{font-size:27px;line-height:1.45;letter-spacing:-.025em}.card p{font-size:16px;line-height:1.95;margin:0 0 17px;color:var(--muted)}.card p:last-child{margin-bottom:0}.card .version{font-size:12px;line-height:1.7;color:#687b86;padding:10px 0;margin-top:-10px}.compare-list{margin:22px 0 24px}.compare-list>div{display:grid;grid-template-columns:160px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}.compare-list b{font-weight:650;line-height:1.6}.compare-list span{color:var(--muted);line-height:1.75}.duo{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0}.duo>div{border-top:2px solid #a5c5cb;padding-top:14px}.duo h4{font-size:17px;margin-bottom:12px}.duo p{font-size:14px}.demo{margin:28px -12px}.demo-heading{font-size:14px;font-weight:600;line-height:1.7;margin-bottom:12px;padding-left:12px}.drawing{overflow-x:auto;background:#edf3f5;border:1px solid #dce6ea;border-radius:9px}.diagram{display:block;width:100%;max-width:550px;min-width:300px;margin:auto;font-family:var(--sans)}.diagram text{text-anchor:middle;fill:var(--ink);font-size:16px}.diagram .left{text-anchor:start}.diagram .small{font-size:14px;fill:var(--muted)}.diagram .status{font-size:15px;fill:var(--green)}.diagram .unit-title{font-size:16px;font-weight:650}.diagram .unit-sub{font-size:14px;fill:var(--muted)}.unit rect{fill:white;stroke:#c9d7dd;stroke-width:1.4;transition:fill .3s,stroke .3s}.unit[data-active=true] rect{fill:#e5f2ef;stroke:var(--green);stroke-width:2}.route{fill:none;stroke:#91a0ae;stroke-width:1.5}.route[data-active=true]{stroke:#1b6b74;stroke-width:2.4}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}.controls button{min-height:44px;font-size:13px;line-height:1.5;border:1px solid #bacbd3;border-radius:6px;background:white;color:var(--ink);padding:10px 13px}.controls button[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}.card .readout{background:var(--soft);padding:16px;border-radius:7px;color:#234d59;font-size:14px;line-height:1.9;margin:0;min-height:112px}.demo figcaption{font-size:11px;line-height:1.6;color:#687d89;margin:10px 4px 0}.edit-highlight{transition:width .5s,fill .3s}.edit-pen{transition:opacity .3s,transform .5s;transform-origin:center}[data-kind=edit][data-phase="1"] .edit-pen{opacity:1;transform:translate(-15px,0)}[data-kind=edit][data-phase="2"] .edit-highlight{fill:#dce6f9}.power{transition:opacity .3s}[data-kind=place][data-phase="1"] .power{opacity:.2}.tick{stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .45s}[data-kind=trigger][data-phase="1"] .tick,[data-kind=trigger][data-phase="2"] .tick{stroke-dashoffset:0}.comparison{margin:24px 0}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.8}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-weight:600}thead{background:var(--soft)}tbody th{width:19%}.card .takeaway{border-left:3px solid var(--green);padding-left:18px;margin-top:24px;color:var(--ink)}.questions{padding:28px 0;border-top:1px solid var(--line)}.questions h2{font-size:18px;margin-bottom:14px}.questions p{font-size:15px;color:var(--muted);margin-bottom:10px}footer{padding:20px 0 28px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}summary{cursor:pointer;min-height:44px;padding:9px 0}.sources{display:grid;gap:10px;padding:15px 0;overflow-wrap:anywhere}.sources p{line-height:1.8}.sources a{line-height:1.7}.rail{display:none}@media(min-width:1180px){.rail{display:block;position:fixed;left:calc(50% - 570px);top:110px;width:145px;padding-left:14px;border-left:1px solid #c5d4dc}.rail a{display:block;text-decoration:none;color:#647d8b;font-size:12px;line-height:1.6;padding:6px 0}.rail em{font-style:normal;font-size:10px;margin-right:9px}.rail a[aria-current=true]{color:var(--blue);font-weight:700}}
+@media(max-width:640px){.wrap{padding:0 18px 30px}.hero{padding-top:27px}.hero h1{font-size:36px;margin-top:24px}.intro{font-size:16px}.hero-pair{gap:20px;margin-top:24px}.hero-product h2{font-size:20px}.hero-product p{font-size:14px}.other-products{gap:12px;grid-template-columns:1fr}.other-products>div{display:grid;grid-template-columns:145px 1fr;gap:10px}.other-products span{margin:0}.more-row{align-items:flex-start;gap:13px}.more{padding:12px 17px;gap:15px}.guide{margin:0 -7px;padding:0 19px;border-radius:9px}.card{padding:30px 0}.card h3{font-size:23px}.card p{font-size:16px;line-height:1.95}.no-head{margin-bottom:18px}.compare-list>div{grid-template-columns:1fr;gap:3px}.duo{grid-template-columns:1fr;gap:22px}.duo p{font-size:15px}.demo{margin:25px -7px}.controls button{flex:1 1 43%}.card .readout{font-size:14px;min-height:0;padding:14px}.diagram{min-width:300px}th,td{padding:10px 6px;font-size:12px}.more-hint{font-size:11px}.edition{font-size:11px}.questions p{font-size:15px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
-</style>
-</head>
-<body>
-<div class="topbar" aria-hidden="true"><i id="prog"></i></div><nav class="rail" id="rail" aria-label="章节目录" hidden><a href="#c1"><em>01</em>两个词的关系</a><a href="#c2"><em>02</em>怎样用工具</a><a href="#c3"><em>03</em>怎样接进度</a><a href="#c4"><em>04</em>谁决定权限</a><a href="#c5"><em>05</em>怎样核实结果</a><a href="#c6"><em>06</em>为什么受关注</a><a href="#c7"><em>07</em>代价与局限</a><a href="#c8"><em>08</em>提示词与流程</a><a href="#c9"><em>09</em>怎样选助手</a></nav>
-<main class="wrap">
-<header class="hero" id="hero">
-<span class="kicker">AI 每日一识 · 名词解释 · 2026 年 11 月 17 日</span>
-<h1><span class="u">什么是 Harness？<br>它和 Agent 有什么区别？</span></h1>
-<p class="brief-h">Agent 是你交任务的整套助手，Harness 是让它运转的支撑软件。</p>
-<div class="brief-grid">
-<div class="brief-cell"><span class="bn">Agent</span><span class="ba">整套助手</span><p>你交给它目标，它会用工具、看结果、接着做，直到完成任务或需要你帮忙。</p></div>
-<div class="brief-cell"><span class="bn">Harness</span><span class="ba">运行支撑</span><p>通常就在 Agent 里面。负责接工具、传结果，也可以管理进度和权限。</p></div>
-</div>
-<div class="more-row"><button class="more" id="more" type="button" aria-expanded="false" aria-controls="guide" hidden><span>了解更多</span><span class="arrow" aria-hidden="true">↓</span></button><p class="more-hint">9 节详解，4 组可点的动图，约 10 分钟。出处收在页尾，点击展开查看。</p></div>
-</header>
-<section class="guide" id="guide" aria-labelledby="guide-title">
-<h2 id="guide-title" tabindex="-1">约 10 分钟，拆开一个 AI 助手的工作过程。</h2>
-<div class="cards">
-<article class="card" id="c1">
-<div class="no-head"><span class="no">01</span><h3>Agent 是整套助手，Harness 在它里面</h3></div>
-<p>先想象一位办事员。你交给他一个目标，他要理解你的意思、使用手边的工具，再根据结果调整做法。Agent（常译作「智能体」）就像这样的 AI 助手，能围绕目标连续做事。</p>
-<p>这套助手里，<strong>AI 模型</strong>负责读懂信息、作出判断。你可以先把模型理解为处理语言、提出下一步的核心能力。<strong>Harness</strong>是围绕模型运行的一套软件，负责把信息送进去、安排工具执行，再把结果带回来。</p>
-<p>所以，谈 Agent 时，通常在看「这个助手能帮我完成什么」。谈 Harness 时，在看「这个助手背后的工作过程怎样组织」。一个能实际运行的 Agent，通常已经包含模型、Harness 和所接入的工具。</p>
-</article>
-<article class="card" id="c2">
-<div class="no-head"><span class="no">02</span><h3>为什么光会回答还不够？</h3></div>
-<p>让 AI 帮你找资料，它可以写出「接下来搜索最新价格」。要真的搜到价格，还得有程序去执行搜索，并把搜到的内容交回来。</p>
-<p>这里的<strong>工具</strong>，就是能执行具体动作的软件功能，比如查网页、读文件、发邮件。Harness 把模型提出的动作连接到工具。模型拿到工具的结果，再判断下一步。这种来回配合，才让 Agent 能连续推进任务。</p>
-<p class="aside">下面借查餐厅空位演示一次。注意图中三个角色，例子里的「查位」换成「查资料」，配合方式依然成立。</p>
-<figure class="demo" data-scene data-kind="loop" data-phase="0">
-<div class="demo-heading">看一条请求怎样走完一圈</div>
-<div class="drawing"><svg class="diagram" viewBox="0 0 360 270" role="img" aria-label="看一条请求怎样走完一圈"><defs><marker id="loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#7d8b9f" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="loop-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#365bc7" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="1" data-from="model" data-to="harness" d="M112 84H130" marker-end="url(#loop-arrow)"/><path class="route" data-route="2" data-from="harness" data-to="tool" d="M230 84H248" marker-end="url(#loop-arrow)"/><path class="route" data-route="3" data-from="tool" data-to="model" d="M298 120V176Q298 190 284 190H76Q62 190 62 176V120" marker-end="url(#loop-arrow)"/><g data-unit="model" class="unit model"><rect x="16" y="52" width="92" height="64" rx="9"/><text x="62" y="79" class="unit-title">AI 模型</text><text x="62" y="101" class="unit-sub">判断</text></g><g data-unit="harness" class="unit support"><rect x="134" y="52" width="92" height="64" rx="9"/><text x="180" y="79" class="unit-title">Harness</text><text x="180" y="101" class="unit-sub">调度</text></g><g data-unit="tool" class="unit tool"><rect x="252" y="52" width="92" height="64" rx="9"/><text x="298" y="79" class="unit-title">工具</text><text x="298" y="101" class="unit-sub">执行</text></g><text class="route-caption" x="180" y="225">Harness 把结果交回模型</text><circle class="packet" cx="0" cy="0" r="4" fill="#365bc7" stroke="white" stroke-width="1.5" visibility="hidden"/></svg></div>
-<div class="controls" role="group" aria-label="看一条请求怎样走完一圈"><button type="button" data-phase="0" aria-pressed="true" data-message="AI 模型决定先查空位。此时只产生了一个行动打算，查询还没有执行。">AI 决定</button>
-<button type="button" data-phase="1" aria-pressed="false" data-message="Harness 接收这个打算，把店名、人数和时间交给查询工具。Agent 因此能从想法走到行动。">系统调度</button>
-<button type="button" data-phase="2" aria-pressed="false" data-message="工具查到满座。Harness 收到真实结果，准备把它交回 AI 模型。">工具回报</button>
-<button type="button" data-phase="3" aria-pressed="false" data-message="AI 模型看到满座后，可以决定换一家。Harness 再组织下一轮，整个 Agent 就这样边做边调整。">继续判断</button></div>
-<p class="readout" aria-live="polite">AI 模型决定先查空位。此时只产生了一个行动打算，查询还没有执行。</p>
-<figcaption>交互示意，不含真实账本、订单或邮件操作。</figcaption>
-</figure>
-<p class="takeaway"><strong>这一圈说明 Harness 的基本作用</strong>——让模型的判断接上真实操作，再把操作结果接回判断。Agent 的连续办事能力就建立在这样的循环上。</p>
-</article>
-<article class="card" id="c3">
-<div class="no-head"><span class="no">03</span><h3>Harness 怎样帮 Agent 接着做？</h3></div>
-<p>长任务往往要分很多轮。AI 模型每次能同时处理的信息有限，这个范围叫<strong>上下文窗口</strong>，可以理解成眼前能摊开的资料。工作时间长了，旧内容可能放不下，下一轮也可能拿不到完整经过。</p>
-<p>Harness 可以安排保存进度，并在继续工作时提供相关记录。比如帮你整理一批文件，交接记录写明哪些已经处理、哪些还需要检查，Agent 就更容易接着做。</p>
-<figure class="demo" data-scene data-kind="memory" data-phase="0">
-<div class="demo-heading">试试一次任务中断后，进度怎么接回来</div>
-<div class="drawing"><svg class="diagram" viewBox="0 0 360 270" role="img" aria-label="试试一次任务中断后，进度怎么接回来"><defs><marker id="memory-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#7d8b9f" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="memory-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#365bc7" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="1" data-from="progress" data-to="storage" d="M148 79H166" marker-end="url(#memory-arrow)"/><path class="route" data-route="2" data-from="storage" data-to="next" d="M257 118V160" marker-end="url(#memory-arrow)"/><g data-unit="progress" class="unit model"><rect x="16" y="44" width="128" height="70" rx="9"/><text x="80" y="71" class="unit-title">当前工作</text><text x="80" y="93" class="unit-sub">已完成与待办</text></g><g data-unit="storage" class="unit support"><rect x="170" y="44" width="174" height="70" rx="9"/><text x="257" y="71" class="unit-title">Harness</text><text x="257" y="93" class="unit-sub">保存交接记录</text></g><g data-unit="next" class="unit model"><rect x="170" y="164" width="174" height="70" rx="9"/><text x="257" y="191" class="unit-title">下一轮 AI</text><text x="257" y="213" class="unit-sub">读取记录，再继续</text></g><text class="route-caption" x="77" y="181">进度保留下来</text><text class="route-caption" x="77" y="205">下次再交给 AI</text><circle class="packet" cx="0" cy="0" r="4" fill="#365bc7" stroke="white" stroke-width="1.5" visibility="hidden"/></svg></div>
-<div class="controls" role="group" aria-label="试试一次任务中断后，进度怎么接回来"><button type="button" data-phase="0" aria-pressed="true" data-message="如果上次的进度没有被保存和重新提供，AI 模型下次可能不知道哪些步骤已经做过。">进度没保存</button>
-<button type="button" data-phase="1" aria-pressed="false" data-message="Harness 配合记录机制，把目标、已完成的步骤和待办事项存下来。图中高亮的保存节点代表这份交接记录。">Harness 保存</button>
-<button type="button" data-phase="2" aria-pressed="false" data-message="Harness 将相关记录交给下一次工作的 AI 模型。Agent 可以据此接着做，同时核实已经变化的信息。">重新接续</button></div>
-<p class="readout" aria-live="polite">如果上次的进度没有被保存和重新提供，AI 模型下次可能不知道哪些步骤已经做过。</p>
-<figcaption>交互示意，不含真实账本、订单或邮件操作。</figcaption>
-</figure>
-<p class="takeaway"><strong>这解释了 Agent 为什么有时能「记住进度」。</strong>这份能力往往来自模型与 Harness 的配合。保存什么、何时重新提供、记录是否准确，都影响接续效果。</p>
-</article>
-<article class="card" id="c4">
-<div class="no-head"><span class="no">04</span><h3>谁决定 Agent 能做到哪一步？</h3></div>
-<p>让 Agent 整理邮件和让它发出邮件，后果不同。用户或开发者可以设定权限，例如允许读邮件、允许写草稿，发送之前必须确认。</p>
-<p>Harness 可以在动作交给工具之前执行这些限制。写一句「请谨慎发送」是在提醒模型；在系统里设置发送权限，则能让动作真的停下来等待授权。具体能限制什么，要看产品怎样实现。</p>
-<figure class="demo" data-scene data-kind="permission" data-phase="0">
-<div class="demo-heading">试试把「发送邮件」设成需要确认</div>
-<div class="drawing"><svg class="diagram" viewBox="0 0 360 270" role="img" aria-label="试试把「发送邮件」设成需要确认"><defs><marker id="permission-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#7d8b9f" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="permission-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#365bc7" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="1" data-from="intent" data-to="gate" d="M148 80H166" marker-end="url(#permission-arrow)"/><path class="route" data-route="2" data-from="gate" data-to="send" d="M255 119V160" marker-end="url(#permission-arrow)"/><g data-unit="intent" class="unit model"><rect x="16" y="45" width="128" height="70" rx="9"/><text x="80" y="72" class="unit-title">AI 提议</text><text x="80" y="94" class="unit-sub">发送邮件</text></g><g data-unit="gate" class="unit support"><rect x="170" y="45" width="170" height="70" rx="9"/><text x="255" y="72" class="unit-title">Harness</text><text x="255" y="94" class="unit-sub">检查授权</text></g><g data-unit="send" class="unit tool"><rect x="170" y="164" width="170" height="70" rx="9"/><text x="255" y="191" class="unit-title">邮件工具</text><text x="255" y="213" class="unit-sub">获得授权后执行</text></g><g class="permission-bar"><path d="M239 139H271" stroke="#a26336" stroke-width="5" stroke-linecap="round"/><text class="route-caption" x="85" y="183" data-when="0" data-show="true">还未检查授权</text><text class="route-caption" x="85" y="183" data-when="1">等待用户确认</text></g><text class="route-caption" x="85" y="210" data-when="2">已获用户确认</text><circle class="packet" cx="0" cy="0" r="4" fill="#365bc7" stroke="white" stroke-width="1.5" visibility="hidden"/></svg></div>
-<div class="controls" role="group" aria-label="试试把「发送邮件」设成需要确认"><button type="button" data-phase="0" aria-pressed="true" data-message="AI 模型认为邮件可以发出。它的判断还需要经过系统中配置的发送权限。">AI 提议发送</button>
-<button type="button" data-phase="1" aria-pressed="false" data-message="Harness 检查到发送需要确认，于是把动作停在工具之前。Agent 此时应该向你展示收件人和邮件内容。">Harness 拦住</button>
-<button type="button" data-phase="2" aria-pressed="false" data-message="你确认了这次发送，Harness 才允许邮件工具执行。实际是否发出，仍要看工具的回执。">用户确认</button></div>
-<p class="readout" aria-live="polite">AI 模型认为邮件可以发出。它的判断还需要经过系统中配置的发送权限。</p>
-<figcaption>交互示意，不含真实账本、订单或邮件操作。</figcaption>
-</figure>
-<p class="takeaway"><strong>Agent 可以提出行动，Harness 可以按配置约束行动。</strong>它遵守的规则由人和产品设定，实际权限检查还可能由工具服务共同执行。</p>
-</article>
-<article class="card" id="c5">
-<div class="no-head"><span class="no">05</span><h3>怎样判断 Agent 真的完成了？</h3></div>
-<p>AI 能写出听起来很确定的回答。执行任务时，还需要查看真实结果。例如发送邮件后，要看发送记录；修改表格后，要打开文件检查改动是否正确。</p>
-<p>Harness 可以收集工具回报，并安排下一步检查。有些检查由 AI 阅读结果完成，有些由写好的程序自动完成。检查得到的证据，帮助 Agent 决定继续修正、向你求助，还是报告完成。</p>
-<figure class="demo" data-scene data-kind="proof" data-phase="0">
-<div class="demo-heading">从「说完成了」走到「核实完成了」</div>
-<div class="drawing"><svg class="diagram" viewBox="0 0 360 270" role="img" aria-label="从「说完成了」走到「核实完成了」"><defs><marker id="proof-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#7d8b9f" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="proof-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#365bc7" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="1" data-from="receipt" data-to="inspect" d="M148 80H166" marker-end="url(#proof-arrow)"/><path class="route" data-route="2" data-from="inspect" data-to="done" d="M255 119V160" marker-end="url(#proof-arrow)"/><g data-unit="receipt" class="unit tool"><rect x="16" y="45" width="128" height="70" rx="9"/><text x="80" y="72" class="unit-title">工具回执</text><text x="80" y="94" class="unit-sub">实际执行结果</text></g><g data-unit="inspect" class="unit support"><rect x="170" y="45" width="170" height="70" rx="9"/><text x="255" y="72" class="unit-title">Harness</text><text x="255" y="94" class="unit-sub">安排核对</text></g><g data-unit="done" class="unit model"><rect x="170" y="164" width="170" height="70" rx="9"/><text x="255" y="191" class="unit-title">Agent</text><text x="255" y="213" class="unit-sub">有依据地报告</text></g><g class="proof-stamp"><circle cx="77" cy="184" r="24" fill="#e4f0eb"/><path class="check" d="m64 183 9 9 18-20" fill="none" stroke="#417b66" stroke-width="3" stroke-linecap="round"/></g><text class="route-caption" x="77" y="231">核对实际结果</text><circle class="packet" cx="0" cy="0" r="4" fill="#365bc7" stroke="white" stroke-width="1.5" visibility="hidden"/></svg></div>
-<div class="controls" role="group" aria-label="从「说完成了」走到「核实完成了」"><button type="button" data-phase="0" aria-pressed="true" data-message="AI 说邮件发好了，这句话本身不能证明工具真的完成了操作。Agent 需要可核查的结果。">只有口头结论</button>
-<button type="button" data-phase="1" aria-pressed="false" data-message="Harness 把工具的发送回执送回来。现在能检查是否有成功记录，以及收件人是否正确。">取得回执</button>
-<button type="button" data-phase="2" aria-pressed="false" data-message="AI 或预先写好的检查程序核对回执后，Agent 才有依据报告完成。Harness 负责让这些检查有机会发生。">核对结果</button></div>
-<p class="readout" aria-live="polite">AI 说邮件发好了，这句话本身不能证明工具真的完成了操作。Agent 需要可核查的结果。</p>
-<figcaption>交互示意，不含真实账本、订单或邮件操作。</figcaption>
-</figure>
-<p class="takeaway"><strong>Harness 帮 Agent 获得反馈。</strong>检查设计得是否充分、反馈是否可信，决定了「完成」这句话有多可靠。</p>
-</article>
-<article class="card" id="c6">
-<div class="no-head"><span class="no">06</span><h3>为什么这两年 Harness 被反复提起？</h3></div>
-<p>当 AI 被要求处理更长、更复杂的任务，能力的短板会出现在整个办事过程里。模型可能判断得不错，但找不到资料、接不上工具、丢失进度，最后仍然交不出结果。</p>
-<p>2025 年，Anthropic 分享了让编程 Agent 留下进度记录、在下一轮继续工作的实践。2026 年，OpenAI 讨论了如何通过清晰的环境、资料和检查机制帮助 Agent 完成软件工作。</p>
-<p>这些实践让 Harness 受到更多关注。模型提供判断能力，围绕它的运行安排影响这种能力能否稳定发挥。不同团队使用 Harness 一词时，覆盖范围会有差异，有的偏重运行循环，有的还包含更广的工作环境和规则。</p>
-</article>
-<article class="card" id="c7">
-<div class="no-head"><span class="no">07</span><h3>换个 Harness，Agent 就会更聪明吗？</h3></div>
-<p>同一个模型，放进不同的系统，使用体验可能很不一样。有的 Agent 能读取你提供的文件、保存工作进度、检查结果；有的只拿到了当前一句话。给模型的信息和可执行动作不同，最终表现也会不同。</p>
-<p>更合适的 Harness 能减少漏步骤和重复劳动，但模型仍可能理解错需求，工具也可能返回错误信息。Harness 无法凭空补出未接入的资料，也无法保证所有判断正确。</p>
-<p>此外，多轮检查和重试会花时间，也可能增加费用。保存记录、维护工具、设计权限同样需要投入。任务很简单时，整套复杂流程未必值得。</p>
-</article>
-<article class="card" id="c8">
-<div class="no-head"><span class="no">08</span><h3>它与提示词、固定流程有什么关系？</h3></div>
-<p><strong>提示词</strong>就是你给 AI 的要求，例如「先查资料，再写总结」。Harness 可以把这些要求交给模型，也可以把部分要求落实为可执行的检查和限制。</p>
-<p>固定流程会预先规定每一步怎样走。Agent 则可以让模型根据中途结果选择下一步。真实产品经常把两种方式结合起来，例如查询过程由 AI 调整，提交付款必须经过固定的确认步骤。</p>
-<p>Harness 为这些安排提供运行支持。它能承载固定规则，也能支持模型灵活判断。仅凭产品用了这个名称，无法判断它开放了哪些能力。</p>
-</article>
-<article class="card" id="c9">
-<div class="no-head"><span class="no">09</span><h3>下次看到这两个词，问什么最有用？</h3></div>
-<p>看到「Agent」，先问它能替你完成什么任务，以及遇到变化时能否调整做法。看到「Harness」，再看它怎样接工具、保存进度、执行权限和检查结果。</p>
-<p>如果你要选一个帮忙处理文件的助手，可以实际试一件小事。让它处理几份资料，中途暂停后再继续，检查它有没有漏项，最后打开结果文件看看。这样能看到整套 Agent 的实际表现。</p>
-<p class="takeaway"><strong>Agent 是你交任务的整套助手。Harness 是让这套助手运转的支撑软件。</strong>前者描述办事能力，后者解释这种能力背后的组织方式。</p>
-</article>
-</div>
-<aside class="questions" aria-labelledby="thoughts">
-<h2 id="thoughts">把问题带回自己的工作</h2>
-<p>如果让 Agent 替你处理一项日常工作，哪一个动作可以直接做，哪一个动作必须由你确认？</p>
-<p>当它说「完成了」，你希望看到什么证据，才愿意把结果交给别人？</p>
-</aside>
-<footer><details><summary>出处与延伸阅读 · 3 篇</summary><div class="sources">
-<a href="https://www.anthropic.com/research/demystifying-evals-for-ai-agents">Anthropic · Agent 与 Harness 的定义</a>
-<a href="https://www.anthropic.com/research/effective-harnesses-for-long-running-agents">Anthropic · 长任务如何接续</a>
-<a href="https://openai.com/index/harness-engineering/">OpenAI · Harness 工程实践</a>
-</div></details></footer>
-</section>
-</main>
-<script>
+</style></head><body><div class="topbar" aria-hidden="true"><i id="prog"></i></div><nav class="rail" id="rail" aria-label="章节目录" hidden><a href="#c1"><em>01</em>先看差别</a><a href="#c2"><em>02</em>WorkBuddy</a><a href="#c3"><em>03</em>千问办公</a><a href="#c4"><em>04</em>成果怎么改</a><a href="#c5"><em>05</em>离线怎么办</a><a href="#c6"><em>06</em>自动开始</a><a href="#c7"><em>07</em>同题怎么比</a><a href="#c8"><em>08</em>TRAE</a><a href="#c9"><em>09</em>DeepSeek Harness</a><a href="#c10"><em>10</em>豆包</a><a href="#c11"><em>11</em>代价与限制</a><a href="#c12"><em>12</em>先试哪款</a></nav><main class="wrap"><header class="hero" id="hero"><div class="edition"><span>AI 每日一识</span><span>2026 年 11 月 17 日</span></div><h1>这份工作，<br>交给哪个 AI？</h1><p class="intro">五款助手，先看它们怎样接上你的工作。<br>这次重点讲 WorkBuddy 和千问办公。</p><div class="hero-pair"><div class="hero-product"><h2>WorkBuddy</h2><p>把电脑文件和已接通的服务交给它，帮你处理任务、做出可继续修改的成果。</p></div><div class="hero-product"><h2>千问办公</h2><p>把文件、钉钉资料与团队任务接起来，适合从现有办公流程里找切入点。</p></div></div><div class="other-products"><div><b>TRAE</b><span>从想法到软件项目</span></div><div><b>DeepSeek Harness</b><span>可用插件改造的工作助手</span></div><div><b>豆包</b><span>熟悉入口里的工作任务</span></div></div><div class="more-row"><button id="more" class="more" type="button" aria-controls="guide" aria-expanded="false" hidden><span>了解更多</span><span class="arrow" aria-hidden="true">↓</span></button><p class="more-hint">约 12 分钟，4 个可操作的讲解。<br>按 11 月 16 日官方资料核对，功能范围有交集。</p></div></header><section class="guide" id="guide" aria-labelledby="guide-title"><h2 id="guide-title" tabindex="-1">从资料、交付、运行位置和自动任务，逐项看懂。</h2><div class="cards"><article class="card" id="c1"><div class="no-head"><span class="no">01 / 先看差别</span><h3>五款都能做事，差别从哪里看？</h3></div><p>你可以把它们理解为五位工作助手：都能听懂一部分要求、使用工具、交付成果，但接触的资料、熟悉的工作环境、交付方式并不一样。<strong>同样叫“帮我做周报”，实际过程可能完全不同。</strong></p><div class="compare-list"><div><b>WorkBuddy</b><span>先看电脑资料、外部服务与办公文件怎么接起来。</span></div><div><b>千问办公</b><span>先看钉钉资料、团队协作与重复流程怎么接起来。</span></div><div><b>TRAE</b><span>先看从想法到软件项目，再到修改、测试的连续过程。</span></div><div><b>DeepSeek Harness</b><span>先看开箱即用的助手，怎样用插件继续改造。</span></div><div><b>豆包</b><span>先看熟悉的助手入口，能否用“工作任务”完成交付。</span></div></div><p>这是<strong>阅读和试用的切入点</strong>，不是能力排他清单。WorkBuddy 也有云端和团队功能，千问办公也能处理本地文件，TRAE 也能产出办公材料。不能靠“有或没有 AI”给它们分档。</p><p>为什么最近越来越像？从这些产品的更新方向看，用户希望 AI 从回答问题走向完成任务。它们都在补资料接入、工具操作和成果编辑。能力逐渐重叠后，接上你现有工作的方法就更值得比较。</p></article>
+<article class="card" id="c2"><div class="no-head"><span class="no">02 / WorkBuddy</span><h3>WorkBuddy：把手边的资料变成成果</h3></div><p class="version">本次核对：5.11.3，官方更新于 2026 年 11 月 15 日。</p><p>先想一件很普通的事：几个表格在电脑文件夹里，补充信息在邮件里，你要整理成一份可以继续修改的报告。WorkBuddy 提供的是围绕这类任务工作的界面：交代目标、提供资料、观察执行过程，再打开产物检查。</p><p>它可以处理文档、表格、演示文稿，也能开展网页和软件相关任务。对普通办公用户，第一步值得看的是<strong>资料能否顺利接入</strong>，而不是一次生成了多少字。</p><p><strong>连接器</strong>可以理解成经你同意后，给助手开通某项服务的工作通道。官方列出了 QQ 邮箱、腾讯文档、腾讯会议、腾讯乐享等接入。查邮件、取文档与发出消息是不同动作，授权范围也要分别看。</p><p>如果你日常围绕电脑文件、腾讯文档或相关服务工作，它值得先试。但“已经登录邮箱”不等于助手已获准读取所有邮件；连接失效、文件没选对，任务仍会卡住。你需要先确认资料来源，再评价生成质量。</p></article>
+<article class="card" id="c3"><div class="no-head"><span class="no">03 / 千问办公</span><h3>千问办公：让资料和团队工作接上</h3></div><p class="version">本次核对：2.1.0，官方更新于 2026 年 11 月 15 日。</p><p>如果工作背景分散在钉钉文档、表格、项目讨论里，反复复制给 AI 会很费事。千问办公值得关注的地方，是把已有资料、团队讨论和后续任务放进相连的工作流程。</p><p><strong>资料空间</strong>就像一个可再次使用的成果柜：保存或收录的文件能找回、组合，再交给新的任务。它不会自动拥有全公司的文件；新任务选中了哪几份资料，仍要看清。</p><p><strong>协作空间</strong>更像团队共用的项目房间。同事可以讨论、交办任务，并关联允许使用的钉钉资料，让其中的 AI 助手有工作背景。该入口按企业组织和开放范围提供，不能把它当作所有个人账号默认拥有的功能。</p><figure class="demo" data-scene data-kind="sources" data-phase="0"><div class="demo-heading">换一组资料，看两款助手怎样接住同一项工作</div><div class="drawing"><svg class="diagram" viewBox="0 0 440 280" role="img" aria-label="换一组资料，看两款助手怎样接住同一项工作"><defs><marker id="sources-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#91a0ae" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="sources-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#1b6b74" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="in" d="M148 83H196"/><path class="route" data-route="out" d="M308 83H348"/><g class="unit" data-unit="source"><rect x="16" y="48" width="128" height="70" rx="12"/><text x="80" y="76" class="unit-title"><tspan data-bind="source">本地资料</tspan></text><text x="80" y="97" class="unit-sub"><tspan data-bind="sourceSub">文件与附件</tspan></text></g><g class="unit" data-unit="agent"><rect x="200" y="48" width="104" height="70" rx="12"/><text x="252" y="76" class="unit-title"><tspan data-bind="agent">WorkBuddy</tspan></text><text x="252" y="97" class="unit-sub">整理与核对</text></g><g class="unit" data-unit="result"><rect x="352" y="48" width="72" height="70" rx="12"/><text x="388" y="76" class="unit-title">周报</text><text x="388" y="97" class="unit-sub">待审核</text></g><path d="M80 124V157Q80 169 92 169H208" fill="none" stroke="#d0d9df" stroke-dasharray="4 5"/><rect x="40" y="192" width="360" height="60" rx="10" fill="#fff"/><text x="220" y="161" class="status"><tspan data-bind="status">资料接通，才能开始工作</tspan></text><text x="220" y="218" class="small"><tspan data-bind="detail">从电脑文件或已授权服务取资料</tspan></text><text x="220" y="240" class="small">两款都支持多种来源；图中只展示典型入口</text><circle class="packet" cx="20" cy="20" r="5" fill="#1b6b74" stroke="white" stroke-width="2" visibility="hidden"/></svg></div><div class="controls" role="group" aria-label="换一组资料，看两款助手怎样接住同一项工作"><button type="button" data-phase="0" aria-pressed="true">WorkBuddy</button><button type="button" data-phase="1" aria-pressed="false">千问办公</button><button type="button" data-phase="2" aria-pressed="false">资料没授权</button></div><p class="readout" aria-live="polite">WorkBuddy：可以围绕本地资料开展任务，也能通过连接器接入外部服务。腾讯文档、QQ 邮箱等都有官方接入说明；每项服务需要相应授权。</p><figcaption>原理交互示意，不含真实账本；不连接产品，也不执行真实任务。</figcaption><script type="application/json" class="scene-data">[{"label":"WorkBuddy","route":"out","nodes":["source","agent","result"],"text":{"source":"本地资料","sourceSub":"文件与附件","agent":"WorkBuddy","status":"先接通你的文件与服务","detail":"例如：电脑文件 + 已授权的腾讯文档"},"note":"WorkBuddy：可以围绕本地资料开展任务，也能通过连接器接入外部服务。腾讯文档、QQ 邮箱等都有官方接入说明；每项服务需要相应授权。","routes":["in","out"]},{"label":"千问办公","route":"out","nodes":["source","agent","result"],"text":{"source":"团队资料","sourceSub":"文档与讨论","agent":"千问办公","status":"把工作背景带入任务","detail":"例如：资料空间 + 已关联的钉钉资料"},"note":"千问办公：资料空间复用已有成果，协作空间可关联钉钉群聊、文档等背景。后者按企业组织及开放范围提供；同样也能处理本地文件。","routes":["in","out"]},{"label":"资料没授权","route":null,"nodes":["source"],"text":{"source":"受限资料","sourceSub":"尚未获准访问","agent":"任一助手","status":"停在资料入口","detail":"先补齐权限，或提供可使用的文件副本"},"note":"两款都不能因为“会写周报”就自动知道你公司的全部情况。授权失败、资料没接入或版本过旧，都会影响结果。比较产品时，先检查它实际读到了什么。"}]</script></figure><p>2.1.0 还支持从资料空间发布网页并设置访问权限，新增连接器导入等能力。对普通人更直接的意义是：成果能否在原来的工作环境里继续使用。它同样支持本地和云端任务，并非只能在钉钉里聊天。</p></article>
+<article class="card" id="c4"><div class="no-head"><span class="no">04 / 成果怎么改</span><h3>交付一份文件之后，谁来改？</h3></div><p>报告做出来只是第一步。老板改了一个数字，你修了一处措辞，AI 下一轮会不会把它改回去？这比一张看起来漂亮的预览更接近日常使用。</p><div class="duo"><div><h4>WorkBuddy：人机双写</h4><p>官方说明支持在文件区手动编辑，再让 AI 按选中区域调整。桌面本地任务列有 Word、Excel、PPT 等类型。云端编辑的入口另有范围限制，项目和助理里的部分文件仍可能仅能预览。</p></div><div><h4>千问办公：人机共创</h4><p>重点包括对话中的钉钉文档、AI 表格和宜搭应用。你先改内容，AI 再接着完善；在线资料继续沿用原有权限。宜搭可以理解为搭建业务小应用的工具。</p></div></div><figure class="demo" data-scene data-kind="edit" data-phase="0"><div class="demo-heading">点三步，看同一份稿子怎样在人和 AI 之间接续</div><div class="drawing"><svg class="diagram" viewBox="0 0 440 280" role="img" aria-label="点三步，看同一份稿子怎样在人和 AI 之间接续"><defs><marker id="edit-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#91a0ae" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="edit-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#1b6b74" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><rect x="44" y="24" width="352" height="223" rx="12" fill="white" stroke="#d4dfe3"/><text x="68" y="55" class="left small">项目周报 · 演示稿</text><path d="M68 69H372" stroke="#e2e8eb"/><text x="68" y="102" class="left unit-title">本周进展</text><rect class="edit-highlight" x="62" y="116" width="316" height="39" rx="5" fill="#e3f1ef"/><text x="76" y="142" class="left"><tspan data-bind="draft">设备调试已完成。</tspan></text><text x="76" y="180" class="left small"><tspan data-bind="next">待核实：是否还有未完成事项？</tspan></text><text x="76" y="215" class="left small"><tspan data-bind="version">AI 初稿 · 先检查事实</tspan></text><path class="edit-pen" d="M354 77l12 12-22 22-12 2 2-12Z" fill="#1b6b74" opacity="0"/><circle class="packet" cx="20" cy="20" r="5" fill="#1b6b74" stroke="white" stroke-width="2" visibility="hidden"/></svg></div><div class="controls" role="group" aria-label="点三步，看同一份稿子怎样在人和 AI 之间接续"><button type="button" data-phase="0" aria-pressed="true">AI 写初稿</button><button type="button" data-phase="1" aria-pressed="false">我改一处</button><button type="button" data-phase="2" aria-pressed="false">让 AI 接着改</button></div><p class="readout" aria-live="polite">先看初稿能否核实。演示中的 AI 把进展写得过于肯定；你知道现场情况，需要改掉这句。真实产品也可能把不完整资料写成确定结论。</p><figcaption>原理交互示意，不含真实账本；不连接产品，也不执行真实任务。</figcaption><script type="application/json" class="scene-data">[{"label":"AI 写初稿","nodes":[],"text":{"draft":"设备调试已完成。","next":"待核实：是否还有未完成事项？","version":"AI 初稿 · 先检查事实"},"note":"先看初稿能否核实。演示中的 AI 把进展写得过于肯定；你知道现场情况，需要改掉这句。真实产品也可能把不完整资料写成确定结论。"},{"label":"我改一处","nodes":[],"text":{"draft":"调试基本完成，仍有两项待确认。","next":"你补上了 AI 没掌握的现场事实。","version":"人工修订 · 把事实改准"},"note":"手动改准关键事实。WorkBuddy 的“人机双写”和千问办公的“人机共创”，都让人可以参与修改，再让 AI 接着处理；支持的文件类型和入口有所不同。"},{"label":"让 AI 接着改","nodes":[],"text":{"draft":"调试基本完成，仍有两项待确认。","next":"下一步：列出待确认项与负责人。","version":"继续完善 · 保留刚才的修订"},"note":"再要求 AI 根据新版本补行动清单。真正值得检验的是：它有没有保留你改过的事实、有没有改到别处、文件保存在哪里。漂亮的预览不能代替这些检查。"}]</script></figure><p>所以，比较时最好打开<strong>你真正要交付的那种文件</strong>试改一次。支持“做表格”、支持“在原表上改”，以及支持“让同事继续编辑”，是三个需要分别确认的问题。</p></article>
+<article class="card" id="c5"><div class="no-head"><span class="no">05 / 离线怎么办</span><h3>离开电脑，也能继续干吗？</h3></div><p>这里有两个位置要分清：<strong>本地</strong>就是你面前的电脑；<strong>云端</strong>是服务商提供、通过网络使用的电脑环境。手机只是另一种操作入口，不能据此判断任务在哪儿执行。</p><p>WorkBuddy 有手机远程使用和云端任务相关能力。千问办公也支持手机远控指定电脑，以及跨设备接续云端任务。千问远控需要目标电脑开启相应设置，手机使用同一账号和组织。</p><figure class="demo" data-scene data-kind="place" data-phase="0"><div class="demo-heading">电脑休眠了，任务会怎样？</div><div class="drawing"><svg class="diagram" viewBox="0 0 440 280" role="img" aria-label="电脑休眠了，任务会怎样？"><defs><marker id="place-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#91a0ae" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="place-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#1b6b74" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="local" d="M140 86H296"/><path class="route" data-route="cloud" d="M140 86V204H296"/><g class="unit" data-unit="you"><rect x="20" y="51" width="116" height="70" rx="12"/><text x="78" y="79" class="unit-title">你交的任务</text><text x="78" y="100" class="unit-sub">资料已指定</text></g><g class="unit" data-unit="pc"><rect x="300" y="51" width="120" height="70" rx="12"/><text x="360" y="79" class="unit-title">你的电脑</text><text x="360" y="100" class="unit-sub"><tspan data-bind="pc">在线运行</tspan></text></g><g class="unit" data-unit="cloud"><rect x="300" y="169" width="120" height="70" rx="12"/><text x="360" y="197" class="unit-title">云端电脑</text><text x="360" y="218" class="unit-sub"><tspan data-bind="cloud">这次未使用</tspan></text></g><g class="power" transform="translate(0,-48)"><circle cx="210" cy="86" r="18" fill="#edf4f4"/><path d="M210 74V84M202 78a12 12 0 1 0 16 0" fill="none" stroke="#1b6b74" stroke-width="2"/></g><text x="148" y="250" class="small"><tspan data-bind="status">本地文件由本机处理</tspan></text><circle class="packet" cx="20" cy="20" r="5" fill="#1b6b74" stroke="white" stroke-width="2" visibility="hidden"/></svg></div><div class="controls" role="group" aria-label="电脑休眠了，任务会怎样？"><button type="button" data-phase="0" aria-pressed="true">本地在线</button><button type="button" data-phase="1" aria-pressed="false">本地休眠</button><button type="button" data-phase="2" aria-pressed="false">改用云端</button></div><p class="readout" aria-live="polite">本地任务：在你的电脑上执行，能使用被允许的本地资料或应用。手机发指令也可能只是遥控这台电脑；它仍需要开机、联网并允许远程访问。</p><figcaption>原理交互示意，不含真实账本；不连接产品，也不执行真实任务。</figcaption><script type="application/json" class="scene-data">[{"label":"本地在线","route":"local","nodes":["you","pc"],"text":{"pc":"在线运行","cloud":"这次未使用","status":"电脑和客户端要保持可运行"},"note":"本地任务：在你的电脑上执行，能使用被允许的本地资料或应用。手机发指令也可能只是遥控这台电脑；它仍需要开机、联网并允许远程访问。"},{"label":"本地休眠","route":null,"nodes":["you"],"text":{"pc":"暂停／不可达","cloud":"不会自动接班","status":"同一个任务不会凭空搬到云端"},"note":"让电脑休眠，依赖这台电脑的操作通常无法继续。手机能看到任务，不等于任务在云端跑。WorkBuddy 与千问办公都要分清本地任务和云端任务。"},{"label":"改用云端","route":"cloud","nodes":["you","cloud"],"text":{"pc":"可以离线","cloud":"独立运行","status":"所需资料要在云端可访问"},"note":"已配置好的云端任务可以独立运行，但电脑里的私有文件不会自动搬过去。WorkBuddy 文档列有云端定时任务；千问办公提供云端任务及云端触发任务。仍需满足各自的授权、开关与额度条件。"}]</script></figure><p>实际选择取决于资料。必须使用公司电脑上的文件或已安装的软件，就要关注本地环境；资料已获准放在云端且不依赖本机，才适合考虑云端执行。<strong>换一个入口，不会自动解决资料访问问题。</strong></p></article>
+<article class="card" id="c6"><div class="no-head"><span class="no">06 / 自动开始</span><h3>每次都要再说一遍吗？</h3></div><p>一次性任务是“现在帮我整理”。重复任务是“每周五都整理”。WorkBuddy 的定时任务能保存工作要求和执行时间，也区分本地、项目与云端来源；配置了云端的任务无需本机一直在线。</p><p>千问办公的自动任务同时介绍<strong>按时间运行</strong>与<strong>由钉钉事件触发</strong>。后者是某条消息、审批或待办发生变化后，先检查条件，再执行任务。桌面触发任务可选择云端或此电脑，具体开关、权限和额度仍要满足。</p><figure class="demo" data-scene data-kind="trigger" data-phase="0"><div class="demo-heading">到点开始，还是有事发生才开始？</div><div class="drawing"><svg class="diagram" viewBox="0 0 440 280" role="img" aria-label="到点开始，还是有事发生才开始？"><defs><marker id="trigger-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#91a0ae" stroke-width="1.6" stroke-linejoin="round"/></marker><marker id="trigger-arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#1b6b74" stroke-width="1.6" stroke-linejoin="round"/></marker></defs><path class="route" data-route="time" d="M132 75H188Q200 75 200 87V114"/><path class="route" data-route="event" d="M132 204H188Q200 204 200 192V142"/><path class="route" data-route="out" d="M214 128H280"/><g class="unit" data-unit="clock"><rect x="16" y="40" width="112" height="70" rx="12"/><text x="72" y="68" class="unit-title">约定时间</text><text x="72" y="89" class="unit-sub"><tspan data-bind="clock">周五下班前</tspan></text></g><g class="unit" data-unit="event"><rect x="16" y="169" width="112" height="70" rx="12"/><text x="72" y="197" class="unit-title">钉钉事件</text><text x="72" y="218" class="unit-sub"><tspan data-bind="event">指定消息到达</tspan></text></g><g class="unit" data-unit="job"><rect x="284" y="93" width="140" height="70" rx="12"/><text x="354" y="121" class="unit-title">生成待审草稿</text><text x="354" y="142" class="unit-sub"><tspan data-bind="job">等待启动</tspan></text></g><circle cx="200" cy="128" r="10" fill="#fff" stroke="#a9bdc5"/><path class="tick" d="M195 128l4 4 6-8" fill="none" stroke="#1b6b74" stroke-width="2"/><text x="300" y="205" class="small"><tspan data-bind="status">先写好触发条件</tspan></text><text x="300" y="228" class="small">自动执行也要查结果</text><circle class="packet" cx="20" cy="20" r="5" fill="#1b6b74" stroke="white" stroke-width="2" visibility="hidden"/></svg></div><div class="controls" role="group" aria-label="到点开始，还是有事发生才开始？"><button type="button" data-phase="0" aria-pressed="true">尚未触发</button><button type="button" data-phase="1" aria-pressed="false">约定时间到了</button><button type="button" data-phase="2" aria-pressed="false">收到指定消息</button><button type="button" data-phase="3" aria-pressed="false">来了无关消息</button></div><p class="readout" aria-live="polite">两种开始方式回答不同问题：定时任务看“几点做”，事件任务看“发生什么才做”。都应该先设置资料来源、输出位置和不能擅自执行的动作。</p><figcaption>原理交互示意，不含真实账本；不连接产品，也不执行真实任务。</figcaption><script type="application/json" class="scene-data">[{"label":"尚未触发","route":null,"nodes":[],"text":{"clock":"周五下班前","event":"指定消息到达","job":"等待启动","status":"先写好触发条件"},"note":"两种开始方式回答不同问题：定时任务看“几点做”，事件任务看“发生什么才做”。都应该先设置资料来源、输出位置和不能擅自执行的动作。"},{"label":"约定时间到了","route":"time","nodes":["clock","job"],"text":{"clock":"到点了","event":"这次不使用","job":"开始整理","status":"定时任务启动"},"note":"WorkBuddy 与千问办公都提供定时任务。比如每周汇总记录，先生成草稿供你检查。要确认当前任务在哪台电脑运行，以及该环境在约定时间是否可用。","routes":["time","out"]},{"label":"收到指定消息","route":"event","nodes":["event","job"],"text":{"clock":"不必等到整点","event":"符合筛选条件","job":"开始整理","status":"千问办公触发任务"},"note":"千问办公官方文档另列钉钉事件触发：消息、审批或待办变化可作为起点，并检查条件。这个差别与钉钉工作流程有关，不能简化成“另一款不会自动化”。","routes":["event","out"]},{"label":"来了无关消息","route":null,"nodes":["event"],"text":{"clock":"仍按原计划","event":"不符合条件","job":"保持等待","status":"筛选条件没有通过"},"note":"不是群里每来一条消息都要运行。筛选具体群、成员或关键词，可以减少误触发、重复工作和额外用量。此图只演示条件判断，没有创建真实自动任务。"}]</script></figure><p>对团队而言，这个区别很实在：如果事情有固定周期，先试定时；如果要响应钉钉里的特定变化，就重点看千问办公的触发规则。不要在流程还经常出错时直接自动发送，先让它稳定产出可检查的草稿。</p></article>
+<article class="card" id="c7"><div class="no-head"><span class="no">07 / 同题怎么比</span><h3>同一份周报，怎样公平地试两款？</h3></div><p>拿同一批允许使用的资料，分别交给两款助手，提出相同要求：“整理本周进展，列出未解决事项，每条结论标出依据；资料没写的，请说不确定。先保存草稿。”这是一种<strong>试用方法</strong>，下表不是实际跑分结果。</p><div class="comparison" role="region" aria-label="两款产品的试用重点"><table><thead><tr><th>你要检查</th><th>WorkBuddy</th><th>千问办公</th></tr></thead><tbody><tr><th>资料入口</th><td>本地目录与已授权连接器是否接通</td><td>选中的资料、组织和关联数据源是否正确</td></tr><tr><th>结果修改</th><td>你的文件类型能否进入编辑态</td><td>在线产物和文件能否按所需方式修改</td></tr><tr><th>下一次复用</th><td>任务、资料与定时配置能否继续使用</td><td>资料空间、协作空间与自动任务能否接续</td></tr></tbody></table></div><p>最后检查同样三件事：有没有漏掉关键记录，结论能不能找到依据，你能不能直接改结果。哪款在你现有资料和同事习惯里更省事，就更有继续试用的价值。</p><p>本页没有给“准确率 95%”或“快几倍”这样的分数，因为没有进行五款产品的同题实测。官方功能说明可以确认入口和范围，不能替代真实任务的质量验证。</p></article>
+<article class="card" id="c8"><div class="no-head"><span class="no">08 / TRAE</span><h3>TRAE：想做一个能运行的东西</h3></div><p class="version">本次核对：中国站更新日志 v3.4.18，2026 年 11 月 10 日。</p><p>如果你的目标从“写一份报名方案”变成“做一个能提交报名信息的网站”，就开始涉及软件项目：页面要能打开，按钮要能工作，出问题要能修改和测试。TRAE 的产品重心在这一类连续工作。</p><p>官方已将 TraeWork 和 TraeCode 融合为新的 TRAE。它提供两种工作方式：在 <strong>Agent 模式</strong>里交目标、推进任务；需要深入修改代码时，进入 <strong>IDE 模式</strong>，也就是专门编写和检查软件的工作台。</p><p>它同时支持文档、演示文稿等产物，不能再简单说“TRAE 只写代码”。与前两款比较时，更有用的问题是：你的主要成果是一份工作材料，还是一个需要持续维护的软件？</p><p>非技术用户可以从描述需求开始，但仍要试用每个关键操作。能生成一个演示页面，不代表它已经适合处理真实客户数据或长期上线；这些还需要相应的检查与维护。</p></article>
+<article class="card" id="c9"><div class="no-head"><span class="no">09 / DeepSeek Harness</span><h3>DeepSeek Harness：也能直接用，还能改造</h3></div><p class="version">本次核对：官网公开预览版；未将第三方版本号当成统一最新版。</p><p>这个名字容易让人误以为它只是一项底层技术。实际官网已提供桌面下载，介绍了整理资料、表格分析、文档汇报、查证和代码任务。普通用户可以从交任务开始，不必先学编程。</p><p>它的突出方向是<strong>插件组合与开源</strong>。插件像给助手安装额外工具；开源意味着软件代码公开，可以由有能力的人检查和修改。官网还展示了通过对话创建插件的方式。</p><p>“Harness”这个通用词通常指让 AI 连续工作所需的运行支撑；“DeepSeek Harness”则是这里比较的具体产品。看到前者，不能自动推断就是后者。</p><p>如果你希望使用现成工具后还可以深度调整，它值得关注。代价是预览版和插件可能需要更多检查：官网把自动化任务等部分插件标为实验性。开源也不代表模型调用、运行资源和维护都免费。</p></article>
+<article class="card" id="c10"><div class="no-head"><span class="no">10 / 豆包</span><h3>豆包：熟悉的入口，也在接工作任务</h3></div><p class="version">本次核对：官网当前工作任务说明；不同账号和设备以实际入口为准。</p><p>豆包不能只按“聊天、问问题”来理解了。官方已有<strong>工作任务模式</strong>：根据你的目标拆解任务、调用工具，展示执行进度，并允许你停止或接管。</p><p>其说明区分本地电脑和云电脑，还包含电脑操作、浏览器操作、技能和连接器。这里的技能可以理解为可复用的工作方法。能否使用相应入口及工具，仍要看当前设备、账号和授权。</p><p>因此，已习惯用豆包的人，可以先用自己的资料试一次明确交付，例如整理文件并生成报告，再决定是否换工具。不要因为 WorkBuddy 和千问办公名字里更像“办公产品”，就假定豆包一定做不到。</p><p>也别只凭“都能操作电脑”就认为体验相同。团队资料接入、文件的后续编辑、自动流程是否顺手，需要分别验证。豆包官方说明本地任务也可能把必要内容传到云端推理，不能把“本地电脑模式”理解为资料绝不离开电脑。</p></article>
+<article class="card" id="c11"><div class="no-head"><span class="no">11 / 代价与限制</span><h3>“能做”之外，还要付出什么？</h3></div><p>第一是整理资料的成本。文件混乱、口径冲突、缺少权限，会让任何一款助手反复追问或做错。给它一份清楚的任务说明和正确资料，往往比反复更换产品更有帮助。</p><p>第二是核对与返工。它可能漏读一个附件，把“计划完成”写成“已经完成”，或者改坏一个公式。交付前抽查依据、计算和保存位置，仍是你的工作。</p><p>第三是使用和维护成本。不同套餐、模型和任务会有不同额度；自动任务持续运行也可能持续消耗用量。本页不把短期优惠写成长期价格。试用时记下实际消耗、等待时间和你返工的次数，再看是否值得订阅。</p><p>第四是权限和资料流向。本地执行与本地模型不是同一回事。公司资料能否用于某项服务，应遵守公司的实际要求；涉及发消息、覆盖原文件、提交业务操作，要看具体授权设置，并保留必要的人工检查。</p></article>
+<article class="card" id="c12"><div class="no-head"><span class="no">12 / 先试哪款</span><h3>从你明天的一件工作开始</h3></div><p><strong>资料主要在电脑、邮件与腾讯相关服务：</strong>优先试 WorkBuddy 的文件和连接器流程。<strong>资料与协作主要在钉钉：</strong>优先试千问办公的资料、协作和自动任务入口。这是基于已公开能力的场景建议，不是实测排名。</p><p>想把一个需求做成可运行的软件，再看 TRAE；希望深入调整助手的工具与工作方式，留意 DeepSeek Harness 的插件和预览版状态；已经常用豆包，则先检查工作任务入口能否把当前这件事完成。</p><p>第一次试用，把任务缩小到你能检查的范围：提供几份可用资料，要求生成一份草稿，亲手改一处，再让它继续。这样能同时看见资料接入、理解、交付和接续能力。</p><p class="takeaway">选择的关键是：<strong>它能不能接上你的真实工作，并把结果交到你能检查、能修改的位置。</strong>功能清单只是起点。</p></article></div><aside class="questions"><h2>带回你自己的工作</h2><p>你明天最想交出去的那件事，资料分别在哪儿？选中的助手能被允许访问它们吗？</p><p>如果它只能给你漂亮的初稿，却不能让你改对、保存、接着用，你还会选它吗？</p></aside><footer><details><summary>查看版本口径与官方出处</summary><div class="sources"><p>核验截至 2026 年 11 月 16 日。WorkBuddy 5.11.3、千问办公 2.1.0、TRAE 中国站日志 v3.4.18；DeepSeek Harness 采用官网预览版说明，豆包采用当前工作任务说明，未取得可统一比较的客户端版本号。按官方公开文档整理，未做五款同题实测。功能可能按账号、组织、地区、设备及版本开放；建议以实际入口为准。</p><a href="https://www.workbuddy.cn/docs/workbuddy/Changelog" target="_blank" rel="noopener noreferrer">WorkBuddy：版本更新</a><a href="https://www.workbuddy.cn/docs/workbuddy/Overview" target="_blank" rel="noopener noreferrer">WorkBuddy：产品能力</a><a href="https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Connector" target="_blank" rel="noopener noreferrer">WorkBuddy：连接器与授权</a><a href="https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Knowledge-Base/Cowriting" target="_blank" rel="noopener noreferrer">WorkBuddy：人机双写与适用范围</a><a href="https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Automation-Guide" target="_blank" rel="noopener noreferrer">WorkBuddy：本地与云端定时任务</a><a href="https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six" target="_blank" rel="noopener noreferrer">WorkBuddy：手机远程操作</a><a href="https://docs.qwenwork.cn/release-notes/desktop" target="_blank" rel="noopener noreferrer">千问办公：客户端更新</a><a href="https://docs.qwenwork.cn/web/materials" target="_blank" rel="noopener noreferrer">千问办公：资料空间</a><a href="https://docs.qwenwork.cn/web/collaboration" target="_blank" rel="noopener noreferrer">千问办公：协作空间与开放范围</a><a href="https://docs.qwenwork.cn/web/co-editing" target="_blank" rel="noopener noreferrer">千问办公：人机共创</a><a href="https://docs.qwenwork.cn/web/scheduled-tasks" target="_blank" rel="noopener noreferrer">千问办公：自动任务与运行条件</a><a href="https://docs.trae.cn/work_traework-to-traecode-data-migration" target="_blank" rel="noopener noreferrer">TRAE：合并升级与当前定位</a><a href="https://docs.trae.cn/ide_changelog" target="_blank" rel="noopener noreferrer">TRAE：版本更新</a><a href="https://deepseek.com/harness/" target="_blank" rel="noopener noreferrer">DeepSeek Harness：公开预览版与插件</a><a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener noreferrer">DeepSeek Harness：开源项目</a><a href="https://www.doubao.com/legal/DoubaoAgentModeNotice" target="_blank" rel="noopener noreferrer">豆包：工作任务功能须知</a><a href="https://www.doubao.com/legal/privacy" target="_blank" rel="noopener noreferrer">豆包：办公、文件与信息处理说明</a></div></details></footer></section></main><script>
 
 const more = document.getElementById('more');
 const guide = document.getElementById('guide');
@@ -250,54 +32,43 @@ more.addEventListener('click', () => {
     guide.scrollIntoView({behavior: motion.matches ? 'instant' : 'smooth'});
   }
 });
+
 for (const scene of document.querySelectorAll('[data-scene]')) {
-  const buttons = [...scene.querySelectorAll('button')];
-  const packet = scene.querySelector('.packet');
-  let animationFrame = 0;
-  const stopPacket = () => {
-    cancelAnimationFrame(animationFrame);
-    packet.setAttribute('visibility', 'hidden');
-  };
-  motion.addEventListener('change', stopPacket);
-  for (const button of buttons) {
-    button.addEventListener('click', () => {
-      stopPacket();
-      const phase = button.dataset.phase;
-      scene.dataset.phase = phase;
-      const route = scene.querySelector('[data-route="' + phase + '"]');
-      for (const item of buttons) {
-        item.setAttribute('aria-pressed', String(item === button));
-      }
-      for (const line of scene.querySelectorAll('[data-route]')) {
-        line.dataset.active = String(line === route);
-        const marker = scene.dataset.kind + '-arrow' + (line === route ? '-active' : '');
-        line.setAttribute('marker-end', 'url(#' + marker + ')');
-      }
-      for (const unit of scene.querySelectorAll('[data-unit]')) {
-        unit.dataset.active = String(unit.dataset.unit === route?.dataset.to);
-      }
-      for (const label of scene.querySelectorAll('[data-when]')) {
-        label.dataset.show = String(label.dataset.when === phase);
-      }
-      scene.querySelector('.readout').textContent = button.dataset.message;
-      if (route && !motion.matches) {
-        const length = route.getTotalLength();
-        const start = performance.now();
-        const animate = now => {
-          const progress = Math.min((now - start) / 900, 1);
-          const point = route.getPointAtLength(length * progress);
-          packet.setAttribute('cx', String(point.x));
-          packet.setAttribute('cy', String(point.y));
-          packet.setAttribute('visibility', progress === 1 ? 'hidden' : 'visible');
-          if (progress < 1) animationFrame = requestAnimationFrame(animate);
-        };
-        animationFrame = requestAnimationFrame(animate);
-      }
+  const states=JSON.parse(scene.querySelector('.scene-data').textContent);
+  const buttons=[...scene.querySelectorAll('button')];
+  const packet=scene.querySelector('.packet');
+  let frame=0;
+  function stop(){cancelAnimationFrame(frame);packet.setAttribute('visibility','hidden');}
+  function select(index,animate=true){
+    stop();
+    const state=states[index];
+    scene.dataset.phase=String(index);
+    buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));
+    scene.querySelectorAll('[data-bind]').forEach(el=>{el.textContent=state.text[el.dataset.bind];});
+    scene.querySelectorAll('[data-unit]').forEach(el=>{el.dataset.active=String(state.nodes.includes(el.dataset.unit));});
+    scene.querySelectorAll('[data-route]').forEach(el=>{
+      const active=state.routes ? state.routes.includes(el.dataset.route) : el.dataset.route===state.route;
+      el.dataset.active=String(active);
+      el.setAttribute('marker-end','url(#'+scene.dataset.kind+'-arrow'+(active?'-active':'')+')');
     });
+    scene.querySelector('.readout').textContent=state.note;
+    const path=state.route?scene.querySelector('[data-route="'+state.route+'"]'):null;
+    if(path && animate && !motion.matches){
+      const length=path.getTotalLength(), start=performance.now();
+      const tick=now=>{
+        const progress=Math.min((now-start)/1200,1), p=path.getPointAtLength(length*progress);
+        packet.setAttribute('cx',p.x);packet.setAttribute('cy',p.y);
+        packet.setAttribute('visibility',progress===1?'hidden':'visible');
+        if(progress<1) frame=requestAnimationFrame(tick);
+      };
+      frame=requestAnimationFrame(tick);
+    }
   }
+  buttons.forEach((b,i)=>b.addEventListener('click',()=>select(i)));
+  motion.addEventListener('change',stop);
+  more.addEventListener('click',()=>{if(guide.hidden)stop();});
+  select(0,false);
 }
-
-
 const rail = document.getElementById('rail');
 const cards = [...document.querySelectorAll('.card')];
 const chapterLinks = [...rail.querySelectorAll('a')];
@@ -328,6 +99,4 @@ addEventListener('scroll', scheduleReadingUpdate, {passive: true});
 addEventListener('resize', scheduleReadingUpdate);
 updateReadingPosition();
 
-</script>
-</body>
-</html>
+</script></body></html>
