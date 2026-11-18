@@ -244,7 +244,7 @@ const setupShot = 'WorkBuddy 官方 Windows 安装指南';
 COURSE.unshift({id:11, optional:true, title:'如何安装 WorkBuddy', short:'安装 WorkBuddy', subtitle:'跟着截图，在 Windows 电脑上下载、安装并登录。', icon:'download', time:10, color:'teal', lessons:[
   walkthrough('到官网下载 Windows 安装包', [
     ['install-website.png',websiteShot,'到官网，点右上角“下载”','点本页的“打开 WorkBuddy 官网”。浏览器会多开一个标签页。在官网右上角找到黑色的“下载”，用鼠标左键点一次。要看下一张教学图，点回浏览器上方的“新手学堂”标签。'],
-    ['install-windows.png',websiteShot,'在“桌面端”里点 Windows','在展开的菜单里找到带四格窗户图标的“Windows x64（兼容 ARM64）”。点一次，等浏览器下载完成。如果询问保存位置，可以选择“下载”文件夹。'],
+    ['install-windows.png?v=2',websiteShot,'在“桌面端”里点 Windows','先看图中的蓝框。回到官网，在“桌面端”下面找到 Mac 下一行的“Windows x64（兼容 ARM64）”，用鼠标左键点一次。等浏览器下载完成。如果询问保存位置，可以选择“下载”文件夹。'],
     ['official-1.png',setupShot,'在电脑上找到下载好的文件','在下载用的浏览器里同时按 Ctrl 和 J，找到名字以 WorkBuddy 开头的安装包。等进度走完，点文件旁的文件夹图标，就能看到图中这样的文件。版本数字可能不同。']
   ],'我在 Windows 电脑上下载 WorkBuddy，卡在这一步：____。我看到的提示是：____。请告诉我接下来要点哪里。','在电脑的“下载”文件夹里找出刚下载的 WorkBuddy 安装包。','我已经找到下载完成的 WorkBuddy 安装包。','本章演示 Windows 10 或更新版本。按 Ctrl 和 J 没反应时，先点回下载用的浏览器窗口再试。'),
   walkthrough('打开安装包，选择安装位置', [
