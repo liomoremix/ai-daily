@@ -25,3 +25,12 @@ html.no-motion *,html.no-motion *:before,html.no-motion *:after{animation:none!i
 .screen-caption .caption-step{background:var(--blue);color:white;margin-top:0}
 
 .screenshot-button.crop-view{position:relative}.screenshot-button.crop-view img{position:absolute;max-width:none;object-fit:fill}
+
+.practice-lab{margin:18px 0;padding:clamp(14px,3vw,24px);border:1px solid #c6d7e9;border-radius:12px;background:#fff;color:var(--ink);min-width:0}
+.practice-lab h3{font-size:1.1rem;margin:0 0 6px}.practice-lab p{margin:0 0 16px;color:#4c6074}
+.practice-lab label{display:block;margin:10px 0;font-weight:600}
+.practice-lab input:not([type=checkbox]),.practice-lab select{display:block;margin-top:5px;padding:9px 10px;border:1px solid #8094ad;border-radius:6px;background:white;color:#152841;width:100%;min-width:0;font:inherit}
+.lab-actions,.lab-fields{display:flex;gap:8px;flex-wrap:wrap}.lab-fields label{flex:1 1 140px}
+.practice-lab output,.lab-records{display:block;white-space:pre-line;line-height:1.65;border-radius:6px;padding:12px;margin-top:10px;background:#eff6fa;color:#214259}
+.practice-lab output:empty{display:none}.lab-records{background:#f4f6fa;color:#354763}
+.advanced-shortcuts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px 0;color:#425675;font-size:.9rem}.advanced-shortcuts a{text-decoration:underline;text-underline-offset:3px}

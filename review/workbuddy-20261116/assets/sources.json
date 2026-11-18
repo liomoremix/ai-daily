@@ -284,5 +284,166 @@
     "type": "tutorial screenshot",
     "description": "本教学网页的实际提示词、下载或学习工具区域",
     "captured": "2026-11-16"
+  },
+  "guide-entry.webp": {
+    "type": "local",
+    "description": "entry",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-expert-list.webp": {
+    "type": "local",
+    "description": "expert-list",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-expert-details.webp": {
+    "type": "local",
+    "description": "expert-details",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-expert-ideas.webp": {
+    "type": "local",
+    "description": "expert-ideas",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-expert-choice.webp": {
+    "type": "local",
+    "description": "expert-choice",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-expert-output.webp": {
+    "type": "local",
+    "description": "expert-output",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-skill-tabs.webp": {
+    "type": "local",
+    "description": "skill-tabs",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-kit-nav.webp": {
+    "type": "local",
+    "description": "kit-nav",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-kit-add.webp": {
+    "type": "local",
+    "description": "kit-add",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-kit-installed.webp": {
+    "type": "local",
+    "description": "kit-installed",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-kit-list.webp": {
+    "type": "local",
+    "description": "kit-list",
+    "source": "Windows WorkBuddy 5.11.3，裁切实拍于 2026-11-18"
+  },
+  "guide-skill-search.webp": {
+    "type": "official",
+    "description": "skill-search",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/skill-6.CooXdGGr.png"
+  },
+  "guide-skill-pick.webp": {
+    "type": "official",
+    "description": "skill-pick",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/skill-select.PLLHy_nP.png"
+  },
+  "guide-connector-tab.webp": {
+    "type": "official",
+    "description": "connector-tab",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/connector-management-page.1yj5GbzF.png"
+  },
+  "guide-mail-add.webp": {
+    "type": "official",
+    "description": "mail-add",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/qq-mail-add-button.T1d9y0w3.png"
+  },
+  "guide-mail-access.webp": {
+    "type": "official",
+    "description": "mail-access",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/qq-mail-confirm-permission.DqVZH-62.png"
+  },
+  "guide-mail-on.webp": {
+    "type": "official",
+    "description": "mail-on",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/qq-mail-connected.BaJxHxs7.png"
+  },
+  "guide-mail-use.webp": {
+    "type": "official",
+    "description": "mail-use",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/connector-go-chat.ChygmyRK.png"
+  },
+  "guide-mail-toggle.webp": {
+    "type": "official",
+    "description": "mail-toggle",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/connector-plus-enable.aVAh6S_5.png"
+  },
+  "guide-mail-reconnect.webp": {
+    "type": "official",
+    "description": "mail-reconnect",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/connector-reconnect-card.B_k5YO_I.png"
+  },
+  "guide-timer-entry.webp": {
+    "type": "official",
+    "description": "timer-entry",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-entry.uAPrbN_G.png"
+  },
+  "guide-timer-new.webp": {
+    "type": "official",
+    "description": "timer-new",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-new-menu.dlgvaOLy.png"
+  },
+  "guide-timer-name.webp": {
+    "type": "official",
+    "description": "timer-name",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-create-dialog.D4IM2z-F.png"
+  },
+  "guide-timer-instruction.webp": {
+    "type": "official",
+    "description": "timer-instruction",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-create-dialog.D4IM2z-F.png"
+  },
+  "guide-timer-rule.webp": {
+    "type": "official",
+    "description": "timer-rule",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-create-dialog.D4IM2z-F.png"
+  },
+  "guide-timer-confirm.webp": {
+    "type": "official",
+    "description": "timer-confirm",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-create-dialog.D4IM2z-F.png"
+  },
+  "guide-timer-list.webp": {
+    "type": "official",
+    "description": "timer-list",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-new-menu.dlgvaOLy.png"
+  },
+  "guide-timer-records.webp": {
+    "type": "official",
+    "description": "timer-records",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-new-menu.dlgvaOLy.png"
+  },
+  "guide-timer-permission.webp": {
+    "type": "official",
+    "description": "timer-permission",
+    "source": "https://download.codebuddy.cn/web/docs/ad0810e78d876c382cf7f0afbd9113c7bef87f7e/docs/static/automation-create-dialog.D4IM2z-F.png"
+  },
+  "guide-lab-mail.png": {
+    "type": "tutorial",
+    "source": "本教程网页内模拟练习，虚构数据，2026-11-18"
+  },
+  "guide-lab-timer-plan.png": {
+    "type": "tutorial",
+    "source": "本教程网页内模拟练习，虚构数据，2026-11-18"
+  },
+  "guide-lab-timer-result.png": {
+    "type": "tutorial",
+    "source": "本教程网页内模拟练习，虚构数据，2026-11-18"
+  },
+  "guide-pdf.png": {
+    "type": "practice",
+    "source": "《旧书交换会练习.pdf》实际第一页，虚构材料"
   }
 }
