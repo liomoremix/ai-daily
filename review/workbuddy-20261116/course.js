@@ -14,7 +14,7 @@ const COURSE = [
       ['把它当作一位需要说明的助手','你用平时说话的方式描述事情，它会尝试写文字、整理资料或制作文件。你不需要写代码。'],
       ['先看一个很小的任务','“写一段培训通知”就是一次任务。你说清时间、地点和要求，AI 先写一版，你再检查。'],
       ['记住：回答还需要你判断','它可能遗漏信息或写错。你是最后检查结果的人，不需要把第一版直接交出去。']
-    ],INTRO_PROMPT,'想一件你平时会做的小事，例如写通知或整理会议记录。用自己的话说出：我想让它帮我做什么。','我能说出一个想让 AI 帮忙的小任务。','这一步先理解即可。练习前请打开并登录 WorkBuddy；提示词也可以先收藏，稍后再试。',[60,58]),
+    ],INTRO_PROMPT,'把上面这段话粘贴到 WorkBuddy 并发送。从它列出的三个例子里，挑一件你平时会做的小事。','我能说出一个想让 AI 帮忙的小任务。','这一步先理解即可。练习前请打开并登录 WorkBuddy；提示词也可以先收藏，稍后再试。',[60,58]),
     lesson('先认清三个位置','home.png','左侧开任务，中间写要求，右下角发送。',[
       ['左侧：新建任务','开始一件新的事情时，点击“新建任务”。不要把完全无关的工作塞进同一个任务。'],
       ['中间：输入框','写给 AI 的这段话叫“提示词”。它就是你的任务说明，不是什么特殊的代码。'],
@@ -239,7 +239,34 @@ COURSE.push(
     ],'请给我一张三项检查清单，帮助我核对定时任务的运行时间、实际输出、后续是否还会触发。只提供清单，不创建或修改任何任务。','查看刚才的结果。也可在模拟时钟中改选“每天”，运行后点暂停，再尝试快进，确认记录没有增加。','我看过一次运行结果，知道如何暂停重复任务，并核对是否还会再执行。','查不到时，回到定时任务列表确认选对了任务。任务来源若显示“项目”，请在对应项目中管理。')
   ]}
 );
+const websiteShot = 'WorkBuddy 官网实拍 · Windows 下载入口';
+const setupShot = 'WorkBuddy 官方 Windows 安装指南';
+COURSE.unshift({id:11, optional:true, title:'如何安装 WorkBuddy', short:'安装 WorkBuddy', subtitle:'跟着截图，在 Windows 电脑上下载、安装并登录。', icon:'download', time:10, color:'teal', lessons:[
+  walkthrough('到官网下载 Windows 安装包', [
+    ['install-website.png',websiteShot,'到官网，点右上角“下载”','点本页的“打开 WorkBuddy 官网”。浏览器会多开一个标签页。在官网右上角找到黑色的“下载”，用鼠标左键点一次。要看下一张教学图，点回浏览器上方的“新手学堂”标签。'],
+    ['install-windows.png',websiteShot,'在“桌面端”里点 Windows','在展开的菜单里找到带四格窗户图标的“Windows x64（兼容 ARM64）”。点一次，等浏览器下载完成。如果询问保存位置，可以选择“下载”文件夹。'],
+    ['official-1.png',setupShot,'在电脑上找到下载好的文件','在下载用的浏览器里同时按 Ctrl 和 J，找到名字以 WorkBuddy 开头的安装包。等进度走完，点文件旁的文件夹图标，就能看到图中这样的文件。版本数字可能不同。']
+  ],'我在 Windows 电脑上下载 WorkBuddy，卡在这一步：____。我看到的提示是：____。请告诉我接下来要点哪里。','在电脑的“下载”文件夹里找出刚下载的 WorkBuddy 安装包。','我已经找到下载完成的 WorkBuddy 安装包。','本章演示 Windows 10 或更新版本。按 Ctrl 和 J 没反应时，先点回下载用的浏览器窗口再试。'),
+  walkthrough('打开安装包，选择安装位置', [
+    ['official-2.png',setupShot,'双击安装包，阅读许可协议','对准刚才找到的文件，快速连按两下鼠标左键。出现许可协议后，先阅读条款。如果同意，点“我同意此协议”，再点右下角“下一步”。'],
+    ['official-3.png',setupShot,'保留安装位置，点“下一步”','出现“选择目标位置”时，长框里已经填好了文件夹。这是软件将来存放的位置。第一次安装可以保留这里的文字，直接点右下角“下一步”。']
+  ],'我已下载 WorkBuddy，打开安装包后停在____页面。窗口提示____。请帮我判断下一步。','双击自己的安装包，完成这两页，停在选择开始菜单文件夹的页面。','我已经选好安装位置，进入了下一页。','如果电脑要求管理员账号或安装权限，可以把提示文字给单位的电脑管理员。'),
+  walkthrough('为以后打开 WorkBuddy 留一个桌面图标', [
+    ['official-4.png',setupShot,'开始菜单文件夹保留 WorkBuddy','“开始菜单”就是点屏幕下方 Windows 徽标打开的菜单。这一页决定软件在菜单里叫什么，保留默认名称 WorkBuddy，点右下角“下一步”。'],
+    ['official-5.png',setupShot,'找到“创建桌面快捷方式”','在“选择附加任务”页，看列表里的“创建桌面快捷方式”。方框里有勾就保留；空着就点方框一次。其他选项可维持原样，然后点“下一步”。']
+  ],'我想在桌面保留 WorkBuddy 图标，现在安装向导显示____。请告诉我该勾哪一项。','在自己的安装窗口找到桌面快捷方式，并进入“准备安装”。','我看到了“准备安装”页面。','如果你的版本跳过了快捷方式选项，可以继续安装。之后在 Windows 开始菜单里输入 WorkBuddy 也能找到软件。'),
+  walkthrough('点“安装”，等到出现“完成”', [
+    ['official-6.png',setupShot,'确认页面后点一次“安装”','在“准备安装”页，右下角的按钮从“下一步”变成了“安装”。点一次，让窗口保持打开，等电脑把文件装好。'],
+    ['official-7.png',setupShot,'点“完成”，进入软件','看到“WorkBuddy 安装完成”后，保留“运行 WorkBuddy”的勾，点“完成”。等软件窗口出现。如果窗口没有出现，就双击桌面的 WorkBuddy 图标。']
+  ],'WorkBuddy 安装窗口现在显示____。我等了____分钟，请帮我判断安装是否完成。','在你的电脑上完成安装，找到新出现的 WorkBuddy 窗口。','我已经看到 WorkBuddy 窗口。','安装结束后找不到图标时，点屏幕下方 Windows 徽标，输入 WorkBuddy，点搜索结果里的应用。'),
+  walkthrough('登录后，认出可以开始学习的画面', [
+    ['official-8.png',setupShot,'在 WorkBuddy 窗口点“登录”','第一次启动时，窗口中间有“登录”按钮。点一次，等浏览器打开登录页。如果你已经看到“新建任务”，可以直接对照最后一张图。'],
+    ['install-login-methods.png',setupShot,'在自己的浏览器里完成登录','可以用手机微信扫描你电脑登录页上的二维码，也可以在页面下方点“手机号”或“邮箱”，按提示完成验证。阅读并同意相关协议后继续。'],
+    ['home.png',desktopShot,'回到 WorkBuddy，找到“新建任务”','如果浏览器询问是否打开 WorkBuddy，确认打开。也可以点 Windows 任务栏里的 WorkBuddy 切回软件。看到左侧“新建任务”和右边的输入框，说明你可以开始第一章了。']
+  ],'我已安装 WorkBuddy，登录后看到____，还没有找到“新建任务”。请告诉我怎样回到软件窗口。','回到你自己的 WorkBuddy 窗口，找到“新建任务”，再回来勾选下方方框。','我已登录，并找到了“新建任务”。','登录页还在浏览器里时，按住 Alt 再按 Tab，选到 WorkBuddy 窗口后松手。如果仍显示“登录”，先回到浏览器确认验证是否已完成。')
+]});
 const STEPS = COURSE.flatMap((chapter, ci) => chapter.lessons.map((step, si) => ({...step, ci, si, id:`${chapter.id}-${si}`})));
+const coreSteps = STEPS.filter(step => !COURSE[step.ci].optional);
 
 // Each explanation uses an observed screenshot or a crop of the exact relevant control.
 const LESSON_FRAMES = {
@@ -256,7 +283,7 @@ const LESSON_FRAMES = {
   '0-2': [
     {image:'tutorial-shortcuts.png', source:'教程实拍 · 窗口切换快捷键', alt:'新手工具箱中的 Alt + Tab：在教程与 WorkBuddy 之间切换'},
     {image:'practice-material.png', source:'练习资料实拍 · 虚构会议记录', alt:'练习会议记录全文，首行明确标注为虚构资料'},
-    {image:'tutorial-self-check.png', source:'教程实拍 · 动手练习与自检', alt:'本教程的我去试一试按钮与我的自检复选框'}
+    {image:'tutorial-self-check.png', source:'教程实拍 · 自检与下一步', alt:'点击自检方框打勾后，下方的下一步按钮才可使用'}
   ]
 };
 Object.assign(LESSON_FRAMES, {

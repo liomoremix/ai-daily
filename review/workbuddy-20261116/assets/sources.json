@@ -142,8 +142,8 @@
   },
   "tutorial-self-check.png": {
     "type": "tutorial",
-    "description": "本教程练习与自检区域",
-    "date": "2026-11-16"
+    "description": "自检方框、操作说明及下一步按钮",
+    "date": "2026-11-18"
   },
   "attached-instructions.png": {
     "type": "local screenshot",
@@ -222,8 +222,8 @@
   },
   "tutorial-learning-route.png": {
     "type": "tutorial screenshot",
-    "description": "本教学网页的实际提示词、下载或学习工具区域",
-    "captured": "2026-11-16"
+    "description": "课程目录中原有基础课程的入口",
+    "captured": "2026-11-18"
   },
   "tutorial-prompt-2-1.png": {
     "type": "tutorial screenshot",
@@ -545,5 +545,22 @@
     "type": "local",
     "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
     "description": "单次规则旁带日期的时间栏"
+  },
+  "install-website.png": {
+    "type": "website screenshot",
+    "url": "https://www.workbuddy.cn/",
+    "description": "官网首页右上角的下载按钮",
+    "captured": "2026-11-18"
+  },
+  "install-windows.png": {
+    "type": "website screenshot",
+    "url": "https://www.workbuddy.cn/",
+    "description": "当前官网的桌面端下载菜单和 Windows 选项",
+    "captured": "2026-11-18"
+  },
+  "install-login-methods.png": {
+    "type": "official guide crop",
+    "url": "https://download.codebuddy.cn/web/docs/0dac6a52efc8f0ff38fbaadc81a771177042ff33/docs/static/login-wechat-qr.Ci-o675k.png",
+    "description": "登录页面的协议、手机号、邮箱等选项"
   }
 }

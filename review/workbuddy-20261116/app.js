@@ -59,7 +59,9 @@ let zoom = 1;
 const main = $('#main');
 const getStep = id => STEPS.find(s => s.id === id);
 const chapterDone = ci => COURSE[ci].lessons.filter((s,si) => state.done.includes(`${COURSE[ci].id}-${si}`)).length;
-const percent = () => Math.round(state.done.length / STEPS.length * 100);
+const coreDone = () => coreSteps.filter(step => state.done.includes(step.id)).length;
+const percent = () => Math.round(coreDone() / coreSteps.length * 100);
+const chapterLabel = ci => COURSE[ci].optional ? '前置章节' : '第 ' + ci + ' 章';
 const sourceType = step => step.image.startsWith('official-') ? '官方指南配图' : '本机实拍 · WorkBuddy 5.11.3';
 function toast(message) {
   clearTimeout(toastTimer);
@@ -84,23 +86,22 @@ function renderSidebar(page, ci) {
     <nav class="course-nav" aria-label="课程章节">${COURSE.map((c,i) => {
       const n = chapterDone(i), complete = n === c.lessons.length;
       const first = c.lessons.findIndex((s,j) => !state.done.includes(`${c.id}-${j}`));
-      return `<a class="chapter-nav ${ci === i ? 'active' : ''} ${complete ? 'complete' : ''}" ${ci === i ? 'aria-current="true"' : ''} href="#lesson/${c.id}-${first < 0 ? 0 : first}"><span class="num">${complete ? '✓' : String(i+1).padStart(2,'0')}</span><span class="chapter-text">${c.short}</span><small>${n}/${c.lessons.length}</small></a>`;
+      return `<a class="chapter-nav ${ci === i ? 'active' : ''} ${complete ? 'complete' : ''}" ${ci === i ? 'aria-current="true"' : ''} href="#lesson/${c.id}-${first < 0 ? 0 : first}"><span class="num">${complete ? '✓' : c.optional ? '前置' : String(i).padStart(2,'0')}</span><span class="chapter-text">${c.short}</span><small>${n}/${c.lessons.length}</small></a>`;
     }).join('')}</nav>
-    <div class="side-bottom"><div class="side-progress"><div class="progress-label"><span>你的学习进度</span><strong>${percent()}%</strong></div><div class="progress-track" role="progressbar" aria-label="总学习进度" aria-valuemin="0" aria-valuemax="${STEPS.length}" aria-valuenow="${state.done.length}"><span style="width:${percent()}%"></span></div><p class="small muted" style="font-size:10px;margin-top:8px">已完成 ${state.done.length} / ${STEPS.length} 个小步骤</p></div><a href="#help" class="side-help">${icon('help')}<span>卡住了？来这里找帮助</span></a></div>`;
+    <div class="side-bottom"><div class="side-progress"><div class="progress-label"><span>正课学习进度</span><strong>${percent()}%</strong></div><div class="progress-track" role="progressbar" aria-label="正课学习进度" aria-valuemin="0" aria-valuemax="${coreSteps.length}" aria-valuenow="${coreDone()}"><span style="width:${percent()}%"></span></div><p class="small muted" style="font-size:10px;margin-top:8px">已完成 ${coreDone()} / ${coreSteps.length} 个小步骤</p></div><a href="#help" class="side-help">${icon('help')}<span>卡住了？来这里找帮助</span></a></div>`;
   $('#sidebar').inert = innerWidth <= 760 && !$('#sidebar').classList.contains('open');
 }
 function go(id) { location.hash = `lesson/${id}`; }
 function renderHome() {
   const resume = getStep(state.last) || STEPS[0];
-  main.innerHTML = `<div class="welcome-line">${icon('spark')}<span>欢迎来到你的第一堂 AI 实践课</span></div>
-    <section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><span class="badge">${icon('hand')} 为第一次使用 AI 的你准备</span><h1 id="hero-title">从第一句话，<br>到第一份成果。</h1><p>不用懂技术，也不用记复杂术语。<br>跟着截图一步步操作，让 WorkBuddy<br>成为你用得顺手的办公搭子。</p><div class="button-row"><a class="button" href="#lesson/${state.done.length ? state.last : '0-0'}">${icon('play')}${state.done.length ? '继续我的学习' : '开始第一课'}${icon('arrow')}</a><a class="button secondary" href="#roadmap" id="view-roadmap">先看看学什么</a></div><div class="hero-footnote">${icon('check')} 无需 AI 基础<span>　</span>${icon('check')} 按自己的节奏学习</div></div>
-    <div class="hero-visual"><div class="preview-window"><div class="preview-chrome"><i></i><i></i><i></i><span>你的第一个小任务</span>${icon('message')}</div><div class="preview-body"><div class="preview-person">${icon('edit')} 你只需要这样说</div><div class="preview-request">帮我写一段培训通知：11月20日下午3点，二楼会议室，请同事带上电脑。语气友好。</div><div class="preview-answer"><strong>${icon('check')} WorkBuddy 的实际回答节选</strong>11月20日下午3点，我们将在二楼会议室举办 WorkBuddy 入门培训，带大家轻松上手这个新工具。</div><div class="preview-bottom"><span>你说需求，它来帮忙</span><button data-image="response.png" data-image-title="第一条指令的真实回答">查看实拍 ${icon('external')}</button></div></div></div><div class="floating-label one">${icon('shield')} 每一步都有图文引导</div><div class="floating-label two">${icon('copy')} 提示词，点一下就能复制</div><span class="mini-note">教学节选排版 · 点击查看完整实拍</span></div></section>
-    <div class="intro-strip"><div class="intro-item">${icon('image')}<div><strong>先看懂，再动手</strong><small>真实界面截图，配合逐条操作说明</small></div></div><div class="intro-item">${icon('hand')}<div><strong>每一小步，都自己试试</strong><small>复制提示词，切回 WorkBuddy 做一遍</small></div></div><div class="intro-item">${icon('flag')}<div><strong>学会了，才进入下一步</strong><small>没有倒计时，随时暂停和回来复习</small></div></div></div>
+  main.innerHTML = `<section class="start-panel" aria-labelledby="hero-title"><h1 id="hero-title">从这里开始学 WorkBuddy</h1>
+    <p>先看截图，再在自己的电脑上试一次。请选择你的起点。</p>
+    <div class="start-actions"><a class="button" href="#lesson/11-0">还没安装，学怎么装 ${icon('arrow')}</a><a class="button secondary" href="#lesson/0-0">已经安装，从第一章开始 ${icon('arrow')}</a></div></section>
     ${state.done.length ? `<div class="resume-banner">${icon('book')}<div><strong>欢迎回来，接着上次的小步骤</strong><p>${esc(COURSE[resume.ci].short)} / ${esc(resume.title)}</p></div><a href="#lesson/${resume.id}" class="button">继续学习 ${icon('arrow')}</a></div>` : ''}
-    <nav class="advanced-shortcuts" aria-label="直接进入进阶课"><strong>进阶练习</strong><a href="#lesson/7-0">使用专家</a><a href="#lesson/8-0">套件与技能</a><a href="#lesson/9-0">连接器</a><a href="#lesson/10-0">定时任务</a></nav><section id="roadmap"><div class="section-top"><div><h2>一条看得见的学习路线</h2><p>从“完全没用过”，到独立完成一个办公小任务。</p></div><span class="section-meta">${COURSE.length} 个章节 / ${STEPS.length} 个小步骤 / 随时可重看</span></div><div class="course-grid">${COURSE.map((c,i) => {
+    <nav class="advanced-shortcuts" aria-label="直接进入进阶课"><strong>进阶练习</strong><a href="#lesson/7-0">使用专家</a><a href="#lesson/8-0">套件与技能</a><a href="#lesson/9-0">连接器</a><a href="#lesson/10-0">定时任务</a></nav><section id="roadmap"><div class="section-top"><div><h2>课程目录</h2><p>可以按顺序学，也可以点一章回看。</p></div><span class="section-meta">安装选学 · 正课 ${COURSE.length-1} 章</span></div><div class="course-grid">${COURSE.map((c,i) => {
       const n = chapterDone(i), first = c.lessons.findIndex((s,j) => !state.done.includes(`${c.id}-${j}`));
-      return `<a class="course-card ${COURSE.length % 3 === 1 && i === COURSE.length-1 ? 'last-card' : ''}" href="#lesson/${c.id}-${Math.max(0,first)}"><div class="card-top"><span class="chapter-icon ${c.color}">${icon(c.icon)}</span><small>第 ${String(i+1).padStart(2,'0')} 章</small></div><div><h3>${esc(c.title)}</h3><p>${esc(c.subtitle)}</p></div><div class="card-meta"><span>${icon('book')}${c.lessons.length} 个小步骤</span><span>${icon('clock')}约 ${c.time} 分钟</span>${n ? `<span>${n === c.lessons.length ? '✓ 已完成' : `${n} 步已完成`}</span>` : ''}</div><span class="card-go">${icon('arrow')}</span></a>`;
-    }).join('')}</div></section><div class="learning-tip">${icon('bulb')}<span>练习前请打开并登录 WorkBuddy。熟悉界面后，就可以从「第一次对话」开始。</span><a href="#lesson/2-0">去写第一条指令 ${icon('arrow')}</a></div>`;
+      return `<a class="course-card ${COURSE.length % 3 === 1 && i === COURSE.length-1 ? 'last-card' : ''}" href="#lesson/${c.id}-${Math.max(0,first)}"><div class="card-top"><span class="chapter-icon ${c.color}">${icon(c.icon)}</span><small>${chapterLabel(i)}</small></div><div><h3>${esc(c.title)}</h3><p>${esc(c.subtitle)}</p></div><div class="card-meta"><span>${icon('book')}${c.lessons.length} 个小步骤</span><span>${icon('clock')}约 ${c.time} 分钟</span>${n ? `<span>${n === c.lessons.length ? '✓ 已完成' : `${n} 步已完成`}</span>` : ''}</div><span class="card-go">${icon('arrow')}</span></a>`;
+    }).join('')}</div></section>`;
 }
 function renderLesson(step) {
   activeStep = step;
@@ -110,24 +111,26 @@ function renderLesson(step) {
   const c = COURSE[step.ci];
   const index = STEPS.indexOf(step);
   const checked = state.checked.includes(step.id) || state.done.includes(step.id);
+  const nextLabel = index === STEPS.length-1 ? '完成本次学习' : c.optional && step.si === c.lessons.length-1 ? '进入第一章' : '下一步';
   const path = entryRoutes[c.id];
   const entryLesson = Boolean(path && step.si === 0);
-  main.innerHTML = `<div class="breadcrumb"><a href="#home">学习中心</a>${icon('chevron')}<span>第 ${step.ci+1} 章 · ${esc(c.short)}</span></div>
+  main.innerHTML = `<div class="breadcrumb"><a href="#home">学习中心</a>${icon('chevron')}<span>${chapterLabel(step.ci)} · ${esc(c.short)}</span></div>
     <div class="lesson-heading"><div><h1>${esc(step.title)}</h1><p>${esc(c.subtitle)}</p></div><span class="lesson-count">第 ${step.si+1} / ${c.lessons.length} 步</span></div>
     <nav class="step-rail" aria-label="本章小步骤">${c.lessons.map((s,i) => `<button class="step-tab ${i === step.si ? 'active' : ''} ${state.done.includes(`${c.id}-${i}`) ? 'done' : ''}" data-step="${c.id}-${i}" aria-label="第${i+1}步：${esc(s.title)}" ${i === step.si ? 'aria-current="step"' : ''} title="${esc(s.title)}">${state.done.includes(`${c.id}-${i}`) && i !== step.si ? icon('check') : String(i+1).padStart(2,'0')}</button>`).join('')}</nav>
     ${path ? `<section class="entry-route" aria-label="在 WorkBuddy 里怎么走"><div><strong>从已打开的 WorkBuddy 开始</strong>${entryLesson ? '' : `<a href="#lesson/${c.id}-0">重看入口图解</a>`}</div><p>${path.map(esc).join(' <span aria-hidden="true">→</span> ')}</p><details><summary>我的窗口里看不到左边这列文字</summary><div class="sidebar-recovery"><button type="button" data-image="entry-restore.webp" data-image-title="WorkBuddy 左上角的侧栏开关，蓝框内" aria-label="放大侧栏开关截图"><img src="assets/entry-restore.webp" alt="左上角的小矩形图标，靠左有一条竖线"></button><p>看 WorkBuddy 窗口最左上角，点击蓝框里的侧栏图标。出现“新建任务”“助理”等文字后，就可以按本章路径继续。在已有对话里也能使用这个入口。</p></div></details></section>` : ''}
-    <div class="learning-flow"><span class="active"><b>1</b> 看图学操作</span>${icon('chevron')}<span><b>2</b> 复制后尝试</span>${icon('chevron')}<span><b>3</b> 自检并继续</span></div>
+    <div class="learning-flow"><span class="active"><b>1</b> 看图学操作</span>${icon('chevron')}<span><b>2</b> 自己试一次</span>${icon('chevron')}<span><b>3</b> 自检并继续</span></div>
+    ${step.id === '11-0' ? `<p class="lesson-resource install-link"><a href="https://www.workbuddy.cn/" target="_blank" rel="noopener">打开 WorkBuddy 官网 ${icon('external')}</a><span>会打开新标签页。可以随时点回本教程看图。</span></p>` : ''}
     <section class="lesson-grid" aria-label="图文操作示范"><div class="screen-panel"><div class="screen-header"><span class="source-label">${esc(step.frames?.[0].source || sourceType(step))}</span><button data-image="${esc(step.image)}" data-image-title="${esc(step.title)}">${icon('zoom')} 放大查看</button></div><div class="screenshot-wrap" id="screenshot-wrap"><button class="screenshot-button" data-image="${esc(step.image)}" data-image-title="${esc(step.title)}" aria-label="放大截图：${esc(step.title)}"><img src="assets/${esc(step.image)}" alt="${esc(step.focus)}" id="lesson-image"></button></div><div class="screen-caption"><span class="demo-number caption-step" id="caption-step" aria-hidden="true">1</span><strong id="screen-focus">${esc(step.focus)}</strong></div><div class="demo-toolbar"><button class="button secondary" id="play-demo">${icon('play')} 看分步讲解</button><span id="demo-status">点击右侧说明，也能逐条看</span></div></div>
     ${entryLesson ? `<div class="explain-panel entry-panel"><div class="eyebrow">${icon('hand')} 对照自己的 WorkBuddy 操作</div><nav class="entry-dots" aria-label="选择一幅入口图解">${step.explain.map(([title],i) => `<button type="button" class="demo-step" data-demo="${i}" aria-label="第 ${i+1} 幅：${esc(title)}" title="${esc(title)}">${i+1}</button>`).join('')}</nav><div aria-live="polite" aria-atomic="true"><h2 id="entry-title"></h2><p id="entry-instruction"></p><div class="entry-try"><strong>轮到你</strong><p id="entry-attempt"></p></div></div><div class="entry-controls"><button class="button secondary" id="entry-back">上一幅</button><button class="button" id="entry-forward"></button></div></div>` :
     `<div class="explain-panel"><div class="eyebrow">${icon('book')} 跟着这几步做</div><h2>先看一遍，再自己试</h2>${step.explain.map(([title,description],i) => `<button class="demo-step ${i === 0 ? 'selected' : ''}" data-demo="${i}" aria-pressed="${i === 0}"><span class="demo-number">${i+1}</span><span><strong>${esc(title)}</strong><p>${esc(description)}</p></span></button>`).join('')}</div>`}</section>
-    <section class="prompt-section"><div class="prompt-header"><h2>${icon('copy')}这一步的提示词</h2><div class="prompt-actions"><button class="icon-button favorite-button" data-favorite="${step.id}" aria-label="${state.favorites.includes(step.id) ? '取消收藏' : '收藏提示词'}" aria-pressed="${state.favorites.includes(step.id)}">${icon('heart')}</button><button class="button" data-copy="${step.id}">${icon('copy')} 复制提示词</button></div></div><p class="prompt-text" id="step-prompt">${esc(step.prompt)}</p><div class="prompt-hint">${icon('bulb')}${step.id === '10-1' ? '复制后回到新建定时任务窗口，点击提示词框，按 Ctrl + V。' : '复制后切换到 WorkBuddy，点击输入框，再按 Ctrl + V 粘贴。'}</div></section>
+    <section class="prompt-section" id="step-exercise" tabindex="-1"><div class="prompt-header"><h2>${icon('copy')}${c.optional ? '需要帮忙时，可以复制这句话' : '这一步的提示词'}</h2><div class="prompt-actions">${c.optional ? '' : `<button class="icon-button favorite-button" data-favorite="${step.id}" aria-label="${state.favorites.includes(step.id) ? '取消收藏' : '收藏提示词'}" aria-pressed="${state.favorites.includes(step.id)}">${icon('heart')}</button>`}<button class="button" data-copy="${step.id}">${icon('copy')} ${c.optional ? '复制求助文字' : '复制提示词'}</button></div></div><p class="prompt-text" id="step-prompt">${esc(step.prompt)}</p><div class="prompt-hint">${icon('bulb')}${c.optional ? '遇到困难时，把空白处换成自己的情况，发给帮助你安装的人。' : step.id === '10-1' ? '复制后回到新建定时任务窗口，点击提示词框，按 Ctrl + V。' : '复制后切换到 WorkBuddy，点击输入框，再按 Ctrl + V 粘贴。'}</div><p class="exercise-line"><strong>自己试一次</strong>${esc(step.practice)}</p></section>
     ${step.id === '8-2' ? `<div class="lesson-resource"><a href="assets/旧书交换会练习.pdf" download>${icon('download')} 下载旧书交换会练习.pdf</a></div>` : ''}
     ${c.id === 4 ? `<div class="lesson-resource"><a href="assets/练习会议记录.txt" download>${icon('download')} 下载练习会议记录.txt</a></div>` : ''}
     ${c.id === 5 ? `<div class="lesson-resource"><a href="assets/新手练习-会议纪要.docx" download>${icon('download')} 下载实拍中的示例 Word（供对照）</a></div>` : ''}
-    <section class="practice-section ${checked ? 'checked' : ''}" id="practice"><div class="practice-top"><span class="practice-icon">${icon('hand')}</span><div class="practice-copy"><h2>轮到你动手了</h2><p>${esc(step.practice)}</p></div><button class="button secondary" id="start-practice">我去试一试 ${icon('external')}</button></div><label class="self-check"><input type="checkbox" id="self-check" ${checked ? 'checked' : ''}><span><strong>我的自检：</strong>${esc(step.check)}</span></label></section>
     <details class="help-details"><summary>没成功？展开看看这一步的提示</summary><p>${esc(step.help)}</p></details>
-    <div class="lesson-bottom"><button class="button secondary" id="previous-step" ${index === 0 ? 'disabled' : ''}>${icon('back')} 上一步</button><div class="next-group"><small id="next-hint">${checked ? '按你自己的判断，准备好了就继续' : '亲自尝试后，勾选上面的自检'}</small><button class="button" id="next-step" ${checked ? '' : 'disabled'}>${index === STEPS.length-1 ? '完成本次学习' : '我学会了，下一步'}${icon('arrow')}</button></div></div>
-    <div class="mini-progress"><span>全程 ${state.done.length}/${STEPS.length} 步已完成</span><div class="progress-track"><span style="width:${percent()}%"></span></div><span>按你的节奏来</span></div>`;
+    <section class="practice-section ${checked ? 'checked' : ''}" id="practice"><label class="self-check"><input type="checkbox" id="self-check" ${checked ? 'checked' : ''}><span><strong>点方框打勾后，才能点“${nextLabel}”</strong><span>${esc(step.check)}</span></span></label></section>
+    <div class="lesson-bottom"><button class="button secondary" id="previous-step" ${index === 0 || step.id === '0-0' ? 'disabled' : ''}>${icon('back')} 上一步</button><div class="next-group"><small id="next-hint" aria-live="polite">${checked ? '已勾选，可以继续' : '先勾选上方方框'}</small><button class="button" id="next-step" aria-describedby="next-hint" ${checked ? '' : 'disabled'}>${nextLabel}${icon('arrow')}</button></div></div>
+    <div class="mini-progress"><span>${c.optional ? '安装' : '正课'} ${c.optional ? chapterDone(step.ci) : coreDone()}/${c.optional ? c.lessons.length : coreSteps.length} 步已完成</span><div class="progress-track"><span style="width:${c.optional ? chapterDone(step.ci)/c.lessons.length*100 : percent()}%"></span></div><span>按你的节奏来</span></div>`;
   if (step.frames) setDemo(0);
   if (c.id === 9 && step.si >= 1) mountMailbox();
   if (c.id === 10 && step.si >= 2) mountSchedule();
@@ -269,7 +272,7 @@ async function copyText(text) {
   try {
     if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
     else throw new Error('Clipboard API unavailable');
-    toast('已复制。切回 WorkBuddy，按 Ctrl + V 粘贴。');
+    toast('已复制。点到需要填字的位置，按 Ctrl + V 粘贴。');
     return true;
   } catch {
     const area = document.createElement('textarea'); area.value = text;
@@ -277,7 +280,7 @@ async function copyText(text) {
     let success = false;
     try { success = document.execCommand('copy'); } catch {}
     area.remove();
-    toast(success ? '已复制。切回 WorkBuddy 粘贴即可。' : '浏览器不允许自动复制，请选中文字后按 Ctrl + C。');
+    toast(success ? '已复制，可以粘贴。' : '浏览器不允许自动复制，请选中文字后按 Ctrl + C。');
     return success;
   }
 }
@@ -297,7 +300,7 @@ function renderPrompts() {
 function renderLibraryCards() {
   const query = librarySearch.trim().toLowerCase();
   const unique = new Set();
-  const items = STEPS.filter(s => {
+  const items = coreSteps.filter(s => {
     if (libraryFilter === 'favorites') return state.favorites.includes(s.id) && `${s.title}${s.prompt}`.toLowerCase().includes(query);
     if (libraryFilter !== 'all' && s.ci !== Number(libraryFilter)) return false;
     if (!`${s.title}${s.prompt}`.toLowerCase().includes(query)) return false;
@@ -325,7 +328,7 @@ function renderHelp() {
     <div class="section-top"><div><h2>常见的小问题</h2><p>先从你遇到的情况开始。</p></div></div><div class="faq-list">${FAQ.map(([q,a]) => `<details class="help-details"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div><div class="learning-tip">${icon('refresh')}<span>想从头再练一次？可以清除本网页进度，收藏仍会保留。</span><button class="button secondary" id="reset-progress">重新开始学习</button></div>`;
 }
 function renderSources() {
-  main.innerHTML = `<div class="sources"><div class="page-heading"><h1>截图来源与使用说明</h1><p>独立制作的新手教学页面，非 WorkBuddy 官方网站。内容核对日期：2026 年 11 月 18 日。</p></div><h2>本机真实操作截图</h2><p>首页、输入、处理状态、通知回答、追问、改写及文件操作相关画面，采集自 Windows WorkBuddy 5.11.3。教学内容使用虚构培训安排。截图只保留教学区域；不包含账号头像、真实邮箱、私人历史任务等信息。图片中的模型名称仅代表拍摄时的选择，无需跟着切换。</p><h2>进阶课配图</h2><p>专家召唤、标题回答、技能市场及套件来自 11 月 18 日本机实拍。邮箱授权和定时任务表单采用官方指南局部配图。虚构邮箱与模拟时钟来自本网页练习，均按来源标注。</p><h2>官方指南参考</h2><ul class="source-list"><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Expert-Center">专家中心</a></li><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market">技能和套件</a></li><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Connector">连接器和 QQ 邮箱授权</a></li><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Automation-Guide">定时任务与运行记录</a></li><li><a href="https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Installation-Win-Guide" target="_blank" rel="noopener">Windows 安装指南</a>：需要安装软件时可查阅。</li><li><a href="https://www.workbuddy.cn/docs/workbuddy/Create-Task" target="_blank" rel="noopener">创建任务</a>：新建任务、附加材料与要求组织方式。</li><li><a href="https://www.workbuddy.cn/docs/workbuddy/Conversation" target="_blank" rel="noopener">任务对话</a>：继续追问与任务操作说明。</li><li><a href="https://www.workbuddy.cn/docs/workbuddy/Results" target="_blank" rel="noopener">结果查看</a>：用于核对产物、文件菜单与另存为的操作说明；课程中的文件画面使用本机实拍。</li></ul><p>商标和界面归原权利方所有。你的练习应以自己生成的文件为准。</p><h2>学习进度与隐私</h2><p>本页不要求登录，不读取 WorkBuddy，不上传你的练习内容。进度、收藏和显示偏好仅保存在当前浏览器。学员点击自检表示自己确认；网页不能自动验证外部软件中的操作结果。公共链接会在你主动点击时打开官方网站。</p><h2>版本与实际使用</h2><p>教程主要面向 Windows 用户；按钮名称、权限提示、登录方式和模型可用性会随版本及账号变化。费用与额度以客户端当前显示为准。阅读教程可离线进行；实际使用 WorkBuddy 通常需要联网并登录。</p><h2>教学节奏</h2><p>章节分钟数是阅读和练习的估计，不是倒计时。可以任意返回复习，也可以先查看后面的章节。只有勾选自检并点击下一步，才会计为完成；跳转浏览不会自动完成未学的步骤。</p></div>`;
+  main.innerHTML = `<div class="sources"><div class="page-heading"><h1>截图来源与使用说明</h1><p>独立制作的新手教学页面，非 WorkBuddy 官方网站。内容核对日期：2026 年 11 月 18 日。</p></div><h2>本机真实操作截图</h2><p>首页、输入、处理状态、通知回答、追问、改写及文件操作相关画面，采集自 Windows WorkBuddy 5.11.3。教学内容使用虚构培训安排。截图只保留教学区域；不包含账号头像、真实邮箱、私人历史任务等信息。图片中的模型名称仅代表拍摄时的选择，无需跟着切换。</p><h2>安装课配图</h2><p>下载入口和 Windows 菜单取自 11 月 18 日的 WorkBuddy 官网。安装向导与登录选项取自下方的官方 Windows 安装指南，最后一张图是登录后的本机界面。</p><h2>进阶课配图</h2><p>专家召唤、标题回答、技能市场及套件来自 11 月 18 日本机实拍。邮箱授权和定时任务表单采用官方指南局部配图。虚构邮箱与模拟时钟来自本网页练习，均按来源标注。</p><h2>官方指南参考</h2><ul class="source-list"><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Expert-Center">专家中心</a></li><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market">技能和套件</a></li><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Connector">连接器和 QQ 邮箱授权</a></li><li><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Automation-Guide">定时任务与运行记录</a></li><li><a href="https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Installation-Win-Guide" target="_blank" rel="noopener">Windows 安装指南</a>：需要安装软件时可查阅。</li><li><a href="https://www.workbuddy.cn/docs/workbuddy/Create-Task" target="_blank" rel="noopener">创建任务</a>：新建任务、附加材料与要求组织方式。</li><li><a href="https://www.workbuddy.cn/docs/workbuddy/Conversation" target="_blank" rel="noopener">任务对话</a>：继续追问与任务操作说明。</li><li><a href="https://www.workbuddy.cn/docs/workbuddy/Results" target="_blank" rel="noopener">结果查看</a>：用于核对产物、文件菜单与另存为的操作说明；课程中的文件画面使用本机实拍。</li></ul><p>商标和界面归原权利方所有。你的练习应以自己生成的文件为准。</p><h2>学习进度与隐私</h2><p>本页不要求登录，不读取 WorkBuddy，不上传你的练习内容。进度、收藏和显示偏好仅保存在当前浏览器。学员点击自检表示自己确认；网页不能自动验证外部软件中的操作结果。公共链接会在你主动点击时打开官方网站。</p><h2>版本与实际使用</h2><p>教程主要面向 Windows 用户；按钮名称、权限提示、登录方式和模型可用性会随版本及账号变化。费用与额度以客户端当前显示为准。阅读教程可离线进行；实际使用 WorkBuddy 通常需要联网并登录。</p><h2>教学节奏</h2><p>章节分钟数是阅读和练习的估计，不是倒计时。可以任意返回复习，也可以先查看后面的章节。只有勾选自检并点击下一步，才会计为完成；跳转浏览不会自动完成未学的步骤。</p></div>`;
 }
 function celebrate() {
   if (!state.motion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -334,8 +337,8 @@ function celebrate() {
   setTimeout(() => { $('#confetti').innerHTML = ''; },2400);
 }
 function renderCompletion() {
-  const all = state.done.length === STEPS.length;
-  const missing = STEPS.filter(s => !state.done.includes(s.id));
+  const missing = coreSteps.filter(s => !state.done.includes(s.id));
+  const all = missing.length === 0;
   main.innerHTML = `<section class="completion"><div class="completion-mark">${icon(all ? 'trophy' : 'flag')}</div><h1>${all ? '你已经迈出了 AI 办公的第一步。' : '本步练习完成，继续按你的节奏学。'}</h1><p>${all ? '你已完成基础操作，也练习了专家、套件、技能、连接器和定时任务。' : '你已走到课程最后。前面还有一些步骤未确认完成，可以回来慢慢补上。'}</p><div class="completion-stats"><div><strong>${state.done.length}</strong><span>已完成的小步骤</span></div><div><strong>${COURSE.filter((c,i) => chapterDone(i) === c.lessons.length).length}</strong><span>已完成的章节</span></div><div><strong>${state.favorites.length}</strong><span>收藏的提示词</span></div></div>${all ? '<p>这不是技能认证，而是你自己完成练习的记录。下次遇到一个小任务，试着从“说清要求”开始。</p>' : `<div class="review-list">${missing.slice(0,4).map(s => `<a href="#lesson/${s.id}">${icon('book')}${esc(s.title)}${icon('chevron')}</a>`).join('')}${missing.length > 4 ? `<p>还有 ${missing.length-4} 个步骤可从课程地图返回。</p>` : ''}</div>`}<div class="button-row"><a class="button" href="${all ? '#prompts' : '#lesson/'+missing[0].id}">${all ? '带走我的提示词' : '继续未完成的步骤'}${icon('arrow')}</a><a class="button secondary" href="#home">返回学习地图</a><button class="button secondary" id="export-progress">${icon('download')} 保存学习记录</button></div></section>`;
 }
 function render() {
@@ -372,7 +375,7 @@ document.addEventListener('click', async event => {
   if (target.hasAttribute('data-demo')) { stopDemo();setDemo(Number(target.dataset.demo)); }
   if (target.hasAttribute('data-copy')) {
     const step = getStep(target.dataset.copy);
-    if (step) { const success = await copyText(step.prompt); if(success){target.innerHTML = `${icon('check')} 已复制`;setTimeout(() => { if(target.isConnected)target.innerHTML = `${icon('copy')} 复制提示词`; },1800);} }
+    if (step) { const success = await copyText(step.prompt); if(success){target.innerHTML = `${icon('check')} 已复制`;setTimeout(() => { if(target.isConnected)target.innerHTML = `${icon('copy')} ${COURSE[step.ci].optional ? '复制求助文字' : '复制提示词'}`; },1800);} }
   }
   if (target.hasAttribute('data-favorite')) toggleFavorite(target.dataset.favorite,target);
   if (target.hasAttribute('data-filter')) {
@@ -392,8 +395,8 @@ document.addEventListener('click', async event => {
       stopDemo();
       const nextFrame = demoIndex + (target.id === 'entry-back' ? -1 : 1);
       if (nextFrame === activeStep.frames.length) {
-        $('#practice').scrollIntoView({block:'center'});
-        $('#start-practice').focus({preventScroll:true});
+        $('#step-exercise').scrollIntoView({block:'start'});
+        $('#step-exercise').focus({preventScroll:true});
       } else if (nextFrame >= 0) {
         setDemo(nextFrame);
         if (matchMedia('(max-width:760px)').matches) $('.screen-panel').scrollIntoView({block:'start'});
@@ -401,16 +404,6 @@ document.addEventListener('click', async event => {
       break;
     }
     case 'play-demo': playDemo(); break;
-    case 'start-practice':
-      $('#practice').classList.add('ready');
-      if ($('.practice-lab')) {
-        $('.practice-lab').scrollIntoView({block:'center',behavior:state.motion ? 'smooth' : 'instant'});
-        $('.practice-lab input, .practice-lab select').focus({preventScroll:true});
-        break;
-      }
-      target.innerHTML = `${icon('check')} 做完后回来勾选自检`;
-      toast('请切到 WorkBuddy 亲自做一遍。完成后回到这里勾选自检。');
-      $('#self-check').focus({preventScroll:true});break;
     case 'next-step': {
       if (!activeStep || !$('#self-check').checked) break;
       const current = activeStep;
@@ -418,7 +411,7 @@ document.addEventListener('click', async event => {
       const next = STEPS[STEPS.indexOf(current)+1];
       if (next) state.last = next.id;
       persist();
-      if (current.si === COURSE[current.ci].lessons.length-1) { celebrate();toast(`第 ${current.ci+1} 章的最后一步已确认，继续保持自己的节奏。`); }
+      if (current.si === COURSE[current.ci].lessons.length-1) { celebrate();toast(`${chapterLabel(current.ci)}的最后一步已确认，继续保持自己的节奏。`); }
       if (next) go(next.id);else {location.hash = 'complete';celebrate();}break;
     }
     case 'previous-step': if(activeStep) { const previous = STEPS[STEPS.indexOf(activeStep)-1];if(previous)go(previous.id); }break;
@@ -431,7 +424,7 @@ document.addEventListener('click', async event => {
     case 'reset-progress': $('#reset-dialog').showModal();break;
     case 'confirm-reset': state.done = [];state.checked = [];state.last = '0-0';persist();$('#reset-dialog').close();location.hash='home';toast('学习进度已重置，收藏的提示词已保留。');break;
     case 'export-progress': {
-      const text = `WorkBuddy 新手学堂 · 学习记录\n导出时间：${new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'})}\n已完成 ${state.done.length}/${STEPS.length} 个步骤\n本记录由学员自检确认，不是技能认证。\n\n`+COURSE.map((c,ci) => `${c.title}\n`+c.lessons.map((s,si) => `${state.done.includes(`${COURSE[ci].id}-${si}`) ? '✓' : '○'} ${s.title}`).join('\n')).join('\n\n');
+      const text = `WorkBuddy 新手学堂 · 学习记录\n导出时间：${new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'})}\n正课已完成 ${coreDone()}/${coreSteps.length} 步，选学安装已完成 ${chapterDone(0)}/${COURSE[0].lessons.length} 步\n本记录由学员自检确认，不是技能认证。\n\n`+COURSE.map((c,ci) => `${c.title}\n`+c.lessons.map((s,si) => `${state.done.includes(`${COURSE[ci].id}-${si}`) ? '✓' : '○'} ${s.title}`).join('\n')).join('\n\n');
       const url = URL.createObjectURL(new Blob(['\uFEFF',text],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='WorkBuddy-我的学习记录.txt';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);break;
     }
   }
@@ -446,7 +439,7 @@ document.addEventListener('change',event => {
     if (event.target.checked) { if(!state.checked.includes(id))state.checked.push(id); }
     else { state.checked = state.checked.filter(x=>x!==id);state.done = state.done.filter(x=>x!==id); }
     persist();$('#next-step').disabled = !event.target.checked;$('#practice').classList.toggle('checked',event.target.checked);
-    $('#next-hint').textContent = event.target.checked ? '按你自己的判断，准备好了就继续' : '亲自尝试后，勾选上面的自检';
+    $('#next-hint').textContent = event.target.checked ? '已勾选，可以继续' : '先勾选上方方框';
     renderSidebar('lesson',activeStep.ci);
   }
 });
