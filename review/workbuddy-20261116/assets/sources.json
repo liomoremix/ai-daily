@@ -445,5 +445,105 @@
   "guide-pdf.png": {
     "type": "practice",
     "source": "《旧书交换会练习.pdf》实际第一页，虚构材料"
+  },
+  "entry-home.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "先找到 WorkBuddy 窗口左侧导航栏"
+  },
+  "entry-restore.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "收起时左上角的侧栏开关"
+  },
+  "entry-hub.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "侧栏中助理和定时任务之间的专家·技能·连接器"
+  },
+  "entry-hub-open.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "展开的专家、技能、连接器菜单"
+  },
+  "entry-expert.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "主区域顶部左边的专家页签"
+  },
+  "entry-expert-card.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "内容创作分类下的内容创作专家"
+  },
+  "entry-skills.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "专家和连接器之间的技能页签"
+  },
+  "entry-suite.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "精选技能下方与推荐、SkillHub并列的套件"
+  },
+  "entry-suite-source.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "套件下方选中的套件来源"
+  },
+  "entry-skill-search.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "技能市场右上角搜索技能"
+  },
+  "entry-installed.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "搜索技能右边的已安装按钮"
+  },
+  "entry-connectors.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "主区域顶部最右边的连接器"
+  },
+  "entry-connector-search.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "连接器页自定义连接器左侧的搜索框"
+  },
+  "entry-mail.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "连接器目录里的 QQ 邮箱卡片"
+  },
+  "entry-timer.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "左栏中专家·技能·连接器下一行的定时任务"
+  },
+  "entry-timer-page.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "定时任务列表的标题、空状态和右上角新建"
+  },
+  "entry-timer-new.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "新建按钮左半边的文字"
+  },
+  "entry-timer-fields.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "新建定时任务窗口中的任务名称"
+  },
+  "entry-timer-rule.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "重复菜单里的单次选项"
+  },
+  "entry-timer-date.webp": {
+    "type": "local",
+    "source": "Windows WorkBuddy 5.11.3 实拍 · 2026-11-18",
+    "description": "单次规则旁带日期的时间栏"
   }
 }

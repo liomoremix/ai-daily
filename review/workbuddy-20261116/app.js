@@ -110,12 +110,16 @@ function renderLesson(step) {
   const c = COURSE[step.ci];
   const index = STEPS.indexOf(step);
   const checked = state.checked.includes(step.id) || state.done.includes(step.id);
+  const path = entryRoutes[c.id];
+  const entryLesson = Boolean(path && step.si === 0);
   main.innerHTML = `<div class="breadcrumb"><a href="#home">学习中心</a>${icon('chevron')}<span>第 ${step.ci+1} 章 · ${esc(c.short)}</span></div>
     <div class="lesson-heading"><div><h1>${esc(step.title)}</h1><p>${esc(c.subtitle)}</p></div><span class="lesson-count">第 ${step.si+1} / ${c.lessons.length} 步</span></div>
     <nav class="step-rail" aria-label="本章小步骤">${c.lessons.map((s,i) => `<button class="step-tab ${i === step.si ? 'active' : ''} ${state.done.includes(`${c.id}-${i}`) ? 'done' : ''}" data-step="${c.id}-${i}" aria-label="第${i+1}步：${esc(s.title)}" ${i === step.si ? 'aria-current="step"' : ''} title="${esc(s.title)}">${state.done.includes(`${c.id}-${i}`) && i !== step.si ? icon('check') : String(i+1).padStart(2,'0')}</button>`).join('')}</nav>
+    ${path ? `<section class="entry-route" aria-label="在 WorkBuddy 里怎么走"><div><strong>从已打开的 WorkBuddy 开始</strong>${entryLesson ? '' : `<a href="#lesson/${c.id}-0">重看入口图解</a>`}</div><p>${path.map(esc).join(' <span aria-hidden="true">→</span> ')}</p><details><summary>我的窗口里看不到左边这列文字</summary><div class="sidebar-recovery"><button type="button" data-image="entry-restore.webp" data-image-title="WorkBuddy 左上角的侧栏开关，蓝框内" aria-label="放大侧栏开关截图"><img src="assets/entry-restore.webp" alt="左上角的小矩形图标，靠左有一条竖线"></button><p>看 WorkBuddy 窗口最左上角，点击蓝框里的侧栏图标。出现“新建任务”“助理”等文字后，就可以按本章路径继续。在已有对话里也能使用这个入口。</p></div></details></section>` : ''}
     <div class="learning-flow"><span class="active"><b>1</b> 看图学操作</span>${icon('chevron')}<span><b>2</b> 复制后尝试</span>${icon('chevron')}<span><b>3</b> 自检并继续</span></div>
     <section class="lesson-grid" aria-label="图文操作示范"><div class="screen-panel"><div class="screen-header"><span class="source-label">${esc(step.frames?.[0].source || sourceType(step))}</span><button data-image="${esc(step.image)}" data-image-title="${esc(step.title)}">${icon('zoom')} 放大查看</button></div><div class="screenshot-wrap" id="screenshot-wrap"><button class="screenshot-button" data-image="${esc(step.image)}" data-image-title="${esc(step.title)}" aria-label="放大截图：${esc(step.title)}"><img src="assets/${esc(step.image)}" alt="${esc(step.focus)}" id="lesson-image"></button></div><div class="screen-caption"><span class="demo-number caption-step" id="caption-step" aria-hidden="true">1</span><strong id="screen-focus">${esc(step.focus)}</strong></div><div class="demo-toolbar"><button class="button secondary" id="play-demo">${icon('play')} 看分步讲解</button><span id="demo-status">点击右侧说明，也能逐条看</span></div></div>
-    <div class="explain-panel"><div class="eyebrow">${icon('book')} 跟着这几步做</div><h2>先看一遍，再自己试</h2>${step.explain.map(([title,description],i) => `<button class="demo-step ${i === 0 ? 'selected' : ''}" data-demo="${i}" aria-pressed="${i === 0}"><span class="demo-number">${i+1}</span><span><strong>${esc(title)}</strong><p>${esc(description)}</p></span></button>`).join('')}</div></section>
+    ${entryLesson ? `<div class="explain-panel entry-panel"><div class="eyebrow">${icon('hand')} 对照自己的 WorkBuddy 操作</div><nav class="entry-dots" aria-label="选择一幅入口图解">${step.explain.map(([title],i) => `<button type="button" class="demo-step" data-demo="${i}" aria-label="第 ${i+1} 幅：${esc(title)}" title="${esc(title)}">${i+1}</button>`).join('')}</nav><div aria-live="polite" aria-atomic="true"><h2 id="entry-title"></h2><p id="entry-instruction"></p><div class="entry-try"><strong>轮到你</strong><p id="entry-attempt"></p></div></div><div class="entry-controls"><button class="button secondary" id="entry-back">上一幅</button><button class="button" id="entry-forward"></button></div></div>` :
+    `<div class="explain-panel"><div class="eyebrow">${icon('book')} 跟着这几步做</div><h2>先看一遍，再自己试</h2>${step.explain.map(([title,description],i) => `<button class="demo-step ${i === 0 ? 'selected' : ''}" data-demo="${i}" aria-pressed="${i === 0}"><span class="demo-number">${i+1}</span><span><strong>${esc(title)}</strong><p>${esc(description)}</p></span></button>`).join('')}</div>`}</section>
     <section class="prompt-section"><div class="prompt-header"><h2>${icon('copy')}这一步的提示词</h2><div class="prompt-actions"><button class="icon-button favorite-button" data-favorite="${step.id}" aria-label="${state.favorites.includes(step.id) ? '取消收藏' : '收藏提示词'}" aria-pressed="${state.favorites.includes(step.id)}">${icon('heart')}</button><button class="button" data-copy="${step.id}">${icon('copy')} 复制提示词</button></div></div><p class="prompt-text" id="step-prompt">${esc(step.prompt)}</p><div class="prompt-hint">${icon('bulb')}${step.id === '10-1' ? '复制后回到新建定时任务窗口，点击提示词框，按 Ctrl + V。' : '复制后切换到 WorkBuddy，点击输入框，再按 Ctrl + V 粘贴。'}</div></section>
     ${step.id === '8-2' ? `<div class="lesson-resource"><a href="assets/旧书交换会练习.pdf" download>${icon('download')} 下载旧书交换会练习.pdf</a></div>` : ''}
     ${c.id === 4 ? `<div class="lesson-resource"><a href="assets/练习会议记录.txt" download>${icon('download')} 下载练习会议记录.txt</a></div>` : ''}
@@ -207,6 +211,15 @@ function setDemo(i) {
   $('#demo-status').textContent = `讲解 ${i+1} / ${activeStep.explain.length}`;
   $('#caption-step').textContent = String(i+1);
   const frame = activeStep.frames?.[i];
+  if ($('#entry-title')) {
+    const [title, instruction] = activeStep.explain[i];
+    $('#entry-title').textContent = title;
+    $('#entry-instruction').textContent = instruction;
+    $('#entry-attempt').textContent = frame.attempt;
+    $('#screen-focus').textContent = title;
+    $('#entry-back').disabled = i === 0;
+    $('#entry-forward').textContent = i+1 === activeStep.explain.length ? '我找到了，去练习' : '看到了，继续';
+  }
   if (frame) {
     const img = $('#lesson-image');
     const viewport = img.parentElement;
@@ -374,6 +387,19 @@ document.addEventListener('click', async event => {
   }
   if (target.hasAttribute('data-close')) target.closest('dialog').close();
   switch(target.id) {
+    case 'entry-back':
+    case 'entry-forward': {
+      stopDemo();
+      const nextFrame = demoIndex + (target.id === 'entry-back' ? -1 : 1);
+      if (nextFrame === activeStep.frames.length) {
+        $('#practice').scrollIntoView({block:'center'});
+        $('#start-practice').focus({preventScroll:true});
+      } else if (nextFrame >= 0) {
+        setDemo(nextFrame);
+        if (matchMedia('(max-width:760px)').matches) $('.screen-panel').scrollIntoView({block:'start'});
+      }
+      break;
+    }
     case 'play-demo': playDemo(); break;
     case 'start-practice':
       $('#practice').classList.add('ready');
